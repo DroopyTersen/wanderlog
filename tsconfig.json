@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "target": "es5",
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "inlineSources": false,
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "typeRoots": ["./node_modules/@types"],
+    "lib": ["es2017", "dom"],
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "moduleResolution": "node"
+  }
+}

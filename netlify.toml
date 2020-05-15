@@ -1,0 +1,7 @@
+[context.production]
+  publish = "dist"
+  
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200

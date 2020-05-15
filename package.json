@@ -1,0 +1,42 @@
+{
+  "name": "wanderlog",
+  "version": "1.0.0",
+  "description": "Lust less, remember more. Wanderlog is a travel diary to help you capture your daily highlights as you explore the world.",
+  "private": true,
+  "scripts": {
+    "prebuild": "npm run clean && node tasks/build.js",
+    "build": "webpack",
+    "prestart": "node tasks/build.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "predeploy": "npm run build",
+    "deploy": "netlify deploy --prod --dir=dist",
+    "clean": "rimraf dist"
+  },
+  "author": "Andrew Petersen",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.8.26",
+    "idb": "^5.0.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-hook-form": "^5.6.3",
+    "react-router": "^6.0.0-alpha.4",
+    "react-router-dom": "^6.0.0-alpha.4",
+    "slugify": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "css-loader": "^3.5.3",
+    "fs-extra": "^9.0.0",
+    "rimraf": "^3.0.2",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
+    "ts-loader": "^7.0.3",
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
