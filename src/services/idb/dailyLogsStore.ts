@@ -12,7 +12,7 @@ export const dailyLogStore = {
       return transaction.objectStore("dailyLogs").get(id);
     });
   },
-  getAll(): Promise<DailyLogItem> {
+  getAll(): Promise<DailyLogItem[]> {
     return tx("dailyLogs", "readonly", (transaction) => {
       return getAll(transaction.objectStore("dailyLogs").index("by-date"));
     });

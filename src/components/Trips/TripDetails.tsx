@@ -12,7 +12,14 @@ export default function TripDetails() {
   return (
     <div>
       <h2>{trip?.item.title}</h2>
-      <Link to="edit">Edit</Link>
+      <ul>
+        <li>
+          <Link to="edit">Edit</Link>
+        </li>
+        <li>
+          <Link to="logs/new">Add Trip Log</Link>
+        </li>
+      </ul>
     </div>
   );
 }

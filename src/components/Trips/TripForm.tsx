@@ -4,7 +4,6 @@ import { useModelForm } from "../shared/useModelForm";
 import { useNavigate, useParams } from "react-router";
 
 export default function TripForm({ id = "" }) {
-  console.log("TripForm -> id", id);
   let navigate = useNavigate();
   let form = useModelForm<TripModel>(id, TripModel.load);
   let { ModelInput, uiStatus, formProps } = form;

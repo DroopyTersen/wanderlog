@@ -1,26 +1,104 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import { useParams, useNavigate } from "react-router";
+import useAsyncData from "../../core/hooks/useAsyncData";
+import { TripModel, DailyLogModel } from "../../models";
+import { useModelForm } from "../shared/useModelForm";
+import slugify from "slugify";
 
-export default function DiaryForm() {
-  const { register, handleSubmit, errors } = useForm({
-    defaultValues: {
-      date: dayjs().format("YYYY-MM-DD"),
-    },
-  });
-  const onSubmit = (data) => console.log(data);
+export default function DailyLogForm({ start = "", end = "", id = "" }) {
+  let navigate = useNavigate();
+  let form = useModelForm<DailyLogModel>(id, DailyLogModel.load);
+
+  if (form.uiStatus === "loading") return <div>Loading...</div>;
+  return (
+    <form {...form.formProps}>
+      <form.ModelInput
+        name="date"
+        label="Date"
+        form={form}
+        type="date"
+        required
+        min={start}
+        max={end}
+      />
+
+      <TagsInput
+        onChange={(tags) => form.update("tags", tags)}
+        initialTags={form.model?.item?.tags}
+      />
+
+      <div className="tags">
+        {form.model?.item?.tags?.map((tag) => (
+          <div>{tag}</div>
+        ))}
+      </div>
+
+      <HighlightsInput
+        onChange={(highlights) => form.update("highlights", highlights)}
+        initialHighlights={form?.model?.item?.highlights}
+      />
+
+      <ul>
+        {form.model.item?.highlights?.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+
+      <button type="submit" disabled={form.uiStatus !== "valid"}>
+        Save
+      </button>
+    </form>
+  );
+}
+
+export function TagsInput({ onChange, initialTags = [] }) {
+  let [value, setValue] = useState(initialTags.join(", "));
+
+  useEffect(() => {
+    let tags = value
+      .replace(/, /g, ",")
+      .replace(/ /g, ",")
+      .split(",")
+      .map((tag) => slugify(tag.trim().toLowerCase()))
+      .filter(Boolean);
+    onChange(tags);
+  }, [value]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        type="date"
-        placeholder="Enter the date..."
-        name="date"
-        ref={register({ required: true })}
-      />
-      <textarea name="body" ref={register({ required: true })} />
+    <label>
+      Tags
+      <input name={name} value={value} onChange={(e) => setValue(e.target.value)} />
+    </label>
+  );
+}
 
-      <input type="submit" />
-    </form>
+export function HighlightsInput({ onChange, initialHighlights = [] }) {
+  let [value, setValue] = useState(initialHighlights.join("\n"));
+  useEffect(() => {
+    let highlights = value
+      .split("\n")
+      .map((str) => str.trim())
+      .filter(Boolean);
+    onChange(highlights);
+  }, [value]);
+
+  return (
+    <label>
+      Highlights
+      <textarea onChange={(event) => setValue(event.target.value)} value={value}></textarea>
+    </label>
+  );
+}
+
+export function NewDailyLogScreen() {
+  let { tripId } = useParams();
+  let { data: trip } = useAsyncData<TripModel>(TripModel.load, [tripId], null);
+
+  return (
+    <div>
+      <h2>New Trip Log</h2>
+      {trip && <DailyLogForm start={trip.item.start} end={trip.item.end} />}
+    </div>
   );
 }
