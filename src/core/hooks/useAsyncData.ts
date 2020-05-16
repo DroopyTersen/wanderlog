@@ -47,7 +47,7 @@ function reducer<T>(state: AsyncDataState<T>, action: any) {
 }
 
 export default function useAsyncData<T>(asyncFn, args: any[], initialValue: T) {
-  let [state, dispatch] = useReducer(reducer, { isLoading: false, error: "", data: initialValue });
+  let [state, dispatch] = useReducer(reducer, { isLoading: true, error: "", data: initialValue });
 
   useEffect(() => {
     let isUnmounted = false;

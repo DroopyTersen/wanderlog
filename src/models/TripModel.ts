@@ -9,8 +9,8 @@ export interface TripItem {
   title: string;
   authorId?: string;
   created?: Date;
-  start?: Date;
-  end?: Date;
+  start?: string;
+  end?: string;
   destination?: string;
   companionIds?: string[];
   coverImage?: {
@@ -26,8 +26,8 @@ export const NEW_TRIP: TripItem = {
   authorId: "Drew",
   created: new Date(),
   destination: "",
-  start: new Date(),
-  end: dayjs(new Date()).add(7, "day").toDate(),
+  start: dayjs(new Date()).startOf("day").format("YYYY-MM-DD"),
+  end: dayjs(new Date()).add(7, "day").format("YYYY-MM-DD"),
   companionIds: [],
   coverImage: {
     url: "",
@@ -40,9 +40,16 @@ export class TripModel implements Model<TripItem> {
   constructor(item: TripItem = NEW_TRIP) {
     this.item = item;
   }
+  static async loadAll() {
+    console.log("TripModel -> loadAll -> loadAll");
+    let items = await tripsStore.getAll();
+    console.log("TripModel -> loadAll -> items", items);
+    return items.reverse().map((item) => new TripModel(item));
+  }
   static async load(id) {
     if (!id) return new TripModel();
-    let item = tripsStore.getById(id);
+    let item = await tripsStore.getById(id);
+    console.log("TripModel -> load -> item", item);
     if (!item) throw new Error("Trip Not Fount: " + id);
     return new TripModel(item);
   }
@@ -50,7 +57,7 @@ export class TripModel implements Model<TripItem> {
     this.item[key] = value;
   }
   checkIsValid(): boolean {
-    return this.item.title && !!this.item.start && !!this.item.end;
+    return this.item.title && this.item.destination && !!this.item.start && !!this.item.end;
   }
   async save() {
     if (this.checkIsValid()) {

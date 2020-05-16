@@ -14,7 +14,7 @@ export const tripsStore = {
   },
   getAll() {
     return tx("trips", "readonly", (transaction) => {
-      return getAll(transaction.objectStore("dailyLogs").index("by-date"));
+      return getAll(transaction.objectStore("trips").index("by-date"));
     });
   },
 };

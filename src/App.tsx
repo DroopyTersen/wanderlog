@@ -2,7 +2,10 @@ import React from "react";
 import "./styles/milligram.custom.scss";
 import DailyLogForm from "./components/DailyLogs/DailyLogForm";
 import { BrowserRouter as Router, Routes, Route, Outlet, useParams } from "react-router-dom";
-import TripForm from "./components/Trips/TripForm";
+import TripForm, { NewTripScreen, EditTripScreen } from "./components/Trips/TripForm";
+import TripsLayout from "./components/Trips/TripsLayout";
+import TripsList from "./components/Trips/TripsList";
+import TripDetails from "./components/Trips/TripDetails";
 
 function App({}) {
   return (
@@ -13,10 +16,10 @@ function App({}) {
           <Route path="*" element={<HomeScreen />} />
 
           <Route path="/trips" element={<TripsLayout />}>
-            <Route path="/" element={<TripsScreen />} />
-            <Route path="new" element={<NewTrip />} />
+            <Route path="/" element={<TripsList />} />
+            <Route path="new" element={<NewTripScreen />} />
             <Route path=":id" element={<TripDetails />} />
-            <Route path=":id/edit" element={<EditTrip />} />
+            <Route path=":id/edit" element={<EditTripScreen />} />
           </Route>
 
           <Route path="/places" element={<PlacesLayout />}>
@@ -33,33 +36,6 @@ function App({}) {
 
 function HomeScreen() {
   return <h1>Home</h1>;
-}
-
-function TripsLayout() {
-  return (
-    <>
-      <h1>Trips</h1>
-      <Outlet />
-    </>
-  );
-}
-
-function TripsScreen() {
-  return <h2>Trips List</h2>;
-}
-
-function TripDetails() {
-  let { id } = useParams();
-  return <h2>Trip Details: {id}</h2>;
-}
-
-function NewTrip() {
-  return <TripForm />;
-}
-
-function EditTrip() {
-  let { id } = useParams();
-  return <h2>Edit Trip: {id}</h2>;
 }
 
 function PlacesLayout() {

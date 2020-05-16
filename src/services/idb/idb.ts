@@ -11,7 +11,7 @@ function getDb() {
 
 function openDb() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("push-chat", 1);
+    const request = indexedDB.open("wanderlog", 1);
     request.onupgradeneeded = (_) => {
       const db = request.result;
       setupStores(db);
