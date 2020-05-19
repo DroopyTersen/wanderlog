@@ -4,17 +4,17 @@ import DailyLogForm, {
   NewDailyLogScreen,
   EditDailyLogScreen,
 } from "./components/DailyLogs/DailyLogForm";
-import { BrowserRouter as Router, Routes, Route, Outlet, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, useParams, Link } from "react-router-dom";
 import TripForm, { NewTripScreen, EditTripScreen } from "./components/Trips/TripForm";
 import TripsLayout from "./components/Trips/TripsLayout";
 import TripsList from "./components/Trips/TripsList";
 import TripDetails from "./components/Trips/TripDetails";
-
+import "./styles/App.scss";
 function App({}) {
   return (
     <div className="app">
-      <h1>Wanderlog</h1>
       <Router>
+        <Nav />
         <Routes>
           <Route path="*" element={<HomeScreen />} />
 
@@ -41,7 +41,17 @@ function App({}) {
 }
 
 function HomeScreen() {
-  return <h1>Home</h1>;
+  return <h2>Home</h2>;
+}
+
+function Nav() {
+  return (
+    <nav className="menu">
+      <Link to="/">Home</Link>
+      <Link to="/trips">Trips</Link>
+      <Link to="/places">Places</Link>
+    </nav>
+  );
 }
 
 function PlacesLayout() {
