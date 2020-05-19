@@ -6,6 +6,7 @@ import { Model } from "./Model";
 
 export interface TripItem {
   id?: string;
+  darkKey?: string;
   title: string;
   authorId?: string;
   created?: Date;
@@ -63,6 +64,13 @@ export class TripModel implements Model<TripItem> {
     if (this.checkIsValid()) {
       await tripsStore.save(this.item);
       await outboxStore.add({ action: "trips.save", payload: this.item });
+      window.swRegistration.sync.register("outbox");
     }
+  }
+}
+
+declare global {
+  interface Window {
+    swRegistration: ServiceWorkerRegistration;
   }
 }

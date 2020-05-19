@@ -16,6 +16,7 @@ function ModelInput({ form, name, label, getValue = (raw) => raw, ...rest }: Mod
     <label>
       {label}
       <input
+        autoComplete="off"
         name={name}
         value={getValue(form.model.item[name])}
         onChange={(e) => {
