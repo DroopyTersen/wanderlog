@@ -7,6 +7,7 @@ import { Model } from "./Model";
 export interface TripItem {
   id?: string;
   title: string;
+  timestamp?: number;
   authorId?: string;
   created?: Date;
   start?: string;
@@ -24,7 +25,6 @@ export const NEW_TRIP: TripItem = {
   title: "New Trip",
   // TODO: replace with current user
   authorId: "Drew",
-  created: new Date(),
   destination: "",
   start: dayjs(new Date()).startOf("day").format("YYYY-MM-DD"),
   end: dayjs(new Date()).add(7, "day").format("YYYY-MM-DD"),
@@ -61,6 +61,7 @@ export class TripModel implements Model<TripItem> {
   }
   async save() {
     if (this.checkIsValid()) {
+      this.item.timestamp = Date.now();
       await tripsStore.save(this.item);
       await outboxStore.add({ action: "trips.save", payload: this.item });
       window.swRegistration.sync.register("trips.save");

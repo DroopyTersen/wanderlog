@@ -7,7 +7,7 @@ import {
   ItemCollection,
 } from "./services/darklang/darklangService";
 import { wait } from "./core/utils";
-import { saveMany } from "./services/idb/idb";
+import { saveMany, deleteAll } from "./services/idb/idb";
 const CACHE_KEY = "v0.1";
 
 const channel = new BroadcastChannel("sw-messages");
@@ -33,6 +33,7 @@ async function sync(tag = "") {
 
 async function syncCollectionFromServer(collection: ItemCollection) {
   let items = await getItemsFromDb(collection);
+  deleteAll(collection);
   await saveMany(collection, items);
   channel.postMessage({ type: "sync", collection });
 }

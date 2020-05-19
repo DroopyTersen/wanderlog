@@ -47,6 +47,12 @@ export function saveMany(store: string, items: any[]) {
   });
 }
 
+export function deleteAll(store: string) {
+  return tx(store, "readwrite", (transaction: IDBTransaction) => {
+    transaction.objectStore(store).clear();
+  });
+}
+
 function iterate(cursorRequest, callback) {
   return new Promise((resolve, reject) => {
     cursorRequest.onerror = (_) => reject(cursorRequest.error);
