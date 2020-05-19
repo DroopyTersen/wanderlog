@@ -39,6 +39,14 @@ export function tx(stores, mode, callback) {
   });
 }
 
+export function saveMany(store: string, items: any[]) {
+  return tx(store, "readwrite", (transaction) => {
+    items.forEach((item) => {
+      transaction.objectStore(store).put(item);
+    });
+  });
+}
+
 function iterate(cursorRequest, callback) {
   return new Promise((resolve, reject) => {
     cursorRequest.onerror = (_) => reject(cursorRequest.error);

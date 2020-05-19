@@ -1,11 +1,14 @@
 import { TripItem } from "../../models";
-import { tx, getAll } from "./idb";
+import { tx, getAll, saveMany } from "./idb";
 
 export const tripsStore = {
   save(item: TripItem) {
     return tx("trips", "readwrite", (transaction) => {
       transaction.objectStore("trips").put(item);
     });
+  },
+  saveMany(items) {
+    saveMany("trips", items);
   },
   getById(id) {
     return tx("trips", "readonly", (transaction: IDBTransaction) => {

@@ -10,7 +10,7 @@ export interface DailyLogItem {
   date: string;
   highlights: string[];
   tags: string[];
-  companionIds?: string[];
+  // companionIds?: string[];
   placeIds?: string[];
   imageIds?: string[];
 }
@@ -23,7 +23,7 @@ export const NEW_DAILY_LOG = {
   date: dayjs().startOf("day").format("YYYY-MM-DD"),
   highlights: [],
   tags: [],
-  companionIds: [],
+  // companionIds: [],
   placeIds: [],
   imageIds: [],
 };
@@ -34,9 +34,11 @@ export class DailyLogModel {
     this.item = item;
   }
   static async loadByTrip(tripId) {
+    if (!tripId) return Promise.resolve([]);
     let trip = await TripModel.load(tripId);
     // TODO: switch to query by dates?
     let items = await dailyLogStore.getAll();
+    console.log("DailyLogModel -> loadByTrip -> items", items);
     let tripLogs = items
       .filter((logItem) => {
         return logItem.date >= trip.item.start && logItem.date <= trip.item.end;
@@ -57,12 +59,14 @@ export class DailyLogModel {
     return this.item.highlights && this.item.highlights.length > 0;
   }
   async save() {
+    // TODO: delete any logs that already exists for that date (local and DB)
     // TODO: handle places.
     // If the Place doesn't exist, add to the Places store
     // Add the visit date (make sure not duplicate)
     if (this.checkIsValid()) {
       await dailyLogStore.save(this.item);
       await outboxStore.add({ action: "dailyLogs.save", payload: this.item });
+      window.swRegistration.sync.register("dailyLogs.save");
     }
   }
 }

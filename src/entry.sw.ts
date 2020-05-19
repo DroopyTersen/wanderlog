@@ -1,28 +1,57 @@
-import { outboxStore } from "./services";
-import { savePlace, saveTrip } from "./services/darklang/darklangService";
+import { outboxStore, tripsStore } from "./services";
+import {
+  savePlace,
+  saveTripToDb,
+  getItemsFromDb,
+  saveDailyLogToDb,
+  ItemCollection,
+} from "./services/darklang/darklangService";
+import { wait } from "./core/utils";
+import { saveMany } from "./services/idb/idb";
 const CACHE_KEY = "v0.1";
 
+const channel = new BroadcastChannel("sw-messages");
+
 self.addEventListener("sync", function (event: SyncEvent) {
-  console.log("sync event", event);
-  event.waitUntil(syncOutbox());
+  console.log("Background Sync", event?.tag);
+  event.waitUntil(sync(event.tag));
 });
 
-let actions = {
-  "trips.save": (payload) => saveTrip(payload),
+async function sync(tag = "") {
+  await syncOutbox();
+  //   await wait(400);
+  await syncFromServer();
+}
+
+async function syncCollectionFromServer(collection: ItemCollection) {
+  let items = await getItemsFromDb(collection);
+  await saveMany(collection, items);
+  channel.postMessage({ type: "sync", collection });
+}
+
+async function syncFromServer() {
+  await syncCollectionFromServer("trips");
+  await syncCollectionFromServer("dailyLogs");
+}
+
+let outboxActions = {
+  "trips.save": (payload) => saveTripToDb(payload),
+  "dailyLogs.save": (payload) => saveDailyLogToDb(payload),
 };
+
 async function syncOutbox() {
   let outboxItems = await outboxStore.getAll();
   for (const outboxItem of outboxItems) {
     try {
-      if (actions[outboxItem.action]) {
-        actions[outboxItem.action](outboxItem.payload)
+      if (outboxActions[outboxItem.action]) {
+        outboxActions[outboxItem.action](outboxItem.payload)
           .catch((err) => {
             console.error(err);
             console.log("Errored Item 2", outboxItem);
           })
           .then(() => {
             console.log("Succss!");
-            //outboxStore.remove(outboxItem.id);
+            outboxStore.remove(outboxItem.id);
           });
       }
     } catch (err) {

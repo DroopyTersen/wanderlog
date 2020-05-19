@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useAsyncData from "../../core/hooks/useAsyncData";
 import { TripModel } from "../../models";
 import { Link } from "react-router-dom";
+import { useSyncListener } from "../shared/useSyncListener";
 
 export default function TripsList() {
-  let { data: trips, isLoading } = useAsyncData<TripModel[]>(TripModel.loadAll, [], null);
+  let { data: trips, isLoading } = useTrips();
 
   if (isLoading) return null;
 
@@ -21,4 +22,9 @@ export default function TripsList() {
       </ul>
     </div>
   );
+}
+
+function useTrips() {
+  let refreshToken = useSyncListener(["trips"]);
+  return useAsyncData<TripModel[]>(TripModel.loadAll, [refreshToken], null);
 }

@@ -6,7 +6,6 @@ import { Model } from "./Model";
 
 export interface TripItem {
   id?: string;
-  darkKey?: string;
   title: string;
   authorId?: string;
   created?: Date;
@@ -42,15 +41,15 @@ export class TripModel implements Model<TripItem> {
     this.item = item;
   }
   static async loadAll() {
-    console.log("TripModel -> loadAll -> loadAll");
+    // console.log("TripModel -> loadAll -> loadAll");
     let items = await tripsStore.getAll();
-    console.log("TripModel -> loadAll -> items", items);
+    // console.log("TripModel -> loadAll -> items", items);
     return items.reverse().map((item) => new TripModel(item));
   }
   static async load(id) {
     if (!id) return new TripModel();
     let item = await tripsStore.getById(id);
-    console.log("TripModel -> load -> item", item);
+    // console.log("TripModel -> load -> item", item);
     if (!item) throw new Error("Trip Not Fount: " + id);
     return new TripModel(item);
   }
@@ -64,7 +63,7 @@ export class TripModel implements Model<TripItem> {
     if (this.checkIsValid()) {
       await tripsStore.save(this.item);
       await outboxStore.add({ action: "trips.save", payload: this.item });
-      window.swRegistration.sync.register("outbox");
+      window.swRegistration.sync.register("trips.save");
     }
   }
 }

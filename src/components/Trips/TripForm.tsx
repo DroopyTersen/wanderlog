@@ -42,7 +42,7 @@ export function EditTripScreen() {
   let { id } = useParams();
   return (
     <div>
-      <h1>New Trip</h1>
+      <h1>Edit Trip</h1>
       <TripForm id={id} />
     </div>
   );

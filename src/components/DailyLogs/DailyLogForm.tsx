@@ -6,9 +6,20 @@ import { TripModel, DailyLogModel } from "../../models";
 import { useModelForm } from "../shared/useModelForm";
 import slugify from "slugify";
 
-export default function DailyLogForm({ start = "", end = "", id = "" }) {
-  let navigate = useNavigate();
+export default function DailyLogForm({
+  start = "",
+  end = "",
+  id = "",
+  onSuccess = () => {},
+  onCancel,
+}) {
   let form = useModelForm<DailyLogModel>(id, DailyLogModel.load);
+
+  if (form.uiStatus === "success") {
+    setTimeout(() => {
+      onSuccess();
+    }, 0);
+  }
 
   if (form.uiStatus === "loading") return <div>Loading...</div>;
   return (
@@ -30,7 +41,7 @@ export default function DailyLogForm({ start = "", end = "", id = "" }) {
 
       <div className="tags">
         {form.model?.item?.tags?.map((tag) => (
-          <div>{tag}</div>
+          <div key={tag}>{tag}</div>
         ))}
       </div>
 
@@ -40,11 +51,16 @@ export default function DailyLogForm({ start = "", end = "", id = "" }) {
       />
 
       <ul>
-        {form.model.item?.highlights?.map((item) => (
-          <li>{item}</li>
+        {form.model.item?.highlights?.map((item, index) => (
+          <li key={index}>{item}</li>
         ))}
       </ul>
 
+      {onCancel && (
+        <button className="button-outline" type="button" onClick={onCancel}>
+          Cancel
+        </button>
+      )}
       <button type="submit" disabled={form.uiStatus !== "valid"}>
         Save
       </button>
@@ -92,13 +108,45 @@ export function HighlightsInput({ onChange, initialHighlights = [] }) {
 }
 
 export function NewDailyLogScreen() {
-  let { tripId } = useParams();
+  let { tripId, logId } = useParams();
+  let navigate = useNavigate();
+  let navigateToTrip = () => navigate("/trips/" + tripId);
   let { data: trip } = useAsyncData<TripModel>(TripModel.load, [tripId], null);
 
   return (
     <div>
       <h2>New Trip Log</h2>
-      {trip && <DailyLogForm start={trip.item.start} end={trip.item.end} />}
+      {trip && (
+        <DailyLogForm
+          start={trip.item.start}
+          end={trip.item.end}
+          id={logId}
+          onSuccess={navigateToTrip}
+          onCancel={navigateToTrip}
+        />
+      )}
+    </div>
+  );
+}
+
+export function EditDailyLogScreen() {
+  let { tripId, logId } = useParams();
+  let navigate = useNavigate();
+  let navigateToTrip = () => navigate("/trips/" + tripId);
+  let { data: trip } = useAsyncData<TripModel>(TripModel.load, [tripId], null);
+
+  return (
+    <div>
+      <h2>Edit Trip Log</h2>
+      {trip && (
+        <DailyLogForm
+          start={trip.item.start}
+          end={trip.item.end}
+          id={logId}
+          onSuccess={navigateToTrip}
+          onCancel={navigateToTrip}
+        />
+      )}
     </div>
   );
 }

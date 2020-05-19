@@ -1,6 +1,9 @@
 import React from "react";
 import "./styles/milligram.custom.scss";
-import DailyLogForm, { NewDailyLogScreen } from "./components/DailyLogs/DailyLogForm";
+import DailyLogForm, {
+  NewDailyLogScreen,
+  EditDailyLogScreen,
+} from "./components/DailyLogs/DailyLogForm";
 import { BrowserRouter as Router, Routes, Route, Outlet, useParams } from "react-router-dom";
 import TripForm, { NewTripScreen, EditTripScreen } from "./components/Trips/TripForm";
 import TripsLayout from "./components/Trips/TripsLayout";
@@ -21,6 +24,8 @@ function App({}) {
             <Route path=":id" element={<TripDetails />} />
             <Route path=":id/edit" element={<EditTripScreen />} />
             <Route path=":tripId/logs/new" element={<NewDailyLogScreen />} />
+            <Route path=":tripId/logs/:logId" element={<EditDailyLogScreen />} />
+            <Route path=":tripId/logs/:logId/edit" element={<EditDailyLogScreen />} />
           </Route>
 
           <Route path="/places" element={<PlacesLayout />}>
