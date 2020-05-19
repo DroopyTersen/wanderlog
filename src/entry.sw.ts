@@ -44,7 +44,7 @@ async function syncOutbox() {
   for (const outboxItem of outboxItems) {
     try {
       if (outboxActions[outboxItem.action]) {
-        outboxActions[outboxItem.action](outboxItem.payload)
+        await outboxActions[outboxItem.action](outboxItem.payload)
           .catch((err) => {
             console.error(err);
             console.log("Errored Item 2", outboxItem);

@@ -1,10 +1,10 @@
 import React from "react";
-import useAsyncData from "../../core/hooks/useAsyncData";
 import { TripModel, DailyLogModel } from "../../models";
 import { Link, useParams } from "react-router-dom";
 import { useSyncListener } from "../shared/useSyncListener";
 import dayjs from "dayjs";
 import { displayDate } from "../../core/utils";
+import useAsyncData from "../shared/useAsyncData";
 
 export default function TripDetails() {
   let { id } = useParams();

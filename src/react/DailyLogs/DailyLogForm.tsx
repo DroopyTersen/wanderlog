@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { useParams, useNavigate } from "react-router";
-import useAsyncData from "../../core/hooks/useAsyncData";
 import { TripModel, DailyLogModel } from "../../models";
 import { useModelForm } from "../shared/useModelForm";
 import slugify from "slugify";
+import useAsyncData from "../shared/useAsyncData";
 
 export default function DailyLogForm({
   start = "",

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import useAsyncData from "../../core/hooks/useAsyncData";
 import { TripModel } from "../../models";
 import { Link } from "react-router-dom";
 import { useSyncListener } from "../shared/useSyncListener";
+import useAsyncData from "../shared/useAsyncData";
 
 export default function TripsList() {
   let { data: trips, isLoading } = useTrips();
