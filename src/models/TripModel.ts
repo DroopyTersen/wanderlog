@@ -9,7 +9,6 @@ export interface TripItem {
   title: string;
   timestamp?: number;
   authorId?: string;
-  created?: Date;
   start?: string;
   end?: string;
   destination?: string;

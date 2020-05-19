@@ -10,7 +10,7 @@ export const savePlace = async function (place: PlaceItem) {
 
 interface Item {
   id?: string;
-  created?: string | Date;
+  timestamp?: number;
   darkKey?: string;
 }
 
@@ -36,11 +36,11 @@ export async function getItemsFromDb(collection: ItemCollection) {
     let data = await resp.text();
     throw new Error(data);
   }
-  let items = await resp.json();
-  return items.map((item) => ({
-    ...item,
-    created: new Date(item.created),
-  }));
+  return resp.json();
+  // return items.map((item) => ({
+  //   ...item,
+  //   timestamp: new Date(item.created),
+  // }));
 }
 
 export const saveTripToDb = async function (item: TripItem) {

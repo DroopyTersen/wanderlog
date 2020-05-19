@@ -5,7 +5,7 @@ import { TripModel } from "./TripModel";
 import slugify from "slugify";
 export interface DailyLogItem {
   id?: string;
-  created: Date;
+  timestamp?: number;
   authorId: string;
   date: string;
   highlights: string[];
@@ -18,7 +18,6 @@ export interface DailyLogItem {
 export const NEW_DAILY_LOG = {
   id: generateId(),
   // TODO: replace with current user
-  created: new Date(),
   authorId: "Drew",
   date: dayjs().startOf("day").format("YYYY-MM-DD"),
   highlights: [],
@@ -63,6 +62,7 @@ export class DailyLogModel {
     // TODO: handle places.
     // If the Place doesn't exist, add to the Places store
     // Add the visit date (make sure not duplicate)
+    this.item.timestamp = Date.now();
     if (this.checkIsValid()) {
       await dailyLogStore.save(this.item);
       await outboxStore.add({ action: "dailyLogs.save", payload: this.item });
