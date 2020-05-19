@@ -12,6 +12,14 @@ const CACHE_KEY = "v0.1";
 
 const channel = new BroadcastChannel("sw-messages");
 
+self.addEventListener("fetch", function (event: FetchEvent) {
+  event.respondWith(
+    fetch(event.request).catch(function () {
+      return caches.match(event.request);
+    })
+  );
+});
+
 self.addEventListener("sync", function (event: SyncEvent) {
   console.log("Background Sync", event?.tag);
   event.waitUntil(sync(event.tag));
@@ -102,7 +110,14 @@ function getFromCache(request) {
 
 function precache() {
   return caches.open(CACHE_KEY).then(function (cache) {
-    return cache.addAll(["/", "index.html", "favicon.png", "app.js", "manifest.json"]);
+    return cache.addAll([
+      "/",
+      "index.html",
+      "favicon.png",
+      "app.js",
+      "manifest.json",
+      "/images/icons/icon-144x144.png",
+    ]);
   });
 }
 
