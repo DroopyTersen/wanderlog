@@ -19,7 +19,11 @@
       window.addEventListener('load', function () {
         navigator.serviceWorker.register('/sw.js').then((swRegistration) => {
           window.swRegistration = swRegistration
-          window.swRegistration.sync.register("onload")
+          // Wait for service worker to be activated before triggering sync
+          setTimeout(() => {
+            window.swRegistration.sync.register("onload")
+          }, 500)
+
         });
       });
     }
