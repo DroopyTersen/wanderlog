@@ -13,6 +13,13 @@ const CACHE_KEY = "v0.1";
 const channel = new BroadcastChannel("sw-messages");
 
 self.addEventListener("fetch", function (event: FetchEvent) {
+  if (event.request.method !== "GET") {
+    return;
+  }
+  if (event.request.mode === "navigate") {
+    event.respondWith(caches.match("index.html"));
+    return;
+  }
   event.respondWith(
     fetch(event.request).catch(function () {
       return caches.match(event.request);
