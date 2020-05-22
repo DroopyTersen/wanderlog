@@ -1,12 +1,21 @@
 .header {
   .nav-brand {
     display: inline-block;
+    margin: 0;
     .app-title {
       font-size: 2rem;
       padding: 5px;
+      margin-left: 0;
       a {
         border: none;
       }
     }
+  }
+  .collapsible button {
+    border: none;
+    box-shadow: none;
+  }
+  a.active {
+    border-color: #ddcd45;
   }
 }

@@ -1,17 +1,18 @@
 import React, { useRef } from "react";
 import "./Header.scss";
-import { Link } from "react-router-dom";
+import { Link, useRoutes, useLocation, useNavigate } from "react-router-dom";
 import useClickOutside from "../../shared/useClickOutside";
 
 export default function Header({ title = "Wanderlog" }) {
+  let { pathname } = useLocation();
   return (
     <nav className="header border fixed split-nav">
       <div className="nav-brand">
-        <h1 className="app-title">
-          <a href="/">Wanderlog</a>
-        </h1>
+        <div className="app-title">
+          <Link to="/">Wanderlog</Link>
+        </div>
       </div>
-      <div className="collapsible">
+      <div className="collapsible" key={pathname}>
         <input id="collapsible1" type="checkbox" name="collapsible1" />
         <button>
           <label htmlFor="collapsible1">
@@ -23,17 +24,42 @@ export default function Header({ title = "Wanderlog" }) {
         <div className="collapsible-body">
           <ul className="inline">
             <li>
-              <Link to="/trips">Trips</Link>
+              <Link to="/trips" className={getActiveClass(pathname, "/trips")}>
+                Trips
+              </Link>
             </li>
             <li>
-              <Link to="/trips">Places</Link>
+              <Link to="/places" className={getActiveClass(pathname, "/places")}>
+                Places
+              </Link>
             </li>
             <li>
-              <Link to="/trips">Photos</Link>
+              <Link to="/photos" className={getActiveClass(pathname, "/photos")}>
+                Photos
+              </Link>
             </li>
           </ul>
         </div>
       </div>
     </nav>
+  );
+}
+
+const getActiveClass = (pathname: string, linkPath: string) => {
+  return pathname.toLowerCase().startsWith(linkPath.toLowerCase()) ? "active" : "";
+};
+
+export function LinkButton({ to = "", children, ...rest }) {
+  let navigate = useNavigate();
+  return (
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        navigate(to);
+      }}
+      {...rest}
+    >
+      {children}
+    </button>
   );
 }

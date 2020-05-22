@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useReducer } from "react";
 import { TripModel } from "../../models";
 import { useModelForm } from "../shared/useModelForm";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
+import { FormActions } from "../shared/useForm";
 
 export default function TripForm({ id = "" }) {
   let navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function TripForm({ id = "" }) {
 
       <ModelInput name="end" label="End Date" type="date" form={form} required />
 
-      <input type="submit" disabled={uiStatus !== "valid"} />
+      <FormActions isValid={uiStatus === "valid"}></FormActions>
     </form>
   );
 }

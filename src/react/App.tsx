@@ -23,9 +23,9 @@ function App({}) {
               <Route path="new" element={<NewTripScreen />} />
               <Route path=":id" element={<TripDetails />} />
               <Route path=":id/edit" element={<EditTripScreen />} />
-              <Route path=":tripId/logs/new" element={<NewDailyLogScreen />} />
-              <Route path=":tripId/logs/:logId" element={<EditDailyLogScreen />} />
-              <Route path=":tripId/logs/:logId/edit" element={<EditDailyLogScreen />} />
+              <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
+              <Route path=":tripId/dailyLogs/:logId" element={<EditDailyLogScreen />} />
+              <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
             </Route>
 
             <Route path="/places" element={<PlacesLayout />}>
@@ -53,10 +53,10 @@ function HomeScreen() {
 
 function PlacesLayout() {
   return (
-    <>
+    <div className="content">
       <h1>Places</h1>
       <Outlet />
-    </>
+    </div>
   );
 }
 

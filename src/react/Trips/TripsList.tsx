@@ -3,6 +3,8 @@ import { TripModel } from "../../models";
 import { Link } from "react-router-dom";
 import { useSyncListener } from "../shared/useSyncListener";
 import useAsyncData from "../shared/useAsyncData";
+import dayjs from "dayjs";
+import { LinkButton } from "../global/Header/Header";
 
 export default function TripsList() {
   let { data: trips, isLoading } = useTrips();
@@ -11,15 +13,18 @@ export default function TripsList() {
 
   return (
     <div>
-      <ul>
-        {trips?.map((trip) => {
-          return (
-            <li key={trip.item.id}>
-              <Link to={trip.item.id}>{trip.item.title}</Link>
-            </li>
-          );
-        })}
-      </ul>
+      <h1>Trips</h1>
+      <div
+        style={{
+          display: "grid",
+          gap: "10px",
+          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr)",
+        }}
+      >
+        {trips?.map((trip) => (
+          <TripCard key={trip.item.id} trip={trip} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -27,4 +32,47 @@ export default function TripsList() {
 function useTrips() {
   let refreshToken = useSyncListener(["trips"]);
   return useAsyncData<TripModel[]>(TripModel.loadAll, [refreshToken], null);
+}
+
+function TripCard({ trip }: { trip: TripModel }) {
+  return (
+    <Link to={trip.item.id}>
+      <article className="card">
+        <div style={{ display: "grid", gap: "1px", gridTemplateColumns: "1fr 1fr 1fr" }}>
+          <img
+            src="/images/mountains.png"
+            alt="Trip Cover Photo"
+            style={{ height: "130px", objectFit: "cover", width: "100%" }}
+          />
+          <img
+            src="/images/mountains.png"
+            alt="Trip Cover Photo"
+            style={{ height: "130px", objectFit: "cover", width: "100%" }}
+          />
+          <img
+            src="/images/mountains.png"
+            alt="Trip Cover Photo"
+            style={{ height: "130px", objectFit: "cover", width: "100%" }}
+          />
+        </div>
+
+        <div className="card-body">
+          <h4 className="card-title">{trip.item.title}</h4>
+          <h5
+            className="card-subtitle"
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <span>
+              <div>{dayjs(trip.item.start).format("MM/DD/YY")}</div>
+              <div>{dayjs(trip.item.end).format("MM/DD/YY")}</div>
+            </span>
+            <span>{trip.item.destination}</span>
+          </h5>
+          <p className="card-text"></p>
+          <LinkButton to={trip.item.id + "/dailyLogs/new"}>+ Daily Log</LinkButton>
+          <LinkButton to={trip.item.id + "/edit"}>Edit Trip</LinkButton>
+        </div>
+      </article>
+    </Link>
+  );
 }

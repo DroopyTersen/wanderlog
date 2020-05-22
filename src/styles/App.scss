@@ -24,24 +24,63 @@ ul {
   font-weight: normal;
 }
 
+h1 {
+  font-size: 4rem;
+  line-height: 3rem;
+  margin: 12px 0;
+}
+
+h2 {
+  font-size: 3rem;
+  line-height: 2.5rem;
+  margin: 12px 0;
+}
+
 ol,
 ul {
-  list-style: none;
+  // list-style: none;
+  padding-left: 20px;
 }
 
 img {
   max-width: 100%;
   height: auto;
 }
-button {
-  align-self: initial;
+html button {
+  margin: 0;
+  align-self: initial !important;
 }
 .content {
-  padding: 0 10px;
+  padding: 60px 10px;
 }
 
 .centered {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+a {
+  text-decoration: none;
+  background-image: none;
+  color: #444;
+}
+
+input,
+textarea {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+form {
+  width: 600px;
+  max-width: 100%;
+}
+.form-actions {
+  // display: flex;
+  // justify-content: flex-end;
+  text-align: center;
+  button {
+    width: 100px;
+    margin: 10px;
+  }
 }
