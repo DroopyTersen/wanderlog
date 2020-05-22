@@ -6,12 +6,15 @@ import TripsLayout from "./Trips/TripsLayout";
 import TripsList from "./Trips/TripsList";
 import TripDetails from "./Trips/TripDetails";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
+import Nav from "./global/Nav/Nav";
+import Header from "./global/Header/Header";
+import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
 function App({}) {
   return (
     <div className="app">
       <NetworkStatusProvider>
         <Router>
-          <Nav />
+          <Header />
           <Routes>
             <Route path="*" element={<HomeScreen />} />
 
@@ -32,6 +35,8 @@ function App({}) {
               <Route path=":id/edit" element={<EditPlace />} />
             </Route>
           </Routes>
+          <FloatingAdd />
+          {/* <Nav /> */}
         </Router>
       </NetworkStatusProvider>
     </div>
@@ -39,18 +44,10 @@ function App({}) {
 }
 
 function HomeScreen() {
-  return <h2>Home</h2>;
-}
-
-function Nav() {
-  let isOnline = useNetworkStatus();
   return (
-    <nav className="menu">
-      <Link to="/">Home</Link>
-      <Link to="/trips">Trips</Link>
-      <Link to="/places">Places</Link>
-      <div>Network Status: {isOnline ? "Online" : "Offline"}</div>
-    </nav>
+    <div className="content centered">
+      <h1>Home</h1>
+    </div>
   );
 }
 

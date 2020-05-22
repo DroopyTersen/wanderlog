@@ -1,0 +1,12 @@
+.header {
+  .nav-brand {
+    display: inline-block;
+    .app-title {
+      font-size: 2rem;
+      padding: 5px;
+      a {
+        border: none;
+      }
+    }
+  }
+}

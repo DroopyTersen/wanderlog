@@ -1,0 +1,15 @@
+nav.nav {
+  padding: 20px 10px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  // background: linear-gradient(transparent, rgba(0, 0, 0, 0.1) 20%, rgba(0, 0, 0, 0.5));
+  // color: white;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  > div {
+    margin: 0;
+  }
+}
