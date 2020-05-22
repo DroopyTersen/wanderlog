@@ -39,9 +39,11 @@ export default function DailyLogForm({
         initialTags={form.model?.item?.tags}
       />
 
-      <div className="tags">
+      <div className="tags" style={{ margin: "-10px 0 20px 0" }}>
         {form.model?.item?.tags?.map((tag) => (
-          <div key={tag}>{tag}</div>
+          <div key={tag} className="badge secondary">
+            {tag}
+          </div>
         ))}
       </div>
 
@@ -50,7 +52,7 @@ export default function DailyLogForm({
         initialHighlights={form?.model?.item?.highlights}
       />
 
-      <ul>
+      <ul style={{ margin: "-10px 0 20px 0" }}>
         {form.model.item?.highlights?.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
@@ -115,7 +117,7 @@ export function NewDailyLogScreen() {
 
   return (
     <div>
-      <h2>New Trip Log</h2>
+      <h2>New Daily Log</h2>
       {trip && (
         <DailyLogForm
           start={trip.item.start}
@@ -137,7 +139,7 @@ export function EditDailyLogScreen() {
 
   return (
     <div>
-      <h2>Edit Trip Log</h2>
+      <h2>Edit Daily Log</h2>
       {trip && (
         <DailyLogForm
           start={trip.item.start}

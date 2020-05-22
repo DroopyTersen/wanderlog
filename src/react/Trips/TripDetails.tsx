@@ -5,6 +5,7 @@ import { useSyncListener } from "../shared/useSyncListener";
 import dayjs from "dayjs";
 import { displayDate } from "../../core/utils";
 import useAsyncData from "../shared/useAsyncData";
+import { LinkButton } from "../global/Header/Header";
 
 export default function TripDetails() {
   let { id } = useParams();
@@ -14,22 +15,22 @@ export default function TripDetails() {
   return (
     <div>
       <h2>{trip?.item.title}</h2>
+      <div>{trip.item.destination}</div>
       <div>
         {displayDate(trip.item.start)} to {displayDate(trip.item.end)}
       </div>
-      <ul>
-        <li>
-          <Link to="edit">Edit</Link>
-        </li>
-      </ul>
+      <div>
+        <LinkButton to="dailyLogs/new">+ Daily Log</LinkButton>
+        <LinkButton to="edit">Edit Trip</LinkButton>
+      </div>
       <h3>Daily Logs</h3>
       <ul>
         <li>
-          <Link to="logs/new">Add Trip Log</Link>
+          <LinkButton to="/dailyLogs/new">+ Daily Log</LinkButton>
         </li>
         {dailyLogs.map((dailyLog) => (
           <li key={dailyLog.item.id}>
-            <Link to={"logs/" + dailyLog.item.id}>{displayDate(dailyLog.item.date)}</Link>
+            <Link to={"dailyLogs/" + dailyLog.item.id}>{displayDate(dailyLog.item.date)}</Link>
           </li>
         ))}
       </ul>
