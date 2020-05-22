@@ -66,6 +66,11 @@ export class TripModel implements Model<TripItem> {
       window.swRegistration.sync.register("trips.save");
     }
   }
+  async remove() {
+    await tripsStore.remove(this.item.id);
+    await outboxStore.add({ action: "trips.remove", payload: this.item });
+    window.swRegistration.sync.register("trips.remove");
+  }
 }
 
 declare global {

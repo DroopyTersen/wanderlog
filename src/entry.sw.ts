@@ -6,6 +6,7 @@ import {
   getItemsFromDb,
   saveDailyLogToDb,
   ItemCollection,
+  removeItem,
 } from "./services/darklang/darklangService";
 import { wait } from "./core/utils";
 import { saveMany, deleteAll } from "./services/idb/idb";
@@ -56,6 +57,7 @@ async function syncFromServer() {
 
 let outboxActions = {
   "trips.save": (payload) => saveTripToDb(payload),
+  "trips.remove": (payload) => removeItem(payload, "trips"),
   "dailyLogs.save": (payload) => saveDailyLogToDb(payload),
 };
 

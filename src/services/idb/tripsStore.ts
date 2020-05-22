@@ -20,4 +20,9 @@ export const tripsStore = {
       return getAll(transaction.objectStore("trips").index("by-date"));
     });
   },
+  remove(id) {
+    return tx("trips", "readwrite", (transaction: IDBTransaction) => {
+      transaction.objectStore("trips").delete(id);
+    });
+  },
 };

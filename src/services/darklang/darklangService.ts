@@ -30,6 +30,18 @@ async function saveItem(item: Item, collection: ItemCollection) {
   return resp.json();
 }
 
+export async function removeItem(item: Item, collection: ItemCollection) {
+  let resp = await fetch(ENDPOINT + "/" + collection, {
+    method: "DELETE",
+    body: JSON.stringify({ id: item.id }),
+  });
+  if (!resp.ok) {
+    let data = await resp.text();
+    throw new Error(data);
+  }
+  return resp.json();
+}
+
 export async function getItemsFromDb(collection: ItemCollection) {
   let resp = await fetch(ENDPOINT + "/" + collection);
   if (!resp.ok) {

@@ -37,7 +37,7 @@ function useTrips() {
 function TripCard({ trip }: { trip: TripModel }) {
   return (
     <Link to={trip.item.id}>
-      <article className="card">
+      <div className="card">
         <div style={{ display: "grid", gap: "1px", gridTemplateColumns: "1fr 1fr 1fr" }}>
           <img
             src="/images/mountains.png"
@@ -62,17 +62,26 @@ function TripCard({ trip }: { trip: TripModel }) {
             className="card-subtitle"
             style={{ display: "flex", justifyContent: "space-between" }}
           >
+            <span>{trip.item.destination}</span>
             <span>
               <div>{dayjs(trip.item.start).format("MM/DD/YY")}</div>
               <div>{dayjs(trip.item.end).format("MM/DD/YY")}</div>
             </span>
-            <span>{trip.item.destination}</span>
           </h5>
           <p className="card-text"></p>
+
           <LinkButton to={trip.item.id + "/dailyLogs/new"}>+ Daily Log</LinkButton>
           <LinkButton to={trip.item.id + "/edit"}>Edit Trip</LinkButton>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              trip.remove();
+            }}
+          >
+            Delete
+          </button>
         </div>
-      </article>
+      </div>
     </Link>
   );
 }
