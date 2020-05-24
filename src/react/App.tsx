@@ -28,13 +28,13 @@ function App({}) {
               <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
             </Route>
 
-            <Route path="/dailyLogs">
+            <Route path="/dailyLogs" element={<Layout />}>
               <Route path="new" element={<NewDailyLogScreen />} />
               <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
               <Route path="/:logId" element={<DailyLogDetails />} />
             </Route>
 
-            <Route path="/places" element={<PlacesLayout />}>
+            <Route path="/places" element={<Layout />}>
               <Route path="/" element={<PlacesScreen />} />
               <Route path="new" element={<NewPlace />} />
               <Route path=":id" element={<PlaceDetails />} />
@@ -57,14 +57,14 @@ function HomeScreen() {
   );
 }
 
-function PlacesLayout() {
+function Layout() {
   return (
     <div className="content">
-      <h1>Places</h1>
       <Outlet />
     </div>
   );
 }
+function PlacesLayout() {}
 
 function PlacesScreen() {
   return <h2>Places List</h2>;

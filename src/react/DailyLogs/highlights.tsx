@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 export function HightlightsDisplay({ highlights, ...rest }) {
   return (
-    <ul>
+    <ul {...rest}>
       {highlights?.map((item, index) => (
         <li key={index}>{item}</li>
       ))}

@@ -4,50 +4,47 @@ import { TripModel, DailyLogModel } from "../../models";
 import { useModelForm } from "../shared/useModelForm";
 import { TagsInput, TagsDisplay } from "../shared/tags/tags";
 import { HighlightsInput, HightlightsDisplay } from "./highlights";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useAsyncData from "../shared/useAsyncData";
 
-// 1. Get the Date!
-// Is there a Daily Log Id?
-// Yes -> get the date from that
+export function useDailyLogForm() {
+  let navigate = useNavigate();
+  let { trip, dailyLog } = useModels();
+  let [date, DateInput] = useDailyLogFormDate(trip, dailyLog);
+  let form = useModelForm<DailyLogModel>([date], DailyLogModel.loadByDate);
+  if (form.uiStatus === "success") {
+    setTimeout(() => {
+      navigate("/dailyLogs/" + dailyLog.item.id);
+    }, 0);
+  }
 
-// Is there a Trip Id?
-// Yes -> show a dropdown of Trip days and make them pick
-//    - Default to the first open day
+  return {
+    trip,
+    form,
+    date,
+    DateInput,
+  };
+}
 
-// No Trip Id and No  Daily Log Id?
-// Show a full date date picker, defaulted to
+export function useDailyLogFormDate(trip: TripModel, dailyLog: DailyLogModel) {
+  let { tripId } = useParams();
 
-// 2. When the date changes, need to reset the form
-// - put a key around everything but date?)
-// - we need to see if there is already a trip at that date and show that trip in edit mode
-// - If not do we clear out the other stuff?
-
-export function useDailyLogFormDate() {
-  let { tripId, logId } = useParams();
-  let [date, setDate] = useState(() => {
-    if (!tripId && !logId) {
-      return dayjs().format("YYYY-MM-DD");
-    }
-    return "";
+  let [dateOptions, setDateOptions] = useState(() => {
+    return (trip?.getTripDates?.() || []).map(dateToOption);
   });
 
-  let { data: dateOptions, isLoading } = useAsyncData(
-    async (tripId) => {
-      if (!tripId) return [];
+  let [date, setDate] = useState(() => {
+    return dailyLog?.item?.date || "";
+  });
 
-      let trip = await TripModel.load(tripId);
-      return trip.getTripDates().map((date, index) => ({
-        value: dayjs(date).format("YYYY-MM-DD"),
-        text: `${dayjs(date).format("ddd M/DD/YYYY")}`,
-      }));
-    },
-    [tripId],
-    []
-  );
+  useEffect(() => {
+    setDateOptions((trip?.getTripDates?.() || []).map(dateToOption));
+  }, [trip?.item?.id]);
+
   let DateInput = (
     <input type="date" value={date} name="date" onChange={(e) => setDate(e.target.value)} />
   );
+
   if (tripId) {
     DateInput = (
       <select name="date" value={date} onChange={(e) => setDate(e.target.value)}>
@@ -62,23 +59,44 @@ export function useDailyLogFormDate() {
   }
   // If logId set the date to the log's date
   useEffect(() => {
-    if (!logId) return;
+    let logDate = dailyLog?.item?.date;
+    if (logDate) {
+      setDate(logDate);
+    }
+  }, [dailyLog?.item?.date]);
 
-    let doAsync = async () => {
-      let trip = await DailyLogModel.load(logId);
-      setDate(trip.item.date);
-    };
-    doAsync();
-  }, [logId]);
-
-  // If tripId, set the date to the first available trip date
+  // TODO: If tripId, set the date to the first available trip date
 
   return [date, DateInput];
   // let Input =
 }
 
-function useDailyLogForm() {
-  // On sucess go to DailyLog details
-  // On cancel go back
-  // Show trip info with link if there is a trip
+function useModels() {
+  let { tripId, logId } = useParams();
+  let { data, isLoading } = useAsyncData<{ trip?: TripModel; dailyLog?: DailyLogModel }>(
+    async (tripId, logId) => {
+      let trip = null;
+
+      if (tripId) {
+        trip = await TripModel.load(tripId);
+      }
+
+      let dailyLog = await DailyLogModel.load(logId);
+
+      return {
+        trip,
+        dailyLog,
+      };
+    },
+    [tripId, logId],
+    {}
+  );
+  return data;
 }
+
+const dateToOption = (date: string | Date) => {
+  return {
+    value: dayjs(date).format("YYYY-MM-DD"),
+    text: `${dayjs(date).format("ddd M/DD/YYYY")}`,
+  };
+};

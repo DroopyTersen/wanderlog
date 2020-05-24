@@ -4,31 +4,32 @@ import { TripModel, DailyLogModel } from "../../models";
 import { useModelForm } from "../shared/useModelForm";
 import { TagsInput, TagsDisplay } from "../shared/tags/tags";
 import { HighlightsInput, HightlightsDisplay } from "./highlights";
-import { useParams } from "react-router-dom";
-import { useDailyLogFormDate } from "./useDailyLogForm";
-import { displayDate } from "../../core/utils";
+import { useDailyLogForm } from "./useDailyLogForm";
+
 import { FormActions } from "../shared/useForm";
+import { Link } from "react-router-dom";
 
 export default function DailyLogForm({ onSuccess = () => {}, onCancel }) {
-  let [date, DateInput] = useDailyLogFormDate();
-  let form = useModelForm<DailyLogModel>([date], DailyLogModel.loadByDate);
-  if (form.uiStatus === "success") {
-    setTimeout(() => {
-      // onSuccess();
-    }, 0);
-  }
-
+  let { form, DateInput, trip } = useDailyLogForm();
   if (form.uiStatus === "loading") return <div>Loading...</div>;
-  console.log(form?.uiStatus);
 
   // TODO: show the Trip info with a link back to the trip if the date is within a trip range
 
   return (
     <form {...form.formProps}>
+      {trip?.item?.title && (
+        <div className="trip">
+          <Link to={"/trips/" + trip?.item?.id}>
+            <h3>{trip.item.title}</h3>
+          </Link>
+        </div>
+      )}
+
       <label htmlFor="date">
         Date
         {DateInput}
       </label>
+
       {/* <form.ModelInput name="date" label="Date" form={form} type="hidden" required /> */}
 
       <TagsInput
