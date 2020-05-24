@@ -1,7 +1,7 @@
 import { dailyLogStore, outboxStore } from "../services/idb";
 import { generateId } from "../core/utils";
 import dayjs from "dayjs";
-import { TripModel } from "./TripModel";
+import { TripModel, NEW_TRIP } from "./TripModel";
 import slugify from "slugify";
 export interface DailyLogItem {
   id?: string;
@@ -50,6 +50,16 @@ export class DailyLogModel {
     let item = await dailyLogStore.getById(id);
     if (!item) throw new Error("Daily Log not found: " + id);
     return new DailyLogModel(item);
+  }
+  static async loadByDate(date: string | Date) {
+    let items = await dailyLogStore.getAll();
+    let match = items.find((item) => dayjs(item.date).isSame(dayjs(date)));
+    if (match) {
+      return new DailyLogModel(match);
+    }
+    let newItem = { ...NEW_DAILY_LOG };
+    newItem.date = dayjs(date).format("YYYY-MM-DD");
+    return new DailyLogModel(newItem);
   }
   update(key, value) {
     this.item[key] = value;

@@ -6,7 +6,7 @@ import { FormActions } from "../shared/useForm";
 
 export default function TripForm({ id = "" }) {
   let navigate = useNavigate();
-  let form = useModelForm<TripModel>(id, TripModel.load);
+  let form = useModelForm<TripModel>([id], TripModel.load);
   let { ModelInput, uiStatus, formProps } = form;
   if (uiStatus === "loading") return <div>Loading...</div>;
   console.log("valid form", form.model.checkIsValid(), uiStatus);

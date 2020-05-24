@@ -66,6 +66,18 @@ export class TripModel implements Model<TripItem> {
       window.swRegistration.sync.register("trips.save");
     }
   }
+  getTripDates(): Date[] {
+    if (!this.item.start || !this.item.end) return [];
+    let cur = dayjs(this.item.start);
+    let endDate = dayjs(this.item.end);
+    let dates = [];
+
+    while (cur.isBefore(endDate) || cur.isSame(endDate)) {
+      dates.push(cur.toDate());
+      cur = cur.add(1, "day");
+    }
+    return dates;
+  }
   async remove() {
     await tripsStore.remove(this.item.id);
     await outboxStore.add({ action: "trips.remove", payload: this.item });

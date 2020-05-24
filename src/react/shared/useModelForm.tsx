@@ -84,7 +84,10 @@ function reducer(state: ModelFormState, action) {
   return actionHandlers[action.type] ? actionHandlers[action.type](action) : state;
 }
 
-export function useModelForm<T extends Model<any>>(id, loadModel: (id) => Promise<T>): ModelForm {
+export function useModelForm<T extends Model<any>>(
+  loadArgs: any[],
+  loadModel: (...loadArgs) => Promise<T>
+): ModelForm {
   let [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
 
   useEffect(() => {
@@ -92,7 +95,7 @@ export function useModelForm<T extends Model<any>>(id, loadModel: (id) => Promis
     let doAsync = async () => {
       try {
         dispatch({ type: "load:start" });
-        let model = await loadModel(id);
+        let model = await loadModel(...loadArgs);
         if (isUnmounted) return;
         dispatch({ type: "load:success", model });
       } catch (error) {
@@ -103,7 +106,7 @@ export function useModelForm<T extends Model<any>>(id, loadModel: (id) => Promis
     return () => {
       isUnmounted = true;
     };
-  }, [id]);
+  }, loadArgs);
 
   let formProps = useMemo(() => {
     // let onChange = (event) => {

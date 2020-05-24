@@ -1,12 +1,11 @@
 import React from "react";
-import DailyLogForm, { NewDailyLogScreen, EditDailyLogScreen } from "./DailyLogs/DailyLogForm";
+import { NewDailyLogScreen, EditDailyLogScreen } from "./DailyLogs/dailyLogsScreens";
 import { BrowserRouter as Router, Routes, Route, Outlet, useParams, Link } from "react-router-dom";
 import TripForm, { NewTripScreen, EditTripScreen } from "./Trips/TripForm";
 import TripsLayout from "./Trips/TripsLayout";
 import TripsList from "./Trips/TripsList";
 import TripDetails from "./Trips/TripDetails";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
-import Nav from "./global/Nav/Nav";
 import Header from "./global/Header/Header";
 import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
 function App({}) {
@@ -26,6 +25,12 @@ function App({}) {
               <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
               <Route path=":tripId/dailyLogs/:logId" element={<EditDailyLogScreen />} />
               <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
+            </Route>
+
+            <Route path="/dailyLogs">
+              <Route path="new" element={<NewDailyLogScreen />} />
+              <Route path="/:id/edit" element={<EditDailyLogScreen />} />
+              <Route path="/:id" element={<EditDailyLogScreen />} />
             </Route>
 
             <Route path="/places" element={<PlacesLayout />}>
