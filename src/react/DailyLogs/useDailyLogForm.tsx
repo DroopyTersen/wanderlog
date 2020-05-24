@@ -25,7 +25,12 @@ import useAsyncData from "../shared/useAsyncData";
 
 export function useDailyLogFormDate() {
   let { tripId, logId } = useParams();
-  let [date, setDate] = useState("");
+  let [date, setDate] = useState(() => {
+    if (!tripId && !logId) {
+      return dayjs().format("YYYY-MM-DD");
+    }
+    return "";
+  });
 
   let { data: dateOptions, isLoading } = useAsyncData(
     async (tripId) => {
@@ -40,7 +45,9 @@ export function useDailyLogFormDate() {
     [tripId],
     []
   );
-  let DateInput = <input type="date" name="date" onChange={(e) => setDate(e.target.value)} />;
+  let DateInput = (
+    <input type="date" value={date} name="date" onChange={(e) => setDate(e.target.value)} />
+  );
   if (tripId) {
     DateInput = (
       <select name="date" value={date} onChange={(e) => setDate(e.target.value)}>
@@ -54,10 +61,24 @@ export function useDailyLogFormDate() {
     );
   }
   // If logId set the date to the log's date
+  useEffect(() => {
+    if (!logId) return;
+
+    let doAsync = async () => {
+      let trip = await DailyLogModel.load(logId);
+      setDate(trip.item.date);
+    };
+    doAsync();
+  }, [logId]);
+
   // If tripId, set the date to the first available trip date
 
   return [date, DateInput];
   // let Input =
 }
 
-function useDailyLogForm() {}
+function useDailyLogForm() {
+  // On sucess go to DailyLog details
+  // On cancel go back
+  // Show trip info with link if there is a trip
+}

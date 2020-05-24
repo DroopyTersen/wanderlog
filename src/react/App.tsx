@@ -8,6 +8,7 @@ import TripDetails from "./Trips/TripDetails";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
 import Header from "./global/Header/Header";
 import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
+import DailyLogDetails from "./DailyLogs/DailyLogDetails";
 function App({}) {
   return (
     <div className="app">
@@ -23,14 +24,14 @@ function App({}) {
               <Route path=":id" element={<TripDetails />} />
               <Route path=":id/edit" element={<EditTripScreen />} />
               <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
-              <Route path=":tripId/dailyLogs/:logId" element={<EditDailyLogScreen />} />
+              <Route path=":tripId/dailyLogs/:logId" element={<DailyLogDetails />} />
               <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
             </Route>
 
             <Route path="/dailyLogs">
               <Route path="new" element={<NewDailyLogScreen />} />
-              <Route path="/:id/edit" element={<EditDailyLogScreen />} />
-              <Route path="/:id" element={<EditDailyLogScreen />} />
+              <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
+              <Route path="/:logId" element={<DailyLogDetails />} />
             </Route>
 
             <Route path="/places" element={<PlacesLayout />}>

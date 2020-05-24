@@ -7,17 +7,19 @@ import { HighlightsInput, HightlightsDisplay } from "./highlights";
 import { useParams } from "react-router-dom";
 import { useDailyLogFormDate } from "./useDailyLogForm";
 import { displayDate } from "../../core/utils";
+import { FormActions } from "../shared/useForm";
 
 export default function DailyLogForm({ onSuccess = () => {}, onCancel }) {
   let [date, DateInput] = useDailyLogFormDate();
   let form = useModelForm<DailyLogModel>([date], DailyLogModel.loadByDate);
   if (form.uiStatus === "success") {
     setTimeout(() => {
-      onSuccess();
+      // onSuccess();
     }, 0);
   }
 
   if (form.uiStatus === "loading") return <div>Loading...</div>;
+  console.log(form?.uiStatus);
 
   // TODO: show the Trip info with a link back to the trip if the date is within a trip range
 
@@ -29,9 +31,6 @@ export default function DailyLogForm({ onSuccess = () => {}, onCancel }) {
       </label>
       {/* <form.ModelInput name="date" label="Date" form={form} type="hidden" required /> */}
 
-      <div>
-        Date: {date} vs {displayDate(form.model.item.date)}
-      </div>
       <TagsInput
         onChange={(tags) => form.update("tags", tags)}
         initialTags={form.model?.item?.tags}
@@ -49,14 +48,7 @@ export default function DailyLogForm({ onSuccess = () => {}, onCancel }) {
         highlights={form?.model?.item?.highlights}
       />
 
-      {onCancel && (
-        <button className="button-outline" type="button" onClick={onCancel}>
-          Cancel
-        </button>
-      )}
-      <button type="submit" disabled={form.uiStatus !== "valid"}>
-        Save
-      </button>
+      <FormActions isValid={form.uiStatus === "valid"} />
     </form>
   );
 }

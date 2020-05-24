@@ -65,13 +65,17 @@ export class DailyLogModel {
     this.item[key] = value;
   }
   checkIsValid(): boolean {
-    return this.item.highlights && this.item.highlights.length > 0;
+    return this.item.date && this.item.highlights && this.item.highlights.length > 0;
+  }
+  get title(): string {
+    return dayjs(this.item.date).format("ddd M/DD/YYYY");
   }
   async save() {
     // TODO: delete any logs that already exists for that date (local and DB)
     // TODO: handle places.
     // If the Place doesn't exist, add to the Places store
     // Add the visit date (make sure not duplicate)
+    console.log("DAILY LOG SAVE", this.item);
     this.item.timestamp = Date.now();
     if (this.checkIsValid()) {
       await dailyLogStore.save(this.item);

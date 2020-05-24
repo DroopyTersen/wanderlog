@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect, useMemo } from "react";
 import { Model } from "../../models";
 
-type FormUIStatus = "loading" | "valid" | "invalid" | "saving" | "error" | "success";
+type FormUIStatus = "loading" | "clean" | "valid" | "invalid" | "saving" | "error" | "success";
 
 export interface ModelInputProps {
   form: ModelForm;
@@ -50,7 +50,7 @@ function reducer(state: ModelFormState, action) {
       ...state,
       error: null,
       model,
-      uiStatus: model.checkIsValid() ? "valid" : "invalid",
+      uiStatus: "clean",
     }),
     "load:error": ({ error }) => ({
       ...state,
@@ -59,6 +59,7 @@ function reducer(state: ModelFormState, action) {
       uiStatus: "error",
     }),
     update: ({ key, value }) => {
+      console.log("update", key, value);
       state.model.update(key, value);
       return {
         ...state,
@@ -119,7 +120,6 @@ export function useModelForm<T extends Model<any>>(
       try {
         event.preventDefault();
         dispatch({ type: "save:start" });
-        console.log("SAVE", state.model.item);
         await state.model.save();
         dispatch({ type: "save:success" });
       } catch (error) {
@@ -131,7 +131,7 @@ export function useModelForm<T extends Model<any>>(
       // onChange,
       onSubmit,
     };
-  }, [state?.model?.save]);
+  }, [state?.model]);
 
   return {
     ...state,
