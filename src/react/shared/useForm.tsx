@@ -33,7 +33,7 @@ export function FormActions({
   onCancel = () => window.history.back(),
 }) {
   return (
-    <div className="form-actions">
+    <div className="form-actions row align-right">
       <button type="button" onClick={onCancel}>
         Cancel
       </button>

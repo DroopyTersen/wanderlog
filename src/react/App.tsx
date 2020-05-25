@@ -9,6 +9,7 @@ import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusP
 import Header from "./global/Header/Header";
 import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
 import DailyLogDetails from "./DailyLogs/DailyLogDetails";
+import UploadPhotosForm from "./Images/UploadPhotosForm";
 function App({}) {
   return (
     <div className="app">
@@ -21,8 +22,9 @@ function App({}) {
             <Route path="/trips" element={<TripsLayout />}>
               <Route path="/" element={<TripsList />} />
               <Route path="new" element={<NewTripScreen />} />
-              <Route path=":id" element={<TripDetails />} />
-              <Route path=":id/edit" element={<EditTripScreen />} />
+              <Route path=":tripId" element={<TripDetails />} />
+              <Route path=":tripId/edit" element={<EditTripScreen />} />
+              <Route path=":tripId/dailyLogs" element={<TripDetails />} />
               <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
               <Route path=":tripId/dailyLogs/:logId" element={<DailyLogDetails />} />
               <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
@@ -40,9 +42,14 @@ function App({}) {
               <Route path=":id" element={<PlaceDetails />} />
               <Route path=":id/edit" element={<EditPlace />} />
             </Route>
+
+            <Route path="/photos" element={<Layout />}>
+              <Route path="upload" element={<UploadPhotosForm />} />
+            </Route>
           </Routes>
-          <FloatingAdd />
+
           {/* <Nav /> */}
+          <FloatingAdd />
         </Router>
       </NetworkStatusProvider>
     </div>

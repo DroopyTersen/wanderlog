@@ -24,7 +24,7 @@ export function TagsInput({ onChange, initialTags = [] }) {
 
 export function TagsDisplay({ tags, ...rest }) {
   return (
-    <div className="tags" {...rest}>
+    <div className="tags row tight" {...rest}>
       {tags?.map((tag) => (
         <div key={tag} className="badge secondary">
           {tag}

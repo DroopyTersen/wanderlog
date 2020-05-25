@@ -1,6 +1,6 @@
 export interface OutboxItem {
   id?: string;
-  date?: Date;
+  date: Date;
   action: string;
   payload?: any;
 }

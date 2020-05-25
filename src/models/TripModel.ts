@@ -1,8 +1,7 @@
 import { generateId, checkInDateRange } from "../core/utils";
 import dayjs from "dayjs";
-import { tripsStore } from "../services/idb/tripsStore";
-import { outboxStore } from "../services/idb";
 import { Model } from "./Model";
+import { createIdbStore } from "../services/idb";
 
 export interface TripItem {
   id?: string;
@@ -41,19 +40,19 @@ export class TripModel implements Model<TripItem> {
   }
   static async loadAll() {
     // console.log("TripModel -> loadAll -> loadAll");
-    let items = await tripsStore.getAll();
+    let items = await createIdbStore<TripItem>("trips").getAll();
     // console.log("TripModel -> loadAll -> items", items);
     return items.reverse().map((item) => new TripModel(item));
   }
   static async load(id) {
     if (!id) return new TripModel();
-    let item = await tripsStore.getById(id);
+    let item = await createIdbStore<TripItem>("trips").getById(id);
     // console.log("TripModel -> load -> item", item);
     if (!item) throw new Error("Trip Not Fount: " + id);
     return new TripModel(item);
   }
   static async loadByDate(date: string | Date) {
-    let items: TripItem[] = await tripsStore.getAll();
+    let items: TripItem[] = await createIdbStore<TripItem>("trips").getAll();
     let match = items.find((item) => checkInDateRange(date, item.start, item.end));
     if (match) {
       return new TripModel(match);
@@ -70,8 +69,12 @@ export class TripModel implements Model<TripItem> {
   async save() {
     if (this.checkIsValid()) {
       this.item.timestamp = Date.now();
-      await tripsStore.save(this.item);
-      await outboxStore.add({ action: "trips.save", payload: this.item });
+      await createIdbStore("trips").save(this.item);
+      await createIdbStore("outbox").save({
+        action: "trips.save",
+        payload: this.item,
+        date: new Date(),
+      });
       window.swRegistration.sync.register("trips.save");
     }
   }
@@ -88,8 +91,12 @@ export class TripModel implements Model<TripItem> {
     return dates;
   }
   async remove() {
-    await tripsStore.remove(this.item.id);
-    await outboxStore.add({ action: "trips.remove", payload: this.item });
+    await createIdbStore("trips").remove(this.item.id);
+    await createIdbStore("outbox").save({
+      action: "trips.remove",
+      payload: this.item,
+      date: new Date(),
+    });
     window.swRegistration.sync.register("trips.remove");
   }
 }

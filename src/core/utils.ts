@@ -23,3 +23,12 @@ export function checkInDateRange(date: string | Date, start: string | Date, end:
     (dayjs(date).isBefore(end) || dayjs(date).isSame(end))
   );
 }
+
+export function getFiles(fileList: FileList): File[] {
+  if (!fileList || !fileList.length) return [];
+  let files = [];
+  for (var i = 0; i < fileList.length; i++) {
+    files.push(fileList[i]);
+  }
+  return files;
+}

@@ -1,7 +1,5 @@
-import { DailyLogItem, OutboxItem } from "../../models";
-
+import { setupStores } from "./idbSetup";
 let dbPromise;
-
 function getDb() {
   if (!dbPromise) {
     dbPromise = openDb();
@@ -11,7 +9,7 @@ function getDb() {
 
 function openDb() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("wanderlog", 1);
+    const request = indexedDB.open("wanderlog", 3);
     request.onupgradeneeded = (_) => {
       const db = request.result;
       setupStores(db);
@@ -21,7 +19,7 @@ function openDb() {
   });
 }
 
-export function tx(stores, mode, callback) {
+export function tx(stores, mode, callback): Promise<any> {
   return getDb().then((db: IDBDatabase) => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(stores, mode);
@@ -79,16 +77,39 @@ export function getAll(cursorable) {
   }).then((_) => items);
 }
 
-function setupStores(db: IDBDatabase) {
-  var outboxStore = db.createObjectStore("outbox", { keyPath: "id", autoIncrement: true });
-  outboxStore.createIndex("by-date", "date");
+export interface IDBStore<T> {
+  save(item: T): Promise<any>;
+  saveMany(item: T[]): Promise<any>;
+  getById(id: string): Promise<T>;
+  getAll(index?: string): Promise<T[]>;
+  remove(id: string): Promise<void>;
+}
 
-  var dailyLogStore = db.createObjectStore("dailyLogs", { keyPath: "id" });
-  dailyLogStore.createIndex("by-date", "date");
-  dailyLogStore.createIndex("by-author", "authorId");
-
-  var dailyLogStore = db.createObjectStore("trips", { keyPath: "id" });
-  dailyLogStore.createIndex("by-date", "start");
-
-  db.createObjectStore("keyval");
+export function createIdbStore<T>(collection: string): IDBStore<T> {
+  return {
+    save(item: T) {
+      return tx(collection, "readwrite", (transaction) => {
+        transaction.objectStore(collection).put(item);
+      });
+    },
+    saveMany(items) {
+      return saveMany(collection, items);
+    },
+    getById(id) {
+      return tx(collection, "readonly", (transaction: IDBTransaction) => {
+        return transaction.objectStore(collection).get(id);
+      });
+    },
+    getAll(index = "by-date") {
+      return tx(collection, "readonly", (transaction) => {
+        let store = transaction.objectStore(collection).index(index);
+        return getAll(store);
+      });
+    },
+    remove(id) {
+      return tx(collection, "readwrite", (transaction: IDBTransaction) => {
+        transaction.objectStore(collection).delete(id);
+      });
+    },
+  };
 }

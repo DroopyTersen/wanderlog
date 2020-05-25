@@ -1,8 +1,8 @@
-import { dailyLogStore, outboxStore } from "../services/idb";
 import { generateId } from "../core/utils";
 import dayjs from "dayjs";
 import { TripModel, NEW_TRIP } from "./TripModel";
 import slugify from "slugify";
+import { createIdbStore } from "../services/idb";
 export interface DailyLogItem {
   id?: string;
   timestamp?: number;
@@ -36,7 +36,7 @@ export class DailyLogModel {
     if (!tripId) return Promise.resolve([]);
     let trip = await TripModel.load(tripId);
     // TODO: switch to query by dates?
-    let items = await dailyLogStore.getAll();
+    let items = await createIdbStore<DailyLogItem>("dailyLogs").getAll();
     console.log("DailyLogModel -> loadByTrip -> items", items);
     let tripLogs = items
       .filter((logItem) => {
@@ -47,12 +47,12 @@ export class DailyLogModel {
   }
   static async load(id) {
     if (!id) return new DailyLogModel();
-    let item = await dailyLogStore.getById(id);
+    let item = await createIdbStore<DailyLogItem>("dailyLogs").getById(id);
     if (!item) throw new Error("Daily Log not found: " + id);
     return new DailyLogModel(item);
   }
   static async loadByDate(date: string | Date) {
-    let items = await dailyLogStore.getAll();
+    let items = await createIdbStore<DailyLogItem>("dailyLogs").getAll();
     let match = items.find((item) => dayjs(item.date).isSame(dayjs(date)));
     if (match) {
       return new DailyLogModel(match);
@@ -78,9 +78,22 @@ export class DailyLogModel {
     console.log("DAILY LOG SAVE", this.item);
     this.item.timestamp = Date.now();
     if (this.checkIsValid()) {
-      await dailyLogStore.save(this.item);
-      await outboxStore.add({ action: "dailyLogs.save", payload: this.item });
+      await createIdbStore("dailyLogs").save(this.item);
+      await createIdbStore("outbox").save({
+        action: "dailyLogs.save",
+        payload: this.item,
+        date: new Date(),
+      });
       window.swRegistration.sync.register("dailyLogs.save");
     }
+  }
+  async remove() {
+    await createIdbStore("dailyLogs").remove(this.item.id);
+    await createIdbStore("outbox").save({
+      action: "dailyLogs.remove",
+      payload: this.item,
+      date: new Date(),
+    });
+    window.swRegistration.sync.register("dailyLogs.remove");
   }
 }

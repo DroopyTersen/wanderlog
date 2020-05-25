@@ -7,22 +7,27 @@ import { displayDate } from "../../core/utils";
 import useAsyncData from "../shared/useAsyncData";
 import { LinkButton } from "../global/Header/Header";
 import { HightlightsDisplay } from "../DailyLogs/highlights";
+import FloatingAdd from "../global/FloatingAdd/FloatingAdd";
 
 export default function TripDetails() {
-  let { id } = useParams();
-  let { trip, dailyLogs } = useTrip(id);
+  let { tripId } = useParams();
+  let { trip, dailyLogs } = useTrip(tripId);
   if (!trip) return null;
 
   return (
     <div>
       <h2>{trip?.item.title}</h2>
-      <div>{trip.item.destination}</div>
-      <div>
-        {displayDate(trip.item.start)} to {displayDate(trip.item.end)}
-      </div>
-      <div style={{ margin: "20px 0" }}>
-        <LinkButton to="dailyLogs/new">+ Daily Log</LinkButton>
-        <LinkButton to="edit">Edit Trip</LinkButton>
+      <div className="row space-between">
+        <div>
+          <div>{trip.item.destination}</div>
+          <div>
+            {displayDate(trip.item.start)} to {displayDate(trip.item.end)}
+          </div>
+        </div>
+        <div className="row align-right">
+          <LinkButton to="dailyLogs/new">+ Daily Log</LinkButton>
+          <LinkButton to="edit">Edit Trip</LinkButton>
+        </div>
       </div>
       <h3>Daily Logs</h3>
 

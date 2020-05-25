@@ -1,15 +1,8 @@
 /// <reference lib="webworker"/>
-import { outboxStore, tripsStore } from "./services";
-import {
-  savePlace,
-  saveTripToDb,
-  getItemsFromDb,
-  saveDailyLogToDb,
-  ItemCollection,
-  removeItem,
-} from "./services/darklang/darklangService";
+import { saveItem, getItemsFromDb, ItemCollection, removeItem } from "./services/darklangService";
 import { wait } from "./core/utils";
-import { saveMany, deleteAll } from "./services/idb/idb";
+import { saveMany, deleteAll, createIdbStore } from "./services/idb";
+import { OutboxItem } from "./models";
 const CACHE_KEY = "v0.1";
 
 declare const self: Window & ServiceWorkerGlobalScope;
@@ -53,16 +46,22 @@ async function syncCollectionFromServer(collection: ItemCollection) {
 async function syncFromServer() {
   await syncCollectionFromServer("trips");
   await syncCollectionFromServer("dailyLogs");
+  await syncCollectionFromServer("photos");
 }
 
 let outboxActions = {
-  "trips.save": (payload) => saveTripToDb(payload),
+  "trips.save": (payload) => saveItem(payload, "trips"),
   "trips.remove": (payload) => removeItem(payload, "trips"),
-  "dailyLogs.save": (payload) => saveDailyLogToDb(payload),
+  "dailyLogs.save": (payload) => saveItem(payload, "dailyLogs"),
+  "dailyLogs.remove": (payload) => removeItem(payload, "dailyLogs"),
+  "photos.save": (payload) => saveItem(payload, "photos"),
+  "photos.remove": (payload) => removeItem(payload, "photos"),
 };
 
 async function syncOutbox() {
+  let outboxStore = createIdbStore<OutboxItem>("outbox");
   let outboxItems = await outboxStore.getAll();
+  console.log("syncOutbox -> outboxItems", outboxItems);
   for (const outboxItem of outboxItems) {
     try {
       if (outboxActions[outboxItem.action]) {
