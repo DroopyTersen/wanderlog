@@ -16,13 +16,7 @@
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
-          navigator.serviceWorker.register("/sw.js").then((swRegistration) => {
-            window.swRegistration = swRegistration;
-            // Wait for service worker to be activated before triggering sync
-            setTimeout(() => {
-              swRegistration.sync.register("onload");
-            }, 500);
-          });
+          navigator.serviceWorker.register("/sw.js");
         });
       }
     </script>
