@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { TripModel, NEW_TRIP } from "./TripModel";
 import slugify from "slugify";
 import { createIdbStore } from "../services/idb";
+import { PhotoModel } from "./PhotoModel";
 export interface DailyLogItem {
   id?: string;
   timestamp?: number;
@@ -29,37 +30,45 @@ export const NEW_DAILY_LOG = {
 
 export class DailyLogModel {
   item: DailyLogItem;
+  photos: PhotoModel[] = [];
   constructor(item: DailyLogItem = NEW_DAILY_LOG) {
     this.item = item;
   }
+  static async create(item: DailyLogItem) {
+    let model = new DailyLogModel(item);
+    model.photos = await PhotoModel.loadByDate(model.item.date);
+    return model;
+  }
+
   static async loadByTrip(tripId) {
     if (!tripId) return Promise.resolve([]);
     let trip = await TripModel.load(tripId);
     // TODO: switch to query by dates?
     let items = await createIdbStore<DailyLogItem>("dailyLogs").getAll();
     console.log("DailyLogModel -> loadByTrip -> items", items);
-    let tripLogs = items
-      .filter((logItem) => {
-        return logItem.date >= trip.item.start && logItem.date <= trip.item.end;
-      })
-      .map((item) => new DailyLogModel(item));
+    let filteredItems = items.filter((logItem) => {
+      return logItem.date >= trip.item.start && logItem.date <= trip.item.end;
+    });
+
+    let tripLogs = Promise.all(filteredItems.map(DailyLogModel.create));
+
     return tripLogs;
   }
   static async load(id) {
     if (!id) return new DailyLogModel();
     let item = await createIdbStore<DailyLogItem>("dailyLogs").getById(id);
     if (!item) throw new Error("Daily Log not found: " + id);
-    return new DailyLogModel(item);
+    return DailyLogModel.create(item);
   }
   static async loadByDate(date: string | Date) {
     let items = await createIdbStore<DailyLogItem>("dailyLogs").getAll();
     let match = items.find((item) => dayjs(item.date).isSame(dayjs(date)));
     if (match) {
-      return new DailyLogModel(match);
+      return DailyLogModel.create(match);
     }
     let newItem = { ...NEW_DAILY_LOG };
     newItem.date = dayjs(date).format("YYYY-MM-DD");
-    return new DailyLogModel(newItem);
+    return DailyLogModel.create(newItem);
   }
   update(key, value) {
     this.item[key] = value;

@@ -1,4 +1,4 @@
-import { generateId } from "../core/utils";
+import { generateId, checkInDateRange } from "../core/utils";
 import dayjs from "dayjs";
 import { Model } from ".";
 import { createIdbStore } from "../services/idb";
@@ -34,6 +34,13 @@ export class PhotoModel implements Model<PhotoItem> {
       .filter((item) => dayjs(item.date).isSame(dayjs(date)))
       .map((item) => new PhotoModel(item));
 
+    return photos;
+  }
+  static async loadByDateRange(start: string | Date, end: string | Date) {
+    let items = await createIdbStore<PhotoItem>("photos").getAll();
+    let photos = items
+      .filter((item) => checkInDateRange(item.date, start, end))
+      .map((item) => new PhotoModel(item));
     return photos;
   }
   static create(photoItem: Partial<PhotoItem>) {

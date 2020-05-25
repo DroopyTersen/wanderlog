@@ -2,6 +2,7 @@ import { generateId, checkInDateRange } from "../core/utils";
 import dayjs from "dayjs";
 import { Model } from "./Model";
 import { createIdbStore } from "../services/idb";
+import { PhotoModel } from "./PhotoModel";
 
 export interface TripItem {
   id?: string;
@@ -35,27 +36,36 @@ export const NEW_TRIP: TripItem = {
 
 export class TripModel implements Model<TripItem> {
   item: TripItem;
+  photos: PhotoModel[] = [];
   constructor(item: TripItem = NEW_TRIP) {
     this.item = item;
+  }
+  static async create(item: TripItem) {
+    console.log("TripModel -> create -> item", item);
+    let model = new TripModel(item);
+    model.photos = await PhotoModel.loadByDateRange(model.item.start, model.item.end);
+    console.log("TripModel -> create -> model", model);
+    return model;
   }
   static async loadAll() {
     // console.log("TripModel -> loadAll -> loadAll");
     let items = await createIdbStore<TripItem>("trips").getAll();
     // console.log("TripModel -> loadAll -> items", items);
-    return items.reverse().map((item) => new TripModel(item));
+    let trips = Promise.all(items.reverse().map(TripModel.create));
+    return trips;
   }
   static async load(id) {
     if (!id) return new TripModel();
     let item = await createIdbStore<TripItem>("trips").getById(id);
     // console.log("TripModel -> load -> item", item);
     if (!item) throw new Error("Trip Not Fount: " + id);
-    return new TripModel(item);
+    return TripModel.create(item);
   }
   static async loadByDate(date: string | Date) {
     let items: TripItem[] = await createIdbStore<TripItem>("trips").getAll();
     let match = items.find((item) => checkInDateRange(date, item.start, item.end));
     if (match) {
-      return new TripModel(match);
+      return TripModel.create(match);
     }
     return null;
   }

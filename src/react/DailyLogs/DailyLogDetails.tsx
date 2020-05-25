@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import { HightlightsDisplay } from "./highlights";
 import { TagsDisplay } from "../shared/tags/tags";
 import { LinkButton } from "../global/Header/Header";
+import Grid from "../shared/Grid";
+import { getCloudinaryImageUrl } from "../Images/cloudinary";
 
 export default function DailyLogDetails() {
   let { isLoading, trip, dailyLog } = useDailyLogDetails();
@@ -28,7 +30,14 @@ export default function DailyLogDetails() {
 
       <div>
         <LinkButton to="edit">Edit</LinkButton>
+        <LinkButton to={`/photos/upload?date=${dailyLog.item.date}`}>Add Photos</LinkButton>
       </div>
+
+      <Grid>
+        {dailyLog.photos.map((photo) => (
+          <img src={getCloudinaryImageUrl(photo.item.publicId)} />
+        ))}
+      </Grid>
     </div>
   );
 }

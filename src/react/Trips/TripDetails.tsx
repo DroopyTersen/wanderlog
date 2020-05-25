@@ -8,6 +8,8 @@ import useAsyncData from "../shared/useAsyncData";
 import { LinkButton } from "../global/Header/Header";
 import { HightlightsDisplay } from "../DailyLogs/highlights";
 import FloatingAdd from "../global/FloatingAdd/FloatingAdd";
+import Grid from "../shared/Grid";
+import { getCloudinaryImageUrl } from "../Images/cloudinary";
 
 export default function TripDetails() {
   let { tripId } = useParams();
@@ -42,6 +44,12 @@ export default function TripDetails() {
           <DailyLogCard key={dailyLog.item.id} dailyLog={dailyLog} />
         ))}
       </div>
+
+      <Grid>
+        {trip.photos.map((photo) => (
+          <img src={getCloudinaryImageUrl(photo.item.publicId)} />
+        ))}
+      </Grid>
     </div>
   );
 }

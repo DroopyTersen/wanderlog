@@ -17,10 +17,11 @@ export async function uploadToCloudinary(
   return resp.json();
 }
 
-export const getImageUrl = (
+export const getCloudinaryImageUrl = (
   publicId: string,
   transform: ImageTransform = { mode: "thumb", width: 400, height: 400 }
 ) => {
+  if (!publicId) return "";
   //https://res.cloudinary.com/droopytersen/image/upload/c_fill,g_faces,q_auto,w_400,h_200/v1590417723/wanderlog/20190422_163610_txdh9l.jpg
   let transformString = "";
   if (transform.mode === "thumb") {

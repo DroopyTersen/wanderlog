@@ -12,6 +12,7 @@ ReactDOM.render(React.createElement(App), document.getElementById("root"));
 // }, 500);
 
 navigator?.serviceWorker?.ready?.then?.((registration) => {
+  window.swRegistration = registration;
   // At this point, a Service Worker is controlling the current page
   registration?.sync?.register("sw-ready");
 });

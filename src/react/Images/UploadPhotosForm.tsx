@@ -35,6 +35,9 @@ export default function UploadPhotosForm() {
         await photoModel.save();
         setUploadStatuses((statuses) => updateUploadStatus(statuses, file, "success"));
       }
+      // Go back once success
+      // TODO: redirect to keep history?
+      window.history.back();
     }
   };
   console.log("UploadImagesForm -> queryStringDate", queryStringDate, date);

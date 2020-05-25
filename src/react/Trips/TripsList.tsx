@@ -6,6 +6,7 @@ import useAsyncData from "../shared/useAsyncData";
 import dayjs from "dayjs";
 import { LinkButton } from "../global/Header/Header";
 import FloatingAdd from "../global/FloatingAdd/FloatingAdd";
+import { getCloudinaryImageUrl } from "../Images/cloudinary";
 
 export default function TripsList() {
   let { data: trips, isLoading } = useTrips();
@@ -37,25 +38,22 @@ function useTrips() {
 }
 
 function TripCard({ trip }: { trip: TripModel }) {
+  let coverPhotos = [
+    getCloudinaryImageUrl(trip?.photos?.[0]?.item?.publicId) || "/images/mountains.png",
+    getCloudinaryImageUrl(trip?.photos?.[1]?.item?.publicId) || "/images/mountains.png",
+    getCloudinaryImageUrl(trip?.photos?.[2]?.item?.publicId) || "/images/mountains.png",
+  ];
   return (
     <Link to={trip.item.id}>
       <div className="card">
         <div style={{ display: "grid", gap: "1px", gridTemplateColumns: "1fr 1fr 1fr" }}>
-          <img
-            src="/images/mountains.png"
-            alt="Trip Cover Photo"
-            style={{ height: "130px", objectFit: "cover", width: "100%" }}
-          />
-          <img
-            src="/images/mountains.png"
-            alt="Trip Cover Photo"
-            style={{ height: "130px", objectFit: "cover", width: "100%" }}
-          />
-          <img
-            src="/images/mountains.png"
-            alt="Trip Cover Photo"
-            style={{ height: "130px", objectFit: "cover", width: "100%" }}
-          />
+          {coverPhotos.map((imgUrl) => (
+            <img
+              src={imgUrl}
+              alt="Trip Cover Photo"
+              style={{ height: "130px", objectFit: "cover", width: "100%" }}
+            />
+          ))}
         </div>
 
         <div className="card-body">
