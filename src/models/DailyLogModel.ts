@@ -79,8 +79,21 @@ export class DailyLogModel {
     this.item.timestamp = Date.now();
     if (this.checkIsValid()) {
       await createIdbStore("dailyLogs").save(this.item);
-      await createIdbStore("outbox").save({ action: "dailyLogs.save", payload: this.item });
+      await createIdbStore("outbox").save({
+        action: "dailyLogs.save",
+        payload: this.item,
+        date: new Date(),
+      });
       window.swRegistration.sync.register("dailyLogs.save");
     }
+  }
+  async remove() {
+    await createIdbStore("dailyLogs").remove(this.item.id);
+    await createIdbStore("outbox").save({
+      action: "dailyLogs.remove",
+      payload: this.item,
+      date: new Date(),
+    });
+    window.swRegistration.sync.register("dailyLogs.remove");
   }
 }

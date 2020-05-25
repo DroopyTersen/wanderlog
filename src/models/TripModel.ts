@@ -70,7 +70,11 @@ export class TripModel implements Model<TripItem> {
     if (this.checkIsValid()) {
       this.item.timestamp = Date.now();
       await createIdbStore("trips").save(this.item);
-      await createIdbStore("outbox").save({ action: "trips.save", payload: this.item });
+      await createIdbStore("outbox").save({
+        action: "trips.save",
+        payload: this.item,
+        date: new Date(),
+      });
       window.swRegistration.sync.register("trips.save");
     }
   }
@@ -88,7 +92,11 @@ export class TripModel implements Model<TripItem> {
   }
   async remove() {
     await createIdbStore("trips").remove(this.item.id);
-    await createIdbStore("outbox").save({ action: "trips.remove", payload: this.item });
+    await createIdbStore("outbox").save({
+      action: "trips.remove",
+      payload: this.item,
+      date: new Date(),
+    });
     window.swRegistration.sync.register("trips.remove");
   }
 }

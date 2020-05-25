@@ -9,7 +9,7 @@ function getDb() {
 
 function openDb() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("wanderlog", 1);
+    const request = indexedDB.open("wanderlog", 3);
     request.onupgradeneeded = (_) => {
       const db = request.result;
       setupStores(db);
@@ -102,8 +102,7 @@ export function createIdbStore<T>(collection: string): IDBStore<T> {
     },
     getAll(index = "by-date") {
       return tx(collection, "readonly", (transaction) => {
-        let store = transaction.objectStore(collection);
-        if (index) store = store.index(index);
+        let store = transaction.objectStore(collection).index(index);
         return getAll(store);
       });
     },

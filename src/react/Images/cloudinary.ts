@@ -1,4 +1,7 @@
-export async function uploadFile({ account, preset }, file: File): Promise<CloudinaryResult> {
+export async function uploadToCloudinary(
+  { account, preset },
+  file: File
+): Promise<CloudinaryResult> {
   const endpoint = `https://api.cloudinary.com/v1_1/${account}/image/upload`;
   let formData = new FormData();
   formData.append("upload_preset", preset);

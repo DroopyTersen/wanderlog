@@ -1,18 +1,16 @@
 import React from "react";
 
-export default function ImageGrid({ imgUrls = [], width = "250px", gap = "10px" }) {
+export default function Grid({ width = "250px", gap = "10px", children, ...rest }) {
   return (
     <div
-      className="image-grid"
+      {...rest}
       style={{
         display: "grid",
         gap,
         gridTemplateColumns: `repeat(auto-fill, minmax(${width}, 1fr)`,
       }}
     >
-      {imgUrls.map((imgUrl) => (
-        <img key={imgUrl} src={imgUrl} />
-      ))}
+      {children}
     </div>
   );
 }

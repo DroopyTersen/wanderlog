@@ -9,7 +9,7 @@ import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusP
 import Header from "./global/Header/Header";
 import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
 import DailyLogDetails from "./DailyLogs/DailyLogDetails";
-import UploadImagesForm from "./Images/UploadImagesForm";
+import UploadPhotosForm from "./Images/UploadPhotosForm";
 function App({}) {
   return (
     <div className="app">
@@ -44,7 +44,7 @@ function App({}) {
             </Route>
 
             <Route path="/photos" element={<Layout />}>
-              <Route path="upload" element={<UploadImagesForm />} />
+              <Route path="upload" element={<UploadPhotosForm />} />
             </Route>
           </Routes>
 

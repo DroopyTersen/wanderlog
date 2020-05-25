@@ -10,7 +10,7 @@ export default function FloatingAdd() {
 
   let buttons = [
     { label: "+ Trip", path: "/trips/new" },
-    { label: "+ Photo", path: "/photos/new" },
+    { label: "+ Photo", path: "/photos/upload" },
     { label: "+ Place", path: "/places/new" },
     { label: "+ Daily Log", path: "/dailyLogs/new" },
   ];

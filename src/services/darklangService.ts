@@ -14,7 +14,7 @@ interface Item {
   darkKey?: string;
 }
 
-export type ItemCollection = "trips" | "places" | "images" | "dailyLogs";
+export type ItemCollection = "trips" | "places" | "photos" | "dailyLogs";
 
 export async function saveItem(item: Item, collection: ItemCollection) {
   item.darkKey = item.id;
