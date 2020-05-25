@@ -59,14 +59,20 @@ html button {
   flex-direction: column;
   align-items: center;
 }
-a {
+
+a,
+a:visited {
   text-decoration: none;
   background-image: none;
-  color: #444;
+  color: #0071de;
+}
+a:hover {
+  color: #205688;
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   margin-bottom: 30px;
 }
@@ -107,4 +113,8 @@ form {
   &.space-between {
     justify-content: space-between;
   }
+}
+
+a > .card {
+  height: 100%;
 }

@@ -1,14 +1,14 @@
 import React from "react";
-import DailyLogForm, { NewDailyLogScreen, EditDailyLogScreen } from "./DailyLogs/DailyLogForm";
+import { NewDailyLogScreen, EditDailyLogScreen } from "./DailyLogs/dailyLogsScreens";
 import { BrowserRouter as Router, Routes, Route, Outlet, useParams, Link } from "react-router-dom";
 import TripForm, { NewTripScreen, EditTripScreen } from "./Trips/TripForm";
 import TripsLayout from "./Trips/TripsLayout";
 import TripsList from "./Trips/TripsList";
 import TripDetails from "./Trips/TripDetails";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
-import Nav from "./global/Nav/Nav";
 import Header from "./global/Header/Header";
 import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
+import DailyLogDetails from "./DailyLogs/DailyLogDetails";
 function App({}) {
   return (
     <div className="app">
@@ -24,11 +24,17 @@ function App({}) {
               <Route path=":id" element={<TripDetails />} />
               <Route path=":id/edit" element={<EditTripScreen />} />
               <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
-              <Route path=":tripId/dailyLogs/:logId" element={<EditDailyLogScreen />} />
+              <Route path=":tripId/dailyLogs/:logId" element={<DailyLogDetails />} />
               <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
             </Route>
 
-            <Route path="/places" element={<PlacesLayout />}>
+            <Route path="/dailyLogs" element={<Layout />}>
+              <Route path="new" element={<NewDailyLogScreen />} />
+              <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
+              <Route path="/:logId" element={<DailyLogDetails />} />
+            </Route>
+
+            <Route path="/places" element={<Layout />}>
               <Route path="/" element={<PlacesScreen />} />
               <Route path="new" element={<NewPlace />} />
               <Route path=":id" element={<PlaceDetails />} />
@@ -51,14 +57,14 @@ function HomeScreen() {
   );
 }
 
-function PlacesLayout() {
+function Layout() {
   return (
     <div className="content">
-      <h1>Places</h1>
       <Outlet />
     </div>
   );
 }
+function PlacesLayout() {}
 
 function PlacesScreen() {
   return <h2>Places List</h2>;

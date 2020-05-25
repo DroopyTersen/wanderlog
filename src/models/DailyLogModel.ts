@@ -1,7 +1,7 @@
 import { dailyLogStore, outboxStore } from "../services/idb";
 import { generateId } from "../core/utils";
 import dayjs from "dayjs";
-import { TripModel } from "./TripModel";
+import { TripModel, NEW_TRIP } from "./TripModel";
 import slugify from "slugify";
 export interface DailyLogItem {
   id?: string;
@@ -51,17 +51,31 @@ export class DailyLogModel {
     if (!item) throw new Error("Daily Log not found: " + id);
     return new DailyLogModel(item);
   }
+  static async loadByDate(date: string | Date) {
+    let items = await dailyLogStore.getAll();
+    let match = items.find((item) => dayjs(item.date).isSame(dayjs(date)));
+    if (match) {
+      return new DailyLogModel(match);
+    }
+    let newItem = { ...NEW_DAILY_LOG };
+    newItem.date = dayjs(date).format("YYYY-MM-DD");
+    return new DailyLogModel(newItem);
+  }
   update(key, value) {
     this.item[key] = value;
   }
   checkIsValid(): boolean {
-    return this.item.highlights && this.item.highlights.length > 0;
+    return this.item.date && this.item.highlights && this.item.highlights.length > 0;
+  }
+  get title(): string {
+    return dayjs(this.item.date).format("ddd M/DD/YYYY");
   }
   async save() {
     // TODO: delete any logs that already exists for that date (local and DB)
     // TODO: handle places.
     // If the Place doesn't exist, add to the Places store
     // Add the visit date (make sure not duplicate)
+    console.log("DAILY LOG SAVE", this.item);
     this.item.timestamp = Date.now();
     if (this.checkIsValid()) {
       await dailyLogStore.save(this.item);

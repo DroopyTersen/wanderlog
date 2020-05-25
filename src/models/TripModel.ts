@@ -1,4 +1,4 @@
-import { generateId } from "../core/utils";
+import { generateId, checkInDateRange } from "../core/utils";
 import dayjs from "dayjs";
 import { tripsStore } from "../services/idb/tripsStore";
 import { outboxStore } from "../services/idb";
@@ -52,6 +52,15 @@ export class TripModel implements Model<TripItem> {
     if (!item) throw new Error("Trip Not Fount: " + id);
     return new TripModel(item);
   }
+  static async loadByDate(date: string | Date) {
+    let items: TripItem[] = await tripsStore.getAll();
+    let match = items.find((item) => checkInDateRange(date, item.start, item.end));
+    if (match) {
+      return new TripModel(match);
+    }
+    return null;
+  }
+
   update(key, value) {
     this.item[key] = value;
   }
@@ -65,6 +74,18 @@ export class TripModel implements Model<TripItem> {
       await outboxStore.add({ action: "trips.save", payload: this.item });
       window.swRegistration.sync.register("trips.save");
     }
+  }
+  getTripDates(): Date[] {
+    if (!this.item.start || !this.item.end) return [];
+    let cur = dayjs(this.item.start);
+    let endDate = dayjs(this.item.end);
+    let dates = [];
+
+    while (cur.isBefore(endDate) || cur.isSame(endDate)) {
+      dates.push(cur.toDate());
+      cur = cur.add(1, "day");
+    }
+    return dates;
   }
   async remove() {
     await tripsStore.remove(this.item.id);
