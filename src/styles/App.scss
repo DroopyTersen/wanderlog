@@ -79,8 +79,32 @@ form {
   // display: flex;
   // justify-content: flex-end;
   text-align: center;
+  margin-top: 10px;
   button {
-    width: 100px;
-    margin: 10px;
+    min-width: 100px;
+    // margin: 10px;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: -10px;
+  > * {
+    margin: 0 0 10px;
+  }
+}
+
+.row {
+  display: flex;
+  margin-right: -10px;
+  > * {
+    margin: 0 10px 0 0;
+  }
+  &.align-right {
+    justify-content: flex-end;
+  }
+  &.space-between {
+    justify-content: space-between;
   }
 }
