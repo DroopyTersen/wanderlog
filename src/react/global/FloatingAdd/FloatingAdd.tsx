@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import "./FloatingAdd.scss";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useClickOutside from "../../shared/useClickOutside";
 export default function FloatingAdd() {
+  let { tripId, logId } = useParams();
   let navigate = useNavigate();
   let ref = useRef(null);
   useClickOutside(ref, () => setIsOpen(false));

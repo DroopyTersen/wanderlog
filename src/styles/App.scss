@@ -103,15 +103,25 @@ form {
 
 .row {
   display: flex;
-  margin-right: -10px;
-  > * {
+  margin: 10px -10px 10px 0px;
+  align-items: center;
+  > *:not(.row) {
     margin: 0 10px 0 0;
+  }
+  > .row {
+    margin: 0;
   }
   &.align-right {
     justify-content: flex-end;
   }
   &.space-between {
     justify-content: space-between;
+  }
+  &.tight {
+    margin-right: -5px;
+    > * {
+      margin-right: 5px;
+    }
   }
 }
 

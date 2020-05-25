@@ -5,6 +5,7 @@ import { useSyncListener } from "../shared/useSyncListener";
 import useAsyncData from "../shared/useAsyncData";
 import dayjs from "dayjs";
 import { LinkButton } from "../global/Header/Header";
+import FloatingAdd from "../global/FloatingAdd/FloatingAdd";
 
 export default function TripsList() {
   let { data: trips, isLoading } = useTrips();
@@ -25,6 +26,7 @@ export default function TripsList() {
           <TripCard key={trip.item.id} trip={trip} />
         ))}
       </div>
+      <FloatingAdd />
     </div>
   );
 }

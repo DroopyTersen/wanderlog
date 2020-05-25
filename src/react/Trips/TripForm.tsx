@@ -40,11 +40,11 @@ export function NewTripScreen() {
 }
 
 export function EditTripScreen() {
-  let { id } = useParams();
+  let { tripId } = useParams();
   return (
     <div>
       <h1>Edit Trip</h1>
-      <TripForm id={id} />
+      <TripForm id={tripId} />
     </div>
   );
 }

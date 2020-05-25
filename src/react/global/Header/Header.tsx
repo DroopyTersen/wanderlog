@@ -5,8 +5,21 @@ import useClickOutside from "../../shared/useClickOutside";
 
 export default function Header({ title = "Wanderlog" }) {
   let { pathname } = useLocation();
+  let navigate = useNavigate();
+  let backLink = "";
+  if (pathname !== "/") {
+    backLink = pathname.substr(0, pathname.lastIndexOf("/"));
+    console.log("Header -> backLink", backLink);
+  }
+
   return (
     <nav className="header border fixed split-nav">
+      {pathname !== "/" && (
+        // <Link to={backLink}>Back</Link>
+        <button className="back-button" onClick={() => history.back()}>
+          BACK
+        </button>
+      )}
       <div className="nav-brand">
         <div className="app-title">
           <Link to="/">Wanderlog</Link>

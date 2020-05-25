@@ -21,8 +21,9 @@ function App({}) {
             <Route path="/trips" element={<TripsLayout />}>
               <Route path="/" element={<TripsList />} />
               <Route path="new" element={<NewTripScreen />} />
-              <Route path=":id" element={<TripDetails />} />
-              <Route path=":id/edit" element={<EditTripScreen />} />
+              <Route path=":tripId" element={<TripDetails />} />
+              <Route path=":tripId/edit" element={<EditTripScreen />} />
+              <Route path=":tripId/dailyLogs" element={<TripDetails />} />
               <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
               <Route path=":tripId/dailyLogs/:logId" element={<DailyLogDetails />} />
               <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
@@ -41,8 +42,8 @@ function App({}) {
               <Route path=":id/edit" element={<EditPlace />} />
             </Route>
           </Routes>
-          <FloatingAdd />
           {/* <Nav /> */}
+          <FloatingAdd />
         </Router>
       </NetworkStatusProvider>
     </div>
