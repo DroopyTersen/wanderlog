@@ -1,4 +1,4 @@
-import { PlaceItem, TripItem, DailyLogItem } from "../../models";
+import { PlaceItem, TripItem, DailyLogItem } from "../models";
 
 const ENDPOINT = "https://droopytersen-wanderlog.builtwithdark.com";
 export const savePlace = async function (place: PlaceItem) {
@@ -16,7 +16,7 @@ interface Item {
 
 export type ItemCollection = "trips" | "places" | "images" | "dailyLogs";
 
-async function saveItem(item: Item, collection: ItemCollection) {
+export async function saveItem(item: Item, collection: ItemCollection) {
   item.darkKey = item.id;
   delete item.id;
   let resp = await fetch(ENDPOINT + "/" + collection, {
@@ -55,10 +55,10 @@ export async function getItemsFromDb(collection: ItemCollection) {
   // }));
 }
 
-export const saveTripToDb = async function (item: TripItem) {
-  return saveItem(item, "trips");
-};
+// export const saveTripToDb = async function (item: TripItem) {
+//   return saveItem(item, "trips");
+// };
 
-export const saveDailyLogToDb = async function (item: DailyLogItem) {
-  return saveItem(item, "dailyLogs");
-};
+// export const saveDailyLogToDb = async function (item: DailyLogItem) {
+//   return saveItem(item, "dailyLogs");
+// };

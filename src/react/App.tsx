@@ -9,6 +9,7 @@ import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusP
 import Header from "./global/Header/Header";
 import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
 import DailyLogDetails from "./DailyLogs/DailyLogDetails";
+import UploadImagesForm from "./Images/UploadImagesForm";
 function App({}) {
   return (
     <div className="app">
@@ -41,7 +42,12 @@ function App({}) {
               <Route path=":id" element={<PlaceDetails />} />
               <Route path=":id/edit" element={<EditPlace />} />
             </Route>
+
+            <Route path="/photos" element={<Layout />}>
+              <Route path="upload" element={<UploadImagesForm />} />
+            </Route>
           </Routes>
+
           {/* <Nav /> */}
           <FloatingAdd />
         </Router>

@@ -1,15 +1,8 @@
 /// <reference lib="webworker"/>
-import { outboxStore, tripsStore } from "./services";
-import {
-  savePlace,
-  saveTripToDb,
-  getItemsFromDb,
-  saveDailyLogToDb,
-  ItemCollection,
-  removeItem,
-} from "./services/darklang/darklangService";
+import { saveItem, getItemsFromDb, ItemCollection, removeItem } from "./services/darklangService";
 import { wait } from "./core/utils";
-import { saveMany, deleteAll } from "./services/idb/idb";
+import { saveMany, deleteAll, createIdbStore } from "./services/idb";
+import { OutboxItem } from "./models";
 const CACHE_KEY = "v0.1";
 
 declare const self: Window & ServiceWorkerGlobalScope;
@@ -56,12 +49,13 @@ async function syncFromServer() {
 }
 
 let outboxActions = {
-  "trips.save": (payload) => saveTripToDb(payload),
+  "trips.save": (payload) => saveItem(payload, "trips"),
   "trips.remove": (payload) => removeItem(payload, "trips"),
-  "dailyLogs.save": (payload) => saveDailyLogToDb(payload),
+  "dailyLogs.save": (payload) => saveItem(payload, "dailyLogs"),
 };
 
 async function syncOutbox() {
+  let outboxStore = createIdbStore<OutboxItem>("outbox");
   let outboxItems = await outboxStore.getAll();
   for (const outboxItem of outboxItems) {
     try {
