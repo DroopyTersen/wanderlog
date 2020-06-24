@@ -10,12 +10,13 @@ import Header from "./global/Header/Header";
 import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
 import DailyLogDetails from "./DailyLogs/DailyLogDetails";
 import UploadPhotosForm from "./Images/UploadPhotosForm";
+import AppBackground from "./global/AppBackground/AppBackground";
 function App({}) {
   return (
     <div className="app">
       <NetworkStatusProvider>
         <Router>
-          <Header />
+          {/* <Header /> */}
           <Routes>
             <Route path="*" element={<HomeScreen />} />
 
@@ -58,9 +59,14 @@ function App({}) {
 
 function HomeScreen() {
   return (
-    <div className="content centered">
-      <h1>Home</h1>
-    </div>
+    <>
+      <AppBackground />
+
+      <div className="home content centered">
+        <h1 className="app-title">Wanderlog</h1>
+        <h3 className="tagline">Lust less. Remember more.</h3>
+      </div>
+    </>
   );
 }
 

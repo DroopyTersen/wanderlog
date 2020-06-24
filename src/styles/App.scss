@@ -1,12 +1,29 @@
+@import "./theme.scss";
+
 html {
   box-sizing: border-box;
   font-size: 16px;
+  font-family: var(--textFont);
+  color: var(--white);
+  background: var(--gradientBackground);
+}
+html,
+body,
+#root,
+.app {
+  min-height: 100%;
+  box-sizing: border-box;
 }
 
 *,
 *:before,
 *:after {
   box-sizing: inherit;
+}
+
+h1 {
+  font-family: var(--titleFont);
+  color: var(--gold);
 }
 
 body,
@@ -51,7 +68,7 @@ html button {
   align-self: initial !important;
 }
 .content {
-  padding: 60px 10px;
+  padding: 10px 10px;
 }
 
 .centered {
@@ -127,4 +144,25 @@ form {
 
 a > .card {
   height: 100%;
+}
+
+.home {
+  .app-title {
+    margin-top: 15vh;
+    font-family: var(--titleFont);
+    color: var(--gold);
+    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
+    font-size: 44px;
+    letter-spacing: 3px;
+  }
+  .tagline {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+  @media screen and (min-width: 600px) {
+    .app-title {
+      margin-top: 10vh;
+      font-size: 70px;
+    }
+  }
 }

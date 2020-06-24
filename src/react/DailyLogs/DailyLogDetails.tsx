@@ -4,7 +4,7 @@ import useAsyncData from "../shared/useAsyncData";
 import { DailyLogModel, TripModel } from "../../models";
 import dayjs from "dayjs";
 import { HightlightsDisplay } from "./highlights";
-import { TagsDisplay } from "../shared/tags/tags";
+import { TagsDisplay } from "../components/tags/tags";
 import { LinkButton } from "../global/Header/Header";
 import Grid from "../shared/Grid";
 import { getCloudinaryImageUrl } from "../Images/cloudinary";

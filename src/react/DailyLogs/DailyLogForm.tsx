@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { TripModel, DailyLogModel } from "../../models";
 import { useModelForm } from "../shared/useModelForm";
-import { TagsInput, TagsDisplay } from "../shared/tags/tags";
+import { TagsInput, TagsDisplay } from "../components/tags/tags";
 import { HighlightsInput, HightlightsDisplay } from "./highlights";
 import { useDailyLogForm } from "./useDailyLogForm";
 

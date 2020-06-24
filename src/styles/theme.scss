@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "Monoton";
+  src: url("/fonts/Monoton/Monoton-Regular.eot");
+  src: url("/fonts/Monoton/Monoton-Regular.eot?#iefix") format("embedded-opentype"),
+    url("/fonts/Monoton/Monoton-Regular.woff2") format("woff2"),
+    url("/fonts/Monoton/Monoton-Regular.woff") format("woff"),
+    url("/fonts/Monoton/Monoton-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+:root {
+  --titleFont: Monoton;
+  --textFont: sans-serif;
+  --blue: #497799;
+  --gold: #ffc87d;
+  --pink: #deb9bf;
+
+  --white-100: #fbfbfa;
+  --white: #f1f1ee;
+
+  --neutral-200: #e6e4e0;
+  --neutral-300: #e3e1dc;
+  --neutral-400: #e0ded8;
+  --neutral: #dddbd5;
+  --neutral-600: #c9c8c2;
+  --neutral-700: #b5b4af;
+
+  --gold-400: #e2b87f;
+  --gold-500: #ffc87d;
+  --blue-500: #497799;
+  --blue-600: #7595b4;
+  --blue-700: #a6b6cb;
+  --pink-500: #deb9bf;
+  --gradientBackground: linear-gradient(4deg, var(--pink), var(--blue-600) 60%, var(--blue));
+}
