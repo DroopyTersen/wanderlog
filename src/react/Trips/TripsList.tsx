@@ -5,7 +5,6 @@ import { useSyncListener } from "../shared/useSyncListener";
 import useAsyncData from "../shared/useAsyncData";
 import dayjs from "dayjs";
 import { LinkButton } from "../global/Header/Header";
-import FloatingAdd from "../global/FloatingAdd/FloatingAdd";
 import { getCloudinaryImageUrl } from "../Images/cloudinary";
 
 export default function TripsList() {
@@ -27,7 +26,6 @@ export default function TripsList() {
           <TripCard key={trip.item.id} trip={trip} />
         ))}
       </div>
-      <FloatingAdd />
     </div>
   );
 }

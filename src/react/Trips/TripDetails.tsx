@@ -7,7 +7,6 @@ import { displayDate } from "../../core/utils";
 import useAsyncData from "../shared/useAsyncData";
 import { LinkButton } from "../global/Header/Header";
 import { HightlightsDisplay } from "../DailyLogs/highlights";
-import FloatingAdd from "../global/FloatingAdd/FloatingAdd";
 import Grid from "../shared/Grid";
 import { getCloudinaryImageUrl } from "../Images/cloudinary";
 

@@ -7,51 +7,55 @@ import TripsList from "./Trips/TripsList";
 import TripDetails from "./Trips/TripDetails";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
 import Header from "./global/Header/Header";
-import FloatingAdd from "./global/FloatingAdd/FloatingAdd";
 import DailyLogDetails from "./DailyLogs/DailyLogDetails";
 import UploadPhotosForm from "./Images/UploadPhotosForm";
 import AppBackground from "./global/AppBackground/AppBackground";
+import Nav from "./global/Nav/Nav";
+import { ScreenModeProvider } from "./hooks/useScreenMode";
 function App({}) {
   return (
     <div className="app">
       <NetworkStatusProvider>
-        <Router>
-          {/* <Header /> */}
-          <Routes>
-            <Route path="*" element={<HomeScreen />} />
+        <ScreenModeProvider>
+          <Router>
+            {/* <Header /> */}
+            <Nav />
+            <Routes>
+              <Route path="*" element={<HomeScreen />} />
 
-            <Route path="/trips" element={<TripsLayout />}>
-              <Route path="/" element={<TripsList />} />
-              <Route path="new" element={<NewTripScreen />} />
-              <Route path=":tripId" element={<TripDetails />} />
-              <Route path=":tripId/edit" element={<EditTripScreen />} />
-              <Route path=":tripId/dailyLogs" element={<TripDetails />} />
-              <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
-              <Route path=":tripId/dailyLogs/:logId" element={<DailyLogDetails />} />
-              <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
-            </Route>
+              <Route path="/trips" element={<TripsLayout />}>
+                <Route path="/" element={<TripsList />} />
+                <Route path="new" element={<NewTripScreen />} />
+                <Route path=":tripId" element={<TripDetails />} />
+                <Route path=":tripId/edit" element={<EditTripScreen />} />
+                <Route path=":tripId/dailyLogs" element={<TripDetails />} />
+                <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
+                <Route path=":tripId/dailyLogs/:logId" element={<DailyLogDetails />} />
+                <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
+              </Route>
 
-            <Route path="/dailyLogs" element={<Layout />}>
-              <Route path="new" element={<NewDailyLogScreen />} />
-              <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
-              <Route path="/:logId" element={<DailyLogDetails />} />
-            </Route>
+              <Route path="/dailyLogs" element={<Layout />}>
+                <Route path="new" element={<NewDailyLogScreen />} />
+                <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
+                <Route path="/:logId" element={<DailyLogDetails />} />
+              </Route>
 
-            <Route path="/places" element={<Layout />}>
-              <Route path="/" element={<PlacesScreen />} />
-              <Route path="new" element={<NewPlace />} />
-              <Route path=":id" element={<PlaceDetails />} />
-              <Route path=":id/edit" element={<EditPlace />} />
-            </Route>
+              <Route path="/places" element={<Layout />}>
+                <Route path="/" element={<PlacesScreen />} />
+                <Route path="new" element={<NewPlace />} />
+                <Route path=":id" element={<PlaceDetails />} />
+                <Route path=":id/edit" element={<EditPlace />} />
+              </Route>
 
-            <Route path="/photos" element={<Layout />}>
-              <Route path="upload" element={<UploadPhotosForm />} />
-            </Route>
-          </Routes>
+              <Route path="/photos" element={<Layout />}>
+                <Route path="upload" element={<UploadPhotosForm />} />
+              </Route>
+            </Routes>
 
-          {/* <Nav /> */}
-          <FloatingAdd />
-        </Router>
+            {/* <Nav /> */}
+            {/* <FloatingAdd /> */}
+          </Router>
+        </ScreenModeProvider>
       </NetworkStatusProvider>
     </div>
   );

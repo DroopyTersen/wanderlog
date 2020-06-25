@@ -26,6 +26,14 @@ h1 {
   color: var(--gold);
 }
 
+html a,
+html a:visited {
+  color: var(--white);
+  transition: color 0.2s ease-out;
+}
+html a:hover {
+  color: var(--gold-700);
+}
 body,
 h1,
 h2,
@@ -152,14 +160,14 @@ a > .card {
     font-family: var(--titleFont);
     color: var(--gold);
     text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
-    font-size: 44px;
-    letter-spacing: 3px;
+    font-size: 40px;
+    letter-spacing: 2.5px;
   }
   .tagline {
-    font-size: 14px;
-    letter-spacing: 3px;
+    font-size: 13px;
+    letter-spacing: 2.5px;
   }
-  @media screen and (min-width: 600px) {
+  @media (min-width: 600px) {
     .app-title {
       margin-top: 10vh;
       font-size: 70px;

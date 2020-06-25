@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./AppBackground.scss";
 import useWindowSize from "../../hooks/useWindowSize";
+import { useScreenMode } from "../../hooks/useScreenMode";
 function AppBackground({ variant = "" }) {
   let [status, setStatus] = useState("loading");
-  let { width, height } = useWindowSize();
-  let imgRef = useRef();
-  let mode = width < 800 && width < height ? "portrait" : "desktop";
-  let src = `/images/mountain-road.${mode}.jpg`;
+  let { orientation } = useScreenMode();
+  let src = `/images/mountain-road.${orientation}.jpg`;
   return (
     <div className={["app-background", variant, status].join(" ")}>
       <img src={BASE_64} className="blurred" />
       {variant !== "blurred" && (
         <>
-          <img ref={imgRef} onLoad={() => setStatus("success")} src={src} className="sharp" />
+          <img onLoad={() => setStatus("success")} src={src} className="sharp" />
           <div className="overlay" />
         </>
       )}

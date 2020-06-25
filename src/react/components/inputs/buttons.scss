@@ -1,0 +1,88 @@
+html button,
+html body a[role="button"] {
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  position: relative;
+  white-space: nowrap;
+  vertical-align: middle;
+  line-height: 1.2;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+  transition: all 250ms ease 0s;
+  outline: none;
+  border: 2px solid var(--color);
+  cursor: pointer;
+
+  //   OUTLINE BUTTON
+  background: rgba(255, 255, 255, 0.05);
+
+  --color: var(--blue-900);
+  color: var(--color);
+  // border-color: var(--blue-900);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    //   background-color: #d9e5f521;
+  }
+  &:active {
+    // background-color: var(--gold-200);
+    // border-color: var(--gold-200);
+    background: rgba(255, 255, 255, 0.2);
+    //   background: #d9e5f534;
+    border-color: #d9e5f534;
+    // color ()
+  }
+
+  &.gold {
+    --color: var(--gold-500);
+    &:hover {
+      background: #ffc97d25;
+    }
+    &:active {
+      // background-color: var(--gold-200);
+      // border-color: var(--gold-200);
+      background: #ffc97d38;
+      border-color: #ffc97d38;
+    }
+  }
+}
+
+button.clear {
+  border-color: transparent;
+  background: transparent;
+}
+button.solid {
+  --color: var(--blue);
+
+  color: var(--white);
+  background-color: var(--color);
+  &:hover {
+    background-color: #5686aa;
+    border-color: #5282a7;
+  }
+
+  &:active {
+    // background-color: color-mod(var(--color) lightness(10%));
+    background-color: var(--blue-400);
+    border-color: var(--blue-400);
+  }
+
+  &.gold {
+    --color: var(--gold-300);
+
+    &:hover {
+      background-color: var(--gold-400);
+    }
+    &:active {
+      background-color: var(--gold-200);
+      border-color: var(--gold-200);
+    }
+  }
+}
