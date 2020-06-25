@@ -1,9 +1,26 @@
 nav.nav {
-  padding: 20px 10px;
+  padding: 5px 10px;
   // background: linear-gradient(transparent, rgba(0, 0, 0, 0.1) 20%, rgba(0, 0, 0, 0.5));
   // color: white;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  .nav-item {
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    height: max-content;
+    font-size: 22px;
+    // height: 100%;
+    span {
+      margin-top: 4px;
+      font-size: 13px;
+      // text-transform: uppercase;
+    }
+  }
   > div {
     margin: 0;
   }

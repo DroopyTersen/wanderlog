@@ -6,4 +6,6 @@ config.devServer = {
   contentBase: "./dist",
   historyApiFallback: true,
 };
+// Remove bundle analyzer from prod
+config.plugins = [];
 module.exports = config;

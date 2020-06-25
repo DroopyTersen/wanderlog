@@ -4,7 +4,7 @@ import "./Menu.scss";
 import { Button } from "../inputs/buttons";
 
 export interface MenuSubComponents {
-  Trigger: React.FC<ReactNode>;
+  Trigger: React.FC<{ [key: string]: any }>;
   Submenu: React.FC<{ [key: string]: any }>;
 }
 

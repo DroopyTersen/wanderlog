@@ -26,6 +26,10 @@ html body a[role="button"] {
   --color: var(--blue-900);
   color: var(--color);
   // border-color: var(--blue-900);
+  &.clear {
+    border-color: transparent;
+    background: transparent;
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.15);
@@ -52,37 +56,33 @@ html body a[role="button"] {
       border-color: #ffc97d38;
     }
   }
-}
 
-button.clear {
-  border-color: transparent;
-  background: transparent;
-}
-button.solid {
-  --color: var(--blue);
+  &.solid {
+    --color: var(--blue);
 
-  color: var(--white);
-  background-color: var(--color);
-  &:hover {
-    background-color: #5686aa;
-    border-color: #5282a7;
-  }
-
-  &:active {
-    // background-color: color-mod(var(--color) lightness(10%));
-    background-color: var(--blue-400);
-    border-color: var(--blue-400);
-  }
-
-  &.gold {
-    --color: var(--gold-300);
-
+    color: var(--white);
+    background-color: var(--color);
     &:hover {
-      background-color: var(--gold-400);
+      background-color: #5686aa;
+      border-color: #5282a7;
     }
+
     &:active {
-      background-color: var(--gold-200);
-      border-color: var(--gold-200);
+      // background-color: color-mod(var(--color) lightness(10%));
+      background-color: var(--blue-400);
+      border-color: var(--blue-400);
+    }
+
+    &.gold {
+      --color: var(--gold-300);
+
+      &:hover {
+        background-color: var(--gold-400);
+      }
+      &:active {
+        background-color: var(--gold-200);
+        border-color: var(--gold-200);
+      }
     }
   }
 }
