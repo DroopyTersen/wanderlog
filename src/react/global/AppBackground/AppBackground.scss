@@ -5,6 +5,7 @@
   top: 0;
   bottom: 0;
   z-index: -1;
+  background: var(--blue);
   .overlay {
     position: absolute;
     width: 100%;
@@ -22,22 +23,21 @@
     object-position: bottom;
   }
   img.blurred {
-    filter: blur(20px);
+    filter: blur(15px);
+    &.placeholder {
+      filter: blur(25px);
+    }
   }
   &.loading {
-    img.blurred {
-      opacity: 0.85;
-    }
-
-    img.sharp {
+    img {
       opacity: 0;
+    }
+    img.placeholder {
+      opacity: 0.85;
     }
   }
   &.success {
-    img.blurred {
-      opacity: 0;
-    }
-    img.sharp {
+    img {
       opacity: 1;
     }
   }

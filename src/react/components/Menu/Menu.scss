@@ -5,19 +5,18 @@
   position: relative;
   .menu-submenu {
     --color: var(--blue-900);
-    background: var(--blue);
     display: none;
-    // display: flex;
     flex-direction: column;
     align-items: flex-start;
     position: absolute;
     border-radius: 0.25rem;
-    //   border: 2px solid var(--color);
     padding: 10px 0;
     right: 0;
     width: max-content;
     min-width: 150px;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--color);
+    background: #ffffff26;
     &.open {
       display: flex;
     }
