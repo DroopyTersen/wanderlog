@@ -9,12 +9,6 @@ import { Link } from "react-router-dom";
 export default function AddButton({ direction = "up" }: { direction: "up" | "down" }) {
   let { tripId, logId } = useParams();
 
-  let buttons = [
-    { label: "+ Trip", path: "/trips/new" },
-    { label: "+ Photo", path: "/photos/upload" },
-    { label: "+ Place", path: "/places/new" },
-    { label: "+ Daily Log", path: "/dailyLogs/new" },
-  ];
   return (
     <Menu direction={direction} className="add-button">
       <Menu.Trigger>New!</Menu.Trigger>

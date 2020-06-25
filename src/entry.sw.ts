@@ -3,7 +3,7 @@ import { saveItem, getItemsFromDb, ItemCollection, removeItem } from "./services
 import { wait } from "./core/utils";
 import { saveMany, deleteAll, createIdbStore } from "./services/idb";
 import { OutboxItem } from "./models";
-const CACHE_KEY = "v0.1";
+const CACHE_KEY = "v0.2";
 
 declare const self: Window & ServiceWorkerGlobalScope;
 
