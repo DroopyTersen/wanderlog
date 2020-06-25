@@ -6,7 +6,6 @@ import TripsLayout from "./Trips/TripsLayout";
 import TripsList from "./Trips/TripsList";
 import TripDetails from "./Trips/TripDetails";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
-import Header from "./global/Header/Header";
 import DailyLogDetails from "./DailyLogs/DailyLogDetails";
 import UploadPhotosForm from "./Images/UploadPhotosForm";
 import AppBackground from "./global/AppBackground/AppBackground";
@@ -18,7 +17,6 @@ function App({}) {
       <NetworkStatusProvider>
         <ScreenModeProvider>
           <Router>
-            {/* <Header /> */}
             <Nav />
             <Routes>
               <Route path="*" element={<HomeScreen />} />
@@ -51,9 +49,6 @@ function App({}) {
                 <Route path="upload" element={<UploadPhotosForm />} />
               </Route>
             </Routes>
-
-            {/* <Nav /> */}
-            {/* <FloatingAdd /> */}
           </Router>
         </ScreenModeProvider>
       </NetworkStatusProvider>

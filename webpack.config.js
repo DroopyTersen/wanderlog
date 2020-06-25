@@ -1,10 +1,11 @@
 const path = require("path");
-
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 module.exports = {
   entry: {
     app: "./src/entry.ts",
     sw: "./src/entry.sw.ts",
   },
+  mode: "production",
   devtool: "source-map",
   module: {
     rules: [
@@ -41,4 +42,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
   },
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: "static",
+      defaultSizes: "parsed",
+    }),
+  ],
 };
