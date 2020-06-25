@@ -11,7 +11,10 @@ function AppBackground({ variant = "" }) {
     <div className={["app-background", variant, status].join(" ")}>
       <img src={BASE_64} className="blurred" />
       {variant !== "blurred" && (
-        <img ref={imgRef} onLoad={() => setStatus("success")} src={src} className="sharp" />
+        <>
+          <img ref={imgRef} onLoad={() => setStatus("success")} src={src} className="sharp" />
+          <div className="overlay" />
+        </>
       )}
     </div>
   );

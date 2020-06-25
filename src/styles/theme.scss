@@ -27,9 +27,10 @@
 
   --gold-400: #e2b87f;
   --gold-500: #ffc87d;
+  --blue-400: #365e7c;
   --blue-500: #497799;
   --blue-600: #7595b4;
   --blue-700: #a6b6cb;
   --pink-500: #deb9bf;
-  --gradientBackground: linear-gradient(4deg, var(--pink), var(--blue-600) 60%, var(--blue));
+  --gradientBackground: linear-gradient(4deg, var(--pink), var(--blue-600) 60%, var(--blue) 85%);
 }
