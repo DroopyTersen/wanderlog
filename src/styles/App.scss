@@ -6,12 +6,13 @@ html {
   font-family: var(--textFont);
   color: var(--white);
   background: var(--gradientBackground);
+  -webkit-font-smoothing: antialiased;
 }
 html,
 body,
 #root,
 .app {
-  min-height: 100%;
+  min-height: 100vh;
   box-sizing: border-box;
 }
 

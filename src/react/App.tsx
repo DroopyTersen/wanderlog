@@ -21,7 +21,7 @@ function App({}) {
             <Routes>
               <Route path="*" element={<HomeScreen />} />
 
-              <Route path="/trips" element={<TripsLayout />}>
+              {/* <Route path="/trips" element={<TripsLayout />}>
                 <Route path="/" element={<TripsList />} />
                 <Route path="new" element={<NewTripScreen />} />
                 <Route path=":tripId" element={<TripDetails />} />
@@ -30,7 +30,7 @@ function App({}) {
                 <Route path=":tripId/dailyLogs/new" element={<NewDailyLogScreen />} />
                 <Route path=":tripId/dailyLogs/:logId" element={<DailyLogDetails />} />
                 <Route path=":tripId/dailyLogs/:logId/edit" element={<EditDailyLogScreen />} />
-              </Route>
+              </Route> */}
 
               <Route path="/dailyLogs" element={<Layout />}>
                 <Route path="new" element={<NewDailyLogScreen />} />
@@ -38,7 +38,7 @@ function App({}) {
                 <Route path="/:logId" element={<DailyLogDetails />} />
               </Route>
 
-              <Route path="/places" element={<Layout />}>
+              {/* <Route path="/places" element={<Layout />}>
                 <Route path="/" element={<PlacesScreen />} />
                 <Route path="new" element={<NewPlace />} />
                 <Route path=":id" element={<PlaceDetails />} />
@@ -47,7 +47,7 @@ function App({}) {
 
               <Route path="/photos" element={<Layout />}>
                 <Route path="upload" element={<UploadPhotosForm />} />
-              </Route>
+              </Route> */}
             </Routes>
           </Router>
         </ScreenModeProvider>

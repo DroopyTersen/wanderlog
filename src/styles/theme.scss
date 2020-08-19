@@ -40,5 +40,10 @@
   --blue-700: #a6b6cb;
   --blue-900: #e2ebf7;
   --pink-500: #deb9bf;
-  --gradientBackground: linear-gradient(4deg, var(--pink), var(--blue-600) 60%, var(--blue) 85%);
+  --gradientBackground: linear-gradient(
+    4deg,
+    var(--pink),
+    var(--blue-600) 60%,
+    var(--blue-400) 85%
+  );
 }
