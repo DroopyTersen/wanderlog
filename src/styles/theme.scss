@@ -1,17 +1,8 @@
-@font-face {
-  font-family: "Monoton";
-  src: url("/fonts/Monoton/Monoton-Regular.eot");
-  src: url("/fonts/Monoton/Monoton-Regular.eot?#iefix") format("embedded-opentype"),
-    url("/fonts/Monoton/Monoton-Regular.woff2") format("woff2"),
-    url("/fonts/Monoton/Monoton-Regular.woff") format("woff"),
-    url("/fonts/Monoton/Monoton-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
+@import "./fontFaces.scss";
 
 :root {
   --titleFont: Monoton;
-  --textFont: sans-serif;
+  --textFont: "Open Sans";
 
   --blue: #497799;
   --gold: #ffc87d;
