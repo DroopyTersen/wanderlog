@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import "./Header.scss";
 import { Link, useRoutes, useLocation, useNavigate } from "react-router-dom";
-import useClickOutside from "../../shared/useClickOutside";
 
 export default function Header({ title = "Wanderlog" }) {
   let { pathname } = useLocation();

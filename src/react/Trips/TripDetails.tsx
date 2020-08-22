@@ -4,10 +4,10 @@ import { Link, useParams } from "react-router-dom";
 import { useSyncListener } from "../shared/useSyncListener";
 import dayjs from "dayjs";
 import { displayDate } from "../../core/utils";
-import useAsyncData from "../shared/useAsyncData";
+import useAsyncData from "../hooks/useAsyncData";
 import { HightlightsDisplay } from "../DailyLogs/highlights";
-import Grid from "../shared/Grid";
-import { getCloudinaryImageUrl } from "../Images/cloudinary";
+import Grid from "../components/Grid";
+import { getCloudinaryImageUrl } from "../Photos/cloudinary";
 
 export default function TripDetails() {
   let { tripId } = useParams();

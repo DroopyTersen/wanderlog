@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { useParams, useNavigate } from "react-router";
 import { TripModel, DailyLogModel } from "../../models";
-import useAsyncData from "../shared/useAsyncData";
+import useAsyncData from "../hooks/useAsyncData";
 import DailyLogForm from "./DailyLogForm";
 
 export function NewDailyLogScreen() {

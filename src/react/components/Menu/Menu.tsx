@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useRef, useCallback, useMemo, useContext } from "react";
-import useClickOutside from "../../shared/useClickOutside";
 import "./Menu.scss";
 import { Button } from "../inputs/buttons";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 
 export interface MenuSubComponents {
   Trigger: React.FC<{ [key: string]: any }>;
@@ -51,7 +51,7 @@ const ParentMenu: React.FC<MenuProps> & MenuSubComponents = ({
 const Trigger = ({ children, ...rest }) => {
   let ref = useRef(null);
   let { isOpen, setIsOpen } = useContext(MenuContext);
-  useClickOutside(ref, () => setIsOpen(false));
+  useOnClickOutside(ref, () => setIsOpen(false));
   let onClick = () => setIsOpen((val) => !val);
   return (
     <Button {...rest} onClick={onClick} ref={ref}>
@@ -80,7 +80,7 @@ export function useMenu(direction: "up" | "down" = "down") {
   let [isOpen, setIsOpen] = useState(false);
   console.log("useMenu -> isOpen", isOpen);
   let triggerRef = useRef(null);
-  useClickOutside(triggerRef, () => setIsOpen(false));
+  useOnClickOutside(triggerRef, () => setIsOpen(false));
 
   let triggerProps = useMemo(() => {
     return {

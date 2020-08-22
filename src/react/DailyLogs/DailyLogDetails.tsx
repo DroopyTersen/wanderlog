@@ -1,13 +1,13 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import useAsyncData from "../shared/useAsyncData";
+import useAsyncData from "../hooks/useAsyncData";
 import { DailyLogModel, TripModel } from "../../models";
 import dayjs from "dayjs";
 import { HightlightsDisplay } from "./highlights";
 import { TagsDisplay } from "../components/tags/tags";
 import { LinkButton } from "../global/Header/Header";
-import Grid from "../shared/Grid";
-import { getCloudinaryImageUrl } from "../Images/cloudinary";
+import Grid from "../components/Grid";
+import { getCloudinaryImageUrl } from "../Photos/cloudinary";
 
 export default function DailyLogDetails() {
   let { isLoading, trip, dailyLog } = useDailyLogDetails();

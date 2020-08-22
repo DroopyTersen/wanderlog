@@ -3,11 +3,9 @@ import Popup from "../../components/surfaces/Popup";
 import "./AddButton.scss";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Button } from "../../components/inputs/buttons";
-import useOnClickOutside from "../../hooks/useOnClickOutside";
+
 export default function AddButton({ children }) {
-  let popupRef = useRef(null);
-  let [isOpen, setIsOpen] = useState(false);
-  useOnClickOutside(popupRef, () => setIsOpen(false));
+  let { ref: popupRef, isOpen, setIsOpen, close } = Popup.usePopup();
 
   return (
     <div ref={popupRef}>

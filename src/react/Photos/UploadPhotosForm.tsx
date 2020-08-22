@@ -3,7 +3,7 @@ import { useParams, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import { FormActions } from "../shared/useForm";
 import useImageUploader from "./useImageUploader";
-import Grid from "../shared/Grid";
+import Grid from "../components/Grid";
 import { getFiles, wait } from "../../core/utils";
 import { uploadToCloudinary } from "./cloudinary";
 import { PhotoModel } from "../../models/PhotoModel";

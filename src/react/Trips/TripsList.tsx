@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { TripModel } from "../../models";
 import { Link } from "react-router-dom";
 import { useSyncListener } from "../shared/useSyncListener";
-import useAsyncData from "../shared/useAsyncData";
+import useAsyncData from "../hooks/useAsyncData";
 import dayjs from "dayjs";
 import { LinkButton } from "../global/Header/Header";
-import { getCloudinaryImageUrl } from "../Images/cloudinary";
+import { getCloudinaryImageUrl } from "../Photos/cloudinary";
 
 export default function TripsList() {
   let { data: trips, isLoading } = useTrips();

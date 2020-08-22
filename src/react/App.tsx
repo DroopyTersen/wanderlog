@@ -1,11 +1,8 @@
 import React from "react";
 import { NewDailyLogScreen, EditDailyLogScreen } from "./DailyLogs/dailyLogsScreens";
 import { BrowserRouter as Router, Routes, Route, Outlet, useParams, Link } from "react-router-dom";
-import TripsList from "./Trips/TripsList";
-import TripDetails from "./Trips/TripDetails";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
 import DailyLogDetails from "./DailyLogs/DailyLogDetails";
-import UploadPhotosForm from "./Images/UploadPhotosForm";
 import AppBackground from "./global/AppBackground/AppBackground";
 import Nav from "./global/Nav/Nav";
 import { ScreenModeProvider } from "./hooks/useScreenMode";
