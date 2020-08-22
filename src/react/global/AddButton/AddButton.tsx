@@ -10,7 +10,7 @@ export default function AddButton({ children }) {
   return (
     <div ref={popupRef}>
       <Button onClick={() => setIsOpen((val) => !val)} className="add-trigger">
-        <AiOutlinePlus size={20} />
+        <AiOutlinePlus size={22} />
       </Button>
       <Popup
         className="add-links from-right"
