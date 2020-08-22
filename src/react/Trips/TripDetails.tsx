@@ -5,7 +5,6 @@ import { useSyncListener } from "../shared/useSyncListener";
 import dayjs from "dayjs";
 import { displayDate } from "../../core/utils";
 import useAsyncData from "../shared/useAsyncData";
-import { LinkButton } from "../global/Header/Header";
 import { HightlightsDisplay } from "../DailyLogs/highlights";
 import Grid from "../shared/Grid";
 import { getCloudinaryImageUrl } from "../Images/cloudinary";
@@ -26,8 +25,8 @@ export default function TripDetails() {
           </div>
         </div>
         <div className="row align-right">
-          <LinkButton to="dailyLogs/new">+ Daily Log</LinkButton>
-          <LinkButton to="edit">Edit Trip</LinkButton>
+          <Link to="dailyLogs/new">+ Daily Log</Link>
+          <Link to="edit">Edit Trip</Link>
         </div>
       </div>
       <h3>Daily Logs</h3>

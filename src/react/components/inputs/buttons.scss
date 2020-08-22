@@ -1,5 +1,6 @@
 html button,
 html body a[role="button"] {
+  --color: var(--white);
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -14,16 +15,15 @@ html body a[role="button"] {
   font-size: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  border-radius: 0.25rem;
+  border-radius: 25px;
   transition: all 250ms ease 0s;
   outline: none;
   border: 2px solid var(--color);
   cursor: pointer;
 
   //   OUTLINE BUTTON
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.2);
 
-  --color: var(--blue-900);
   color: var(--color);
   // border-color: var(--blue-900);
   &.clear {

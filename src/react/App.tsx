@@ -1,8 +1,6 @@
 import React from "react";
 import { NewDailyLogScreen, EditDailyLogScreen } from "./DailyLogs/dailyLogsScreens";
 import { BrowserRouter as Router, Routes, Route, Outlet, useParams, Link } from "react-router-dom";
-import TripForm, { NewTripScreen, EditTripScreen } from "./Trips/TripForm";
-import TripsLayout from "./Trips/TripsLayout";
 import TripsList from "./Trips/TripsList";
 import TripDetails from "./Trips/TripDetails";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
@@ -11,13 +9,14 @@ import UploadPhotosForm from "./Images/UploadPhotosForm";
 import AppBackground from "./global/AppBackground/AppBackground";
 import Nav from "./global/Nav/Nav";
 import { ScreenModeProvider } from "./hooks/useScreenMode";
+import Footer from "./global/Footer/Footer";
+import AddButton from "./global/AddButton/AddButton";
 function App({}) {
   return (
     <div className="app">
       <NetworkStatusProvider>
         <ScreenModeProvider>
           <Router>
-            <Nav />
             <Routes>
               <Route path="*" element={<HomeScreen />} />
 
@@ -49,6 +48,7 @@ function App({}) {
                 <Route path="upload" element={<UploadPhotosForm />} />
               </Route> */}
             </Routes>
+            <Nav />
           </Router>
         </ScreenModeProvider>
       </NetworkStatusProvider>
@@ -60,11 +60,17 @@ function HomeScreen() {
   return (
     <>
       <AppBackground />
-
       <div className="home content centered">
         <h1 className="app-title">Wanderlog</h1>
         <h3 className="tagline">Lust less. Remember more.</h3>
       </div>
+      <Footer>
+        <AddButton>
+          <Link to="/trip/new">Trip</Link>
+          <Link to="/photos/new">Photo</Link>
+          <Link to="/dailylogs/new">Daily Log</Link>
+        </AddButton>
+      </Footer>
     </>
   );
 }

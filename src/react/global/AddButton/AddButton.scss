@@ -1,0 +1,24 @@
+.add-links .popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 30px;
+  > * {
+    margin: 25px 0;
+  }
+}
+.add-links a {
+  padding: 18px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 40px;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.add-trigger {
+  height: 40px;
+  padding: 0;
+  border: none;
+}
