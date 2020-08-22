@@ -55,7 +55,7 @@ export class DailyLogModel {
       return logItem.date >= trip.item.start && logItem.date <= trip.item.end;
     });
 
-    let tripLogs = Promise.all(filteredItems.map(DailyLogModel.create));
+    let tripLogs = await Promise.all(filteredItems.map(DailyLogModel.create));
 
     return tripLogs;
   }
@@ -65,6 +65,11 @@ export class DailyLogModel {
     let item = await getStore().getById(id);
     if (!item) throw new Error("Daily Log not found: " + id);
     return DailyLogModel.create(item);
+  }
+
+  static async loadRecent() {
+    let items = await getStore().getAll();
+    return items.map(DailyLogModel.create);
   }
 
   static async loadByDate(date: string | Date) {

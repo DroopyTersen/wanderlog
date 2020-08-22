@@ -8,6 +8,7 @@ import Nav from "./global/Nav/Nav";
 import { ScreenModeProvider } from "./hooks/useScreenMode";
 import Footer from "./global/Footer/Footer";
 import AddButton from "./global/AddButton/AddButton";
+import DailyLogsList from "./DailyLogs/DailyLogsList";
 function App({}) {
   return (
     <div className="app">
@@ -29,6 +30,7 @@ function App({}) {
               </Route> */}
 
               <Route path="/dailyLogs" element={<Layout />}>
+                <Route path="/" element={<DailyLogsList />} />
                 <Route path="new" element={<NewDailyLogScreen />} />
                 <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
                 <Route path="/:logId" element={<DailyLogDetails />} />

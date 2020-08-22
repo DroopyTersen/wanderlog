@@ -5,7 +5,6 @@ import { DailyLogModel, TripModel } from "../../models";
 import dayjs from "dayjs";
 import { HightlightsDisplay } from "./highlights";
 import { TagsDisplay } from "../components/tags/tags";
-import { LinkButton } from "../global/Header/Header";
 import Grid from "../components/Grid";
 import { getCloudinaryImageUrl } from "../Photos/cloudinary";
 
@@ -29,8 +28,8 @@ export default function DailyLogDetails() {
       <HightlightsDisplay style={{ margin: "20px 0" }} highlights={dailyLog.item.highlights} />
 
       <div>
-        <LinkButton to="edit">Edit</LinkButton>
-        <LinkButton to={`/photos/upload?date=${dailyLog.item.date}`}>Add Photos</LinkButton>
+        <Link to="edit">Edit</Link>
+        <Link to={`/photos/upload?date=${dailyLog.item.date}`}>Add Photos</Link>
       </div>
 
       <Grid>

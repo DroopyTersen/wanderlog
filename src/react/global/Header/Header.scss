@@ -1,21 +1,25 @@
 .header {
-  .nav-brand {
-    display: inline-block;
+  background: #324d60;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > * {
+    flex: 0 0 40px;
+  }
+  .back {
+    display: flex;
+    padding: 10px;
+  }
+  .header-title {
+    flex: 1;
+    font-family: var(--titleFont);
+    font-size: 20px;
     margin: 0;
-    .app-title {
-      font-size: 2rem;
-      padding: 5px;
-      margin-left: 0;
-      a {
-        border: none;
-      }
-    }
-  }
-  .collapsible button {
-    border: none;
-    box-shadow: none;
-  }
-  a.active {
-    border-color: #ddcd45;
+    line-height: 32px;
+    text-align: center;
   }
 }
