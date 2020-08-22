@@ -1,7 +1,7 @@
 {
   "name": "Wanderlog",
   "short_name": "Wanderlog",
-  "theme_color": "#325c7c",
+  "theme_color": "#324d60",
   "background_color": "#fff",
   "display": "standalone",
   "orientation": "portrait",
