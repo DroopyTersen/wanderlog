@@ -69,7 +69,8 @@ export class DailyLogModel {
 
   static async loadRecent() {
     let items = await getStore().getAll();
-    return items.map(DailyLogModel.create);
+
+    return Promise.all(items.sort((a, b) => (a.date > b.date ? -1 : 1)).map(DailyLogModel.create));
   }
 
   static async loadByDate(date: string | Date) {

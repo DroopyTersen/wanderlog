@@ -7,16 +7,25 @@ import AddButton from "../global/AddButton/AddButton";
 import { Link } from "react-router-dom";
 import AppBackground from "../global/AppBackground/AppBackground";
 import Header from "../global/Header/Header";
+import Card from "../components/surfaces/Card";
+import Grid from "../components/Grid";
 
 export default function DailyLogsList() {
   let { data: items, isLoading } = useDailyLogs();
 
   if (isLoading) return null;
-
+  console.log("ITEMS", items);
   return (
     <>
       <AppBackground variant="blurred" />
       <Header title="Daily Logs" />
+      <div className="cards">
+        {items.map((dailyLog) => (
+          <Card>
+            <h4>{dailyLog.item.date}</h4>
+          </Card>
+        ))}
+      </div>
       <Footer>
         <AddButton>
           <Link to="/trip/new">Trip</Link>
