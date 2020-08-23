@@ -3,22 +3,25 @@
   .date-number {
     font-weight: bold;
     font-size: 48px;
-    line-height: 65px;
+    line-height: 40px;
     display: flex;
     align-items: center;
-    letter-spacing: -0.125em;
+    letter-spacing: -2px;
+    margin-right: 6px;
   }
   .month {
     font-size: 28px;
-    line-height: 38px;
+    line-height: 26px;
     display: flex;
     align-items: center;
     text-transform: uppercase;
+    font-family: sans-serif;
+    font-weight: 200;
   }
   .year {
     font-weight: 600;
     font-size: 14px;
-    line-height: 19px;
+    line-height: 14px;
     display: flex;
     align-items: center;
     text-align: center;
