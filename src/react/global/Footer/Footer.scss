@@ -8,13 +8,13 @@ footer {
   .gradient {
     position: absolute;
     width: 100%;
-    height: 130px;
+    height: 161px;
     pointer-events: none;
     background: linear-gradient(
       181.52deg,
       rgba(0, 0, 0, 0) 17.02%,
       rgba(47, 70, 82, 0) 17.02%,
-      rgb(48 71 83 / 50%) 55.13%,
+      rgba(48, 71, 83, 0.5) 65.13%,
       #2f4652de 98.7%
     );
     bottom: 0;
