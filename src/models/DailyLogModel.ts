@@ -34,13 +34,14 @@ const getStore = () => createIdbStore<DailyLogItem>("dailyLogs");
 export class DailyLogModel {
   item: DailyLogItem;
   photos: PhotoModel[] = [];
-
+  trip: TripModel = null;
   constructor(item: DailyLogItem = NEW_DAILY_LOG) {
     this.item = item;
   }
 
   static async create(item: DailyLogItem) {
     let model = new DailyLogModel(item);
+    model.trip = await TripModel.loadByDate(item.date);
     model.photos = await PhotoModel.loadByDate(model.item.date);
     return model;
   }

@@ -10,6 +10,7 @@ import Header from "../global/Header/Header";
 import Card from "../components/surfaces/Card";
 import Grid from "../components/Grid";
 import BigDate from "../components/BigDate";
+import DailyLogCard from "./DailyLogCard";
 
 export default function DailyLogsList() {
   let { data: items, isLoading } = useDailyLogs();
@@ -22,9 +23,7 @@ export default function DailyLogsList() {
       <Header title="Daily Logs" />
       <div className="cards">
         {items.map((dailyLog) => (
-          <Card>
-            <BigDate date={dailyLog.item.date} />
-          </Card>
+          <DailyLogCard dailyLog={dailyLog} />
         ))}
       </div>
       <Footer>

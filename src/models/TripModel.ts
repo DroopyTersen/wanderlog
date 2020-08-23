@@ -63,9 +63,12 @@ export class TripModel implements Model<TripItem> {
   }
   static async loadByDate(date: string | Date) {
     let items: TripItem[] = await createIdbStore<TripItem>("trips").getAll();
-    let match = items.find((item) => checkInDateRange(date, item.start, item.end));
-    if (match) {
-      return TripModel.create(match);
+
+    let matches = items
+      .filter((item) => checkInDateRange(date, item.start, item.end))
+      .sort((a, b) => (a.end < b.end ? -1 : 1));
+    if (matches.length) {
+      return TripModel.create(matches[0]);
     }
     return null;
   }
