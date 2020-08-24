@@ -29,6 +29,7 @@ export default function DailyLogsList() {
       <Footer>
         <AddButton>
           <Link to="/trip/new">Trip</Link>
+          <Link to="/places/new">Place</Link>
           <Link to="/photos/new">Photo</Link>
           <Link to="/dailylogs/new">Daily Log</Link>
         </AddButton>

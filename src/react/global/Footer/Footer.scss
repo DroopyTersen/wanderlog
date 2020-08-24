@@ -5,6 +5,9 @@ footer {
   right: 0;
   z-index: 2;
   padding: 10px;
+  > * {
+    position: relative;
+  }
   .gradient {
     position: absolute;
     width: 100%;
@@ -17,10 +20,12 @@ footer {
       rgba(48, 71, 83, 0.5) 65.13%,
       #2f4652de 98.7%
     );
+
     bottom: 0;
     right: 0;
     left: 0;
   }
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }

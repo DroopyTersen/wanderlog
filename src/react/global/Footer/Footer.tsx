@@ -1,9 +1,9 @@
 import React from "react";
 import "./Footer.scss";
 
-export default function Footer({ children }) {
+export default function Footer({ children, className = "" }) {
   return (
-    <footer>
+    <footer className={className}>
       <div className="gradient"></div>
 
       {children}

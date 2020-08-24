@@ -9,20 +9,19 @@ html body a[role="button"] {
   position: relative;
   white-space: nowrap;
   vertical-align: middle;
-  line-height: 1.2;
-  height: 2.5rem;
   min-width: 2.5rem;
   font-size: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 0.3rem 1rem;
   border-radius: 25px;
   transition: all 250ms ease 0s;
   outline: none;
-  border: 2px solid var(--color);
+  border: 1px solid var(--color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
   cursor: pointer;
 
   //   OUTLINE BUTTON
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
 
   color: var(--color);
   // border-color: var(--blue-900);
