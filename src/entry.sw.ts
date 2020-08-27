@@ -3,7 +3,7 @@ import { saveItem, getItemsFromDb, ItemCollection, removeItem } from "./services
 import { wait } from "./core/utils";
 import { saveMany, deleteAll, createIdbStore } from "./services/idb";
 import { OutboxItem } from "./models";
-const CACHE_KEY = "v0.2";
+const CACHE_KEY = "v0.3";
 
 declare const self: Window & ServiceWorkerGlobalScope;
 
@@ -32,7 +32,7 @@ self.addEventListener("sync", function (event: SyncEvent) {
 
 async function sync(tag = "") {
   await syncOutbox();
-  //   await wait(400);
+  await wait(100);
   await syncFromServer();
 }
 
