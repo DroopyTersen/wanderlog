@@ -59,7 +59,6 @@ function reducer(state: ModelFormState, action) {
       uiStatus: "error",
     }),
     update: ({ key, value }) => {
-      console.log("update", key, value);
       state.model.update(key, value);
       return {
         ...state,

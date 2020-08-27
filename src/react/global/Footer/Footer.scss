@@ -8,6 +8,15 @@ footer {
   > * {
     position: relative;
   }
+
+  &.solid {
+    background: var(--darkBlue);
+    box-shadow: 1px -2px 13px #0000005e;
+    .gradient {
+      display: none;
+    }
+  }
+
   .gradient {
     position: absolute;
     width: 100%;

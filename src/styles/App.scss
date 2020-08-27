@@ -81,6 +81,7 @@ html button {
 .content {
   padding: 10px 10px;
   padding-top: 40px;
+  padding-bottom: 60px;
 }
 
 .centered {
@@ -103,8 +104,17 @@ a:hover {
 input,
 textarea,
 select {
+  background: #0000003d;
+  color: var(--white);
+  padding: 8px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
   width: 100%;
-  margin-bottom: 30px;
+  margin: 5px 0 30px 0;
+}
+textarea {
+  height: 200px;
 }
 
 form {
@@ -112,10 +122,12 @@ form {
   max-width: 100%;
 }
 .form-actions {
-  // display: flex;
+  display: flex;
   // justify-content: flex-end;
   text-align: center;
-  margin-top: 10px;
+  > * {
+    margin-left: 5px;
+  }
   button {
     min-width: 100px;
     // margin: 10px;

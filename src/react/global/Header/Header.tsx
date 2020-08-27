@@ -9,7 +9,7 @@ export default function Header({ title = "Wanderlog" }) {
   if (pathname !== "/") {
     backLink = "/" + pathname.substr(0, pathname.lastIndexOf("/"));
   }
-  console.log("Back link ", backLink, pathname);
+  // console.log("Back link ", backLink, pathname);
 
   return (
     <div className="header">

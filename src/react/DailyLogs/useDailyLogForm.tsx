@@ -7,7 +7,7 @@ import { HighlightsInput, HightlightsDisplay } from "./highlights";
 import { useParams, useNavigate } from "react-router-dom";
 import useAsyncData from "../hooks/useAsyncData";
 
-export function useDailyLogForm() {
+export function useDailyLogForm({ onSuccess }) {
   let navigate = useNavigate();
   let { trip, dailyLog } = useModels();
   let [date, DateInput] = useDailyLogFormDate(trip, dailyLog);

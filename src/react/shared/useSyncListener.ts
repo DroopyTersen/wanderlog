@@ -7,7 +7,6 @@ export function useSyncListener(collections: string[] = []) {
   useEffect(() => {
     const handler = (event) => {
       // console.log("useSyncListener -> event", event);
-      alert("Sync event: " + event?.data?.collection);
       if (
         event?.data?.type === "sync" &&
         (collections.length === 0 || collections.some((c) => c === event?.data.collection))

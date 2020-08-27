@@ -42,6 +42,9 @@ html body a[role="button"] {
     border-color: #d9e5f534;
     // color ()
   }
+  &:disabled {
+    opacity: 0.5;
+  }
 
   &.gold {
     --color: var(--gold-500);
