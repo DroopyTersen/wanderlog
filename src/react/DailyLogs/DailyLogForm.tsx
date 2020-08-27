@@ -13,7 +13,7 @@ import Footer from "../global/Footer/Footer";
 import Header from "../global/Header/Header";
 
 export default function DailyLogForm({ onSuccess = () => {}, onCancel, mode = "Edit" }) {
-  let { form, DateInput, trip } = useDailyLogForm(onSuccess);
+  let { form, DateInput, trip } = useDailyLogForm();
   if (form.uiStatus === "loading") return <div>Loading...</div>;
 
   // TODO: show the Trip info with a link back to the trip if the date is within a trip range
