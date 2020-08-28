@@ -1,60 +1,72 @@
 .daily-log-card {
-  display: flex;
   .subtitle {
     font-style: italic;
     font-size: 14px;
     margin-top: 5px;
   }
-  .column-one {
-    flex: 1;
-  }
-  .tags {
-    margin-top: 10px;
-  }
-  .photo {
-    flex: 0 0 100px;
-    height: 100px;
-    width: 100px;
-    img {
-      object-fit: cover;
-      height: 100%;
-      width: 100%;
-      border-radius: 4px;
+  .row-two {
+    display: flex;
+    .photo {
+      flex: 0 0 90px;
+      height: 90px;
+      margin-right: 10px;
+      img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        border-radius: 4px;
+      }
     }
+    .daily-log-trip {
+      margin-bottom: 8px;
+    }
+    .tags .tag {
+      font-size: 12px;
+      line-height: 8px;
+    }
+  }
+  .dailyLog-title {
+    margin-bottom: 15px;
+  }
+}
+
+.dailyLog-title {
+  font-family: var(--textFont);
+  color: var(--white);
+  font-size: 42px;
+  line-height: 38px;
+  margin: 10px 0 10px 0;
+
+  // display: flex;
+  // justify-content: space-between;
+  .date {
+    font-weight: bold;
+    letter-spacing: -2px;
+  }
+  .day {
+    font-weight: 200;
+    text-transform: uppercase;
+    margin-right: 5px;
+  }
+}
+
+.daily-log-trip {
+  font-size: 14px;
+  letter-spacing: 1px;
+  .day-count {
+    font-weight: bold;
+    margin-right: 4px;
+  }
+  a,
+  a:visited {
+    color: var(--pink);
   }
 }
 
 .dailyLog-details {
   margin-top: 10px;
-  .dailyLog-title {
-    font-family: var(--textFont);
-    color: var(--white);
-    font-size: 42px;
-    line-height: 38px;
-    margin: 10px 0 20px 0;
-
-    // display: flex;
-    // justify-content: space-between;
-    .date {
-      font-weight: bold;
-      letter-spacing: -2px;
-    }
-    .day {
-      font-weight: 200;
-      text-transform: uppercase;
-      margin-right: 5px;
-    }
-  }
-  .trip {
-    font-size: 14px;
-    letter-spacing: 1px;
-    .day-count {
-      font-weight: bold;
-      margin-right: 4px;
-    }
-    a {
-      color: var(--pink);
-    }
+  .daily-log-trip {
+    margin: 10px 2px;
   }
   .memories {
     margin: 20px 0;

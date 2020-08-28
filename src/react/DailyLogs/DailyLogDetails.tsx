@@ -3,10 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import useAsyncData from "../hooks/useAsyncData";
 import { DailyLogModel, TripModel } from "../../models";
 import dayjs from "dayjs";
-import { HightlightsDisplay } from "./highlights";
 import { TagsDisplay } from "../components/tags/tags";
-import Grid from "../components/Grid";
-import { getCloudinaryImageUrl } from "../Photos/cloudinary";
 import AppBackground from "../global/AppBackground/AppBackground";
 import Header from "../global/Header/Header";
 import Footer from "../global/Footer/Footer";
@@ -29,18 +26,18 @@ export default function DailyLogDetails() {
       <AppBackground variant="blurred" />
       <Header title="Daily Logs" />
       <div className="dailyLog-details">
+        <h2 className="dailyLog-title">
+          <span className="day">{dayjs(dailyLog.item.date).format("ddd")}</span>
+          <span className="date">{dayjs(dailyLog.item.date).format("M/DD/YYYY")}</span>
+        </h2>
         {trip?.item?.title && (
-          <div className="trip">
+          <div className="daily-log-trip">
             <span className="day-count">
               Day {dayjs(dailyLog.item.date).diff(dayjs(trip.item.start), "day") + 1}:
             </span>
             <Link to={"/trips/" + trip?.item?.id}>{trip.item.title}</Link>
           </div>
         )}
-        <h2 className="dailyLog-title">
-          <span className="day">{dayjs(dailyLog.item.date).format("ddd")}</span>
-          <span className="date">{dayjs(dailyLog.item.date).format("M/DD/YYYY")}</span>
-        </h2>
         <TagsDisplay tags={dailyLog.item.tags} />
         <div className="memories">
           {dailyLog.item.highlights.map((memory) => (

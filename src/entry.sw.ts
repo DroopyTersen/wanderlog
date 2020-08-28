@@ -130,8 +130,12 @@ function precache() {
       "app.js",
       "manifest.json",
       "/images/icons/icon-144x144.png",
+      "/images/mountain-road.thumbnail.png",
       "/images/mountain-road.landscape.jpg",
+      "/images/mountain-road.landscape.tiny.jpg",
       "/images/mountain-road.portrait.jpg",
+      "/images/mountain-road.portrait.tiny.jpg",
+      "/fonts/Monoton/Monoton-Regular.woff2",
       "/fonts/Monoton/Monoton-Regular.woff2",
     ]);
   });
