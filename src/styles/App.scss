@@ -103,8 +103,12 @@ a:hover {
 
 input,
 textarea,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
 select {
-  background: #0000003d;
+  background: #0000003d !important;
   color: var(--white);
   padding: 8px;
   border: none;

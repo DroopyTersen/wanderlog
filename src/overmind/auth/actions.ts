@@ -19,6 +19,7 @@ export const login: Action<{ email: string; password: string }, Promise<void>> =
 ) => {
   state.auth.status = "pending";
   let user = await effects.auth.login(email, password);
+  console.log("user", user);
   if (user) {
     state.auth.currentUser = user;
     state.auth.isLoggedIn = true;
