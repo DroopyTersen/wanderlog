@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { useParams, useNavigate } from "react-router";
 import { TripModel, DailyLogModel } from "../../models";
-import useAsyncData from "../shared/useAsyncData";
+import useAsyncData from "../hooks/useAsyncData";
 import DailyLogForm from "./DailyLogForm";
 
 export function NewDailyLogScreen() {
@@ -25,7 +25,7 @@ export function NewDailyLogScreen() {
   return (
     <div>
       <h2>New Daily Log</h2>
-      {trip && <DailyLogForm onSuccess={navigateToTrip} onCancel={navigateToTrip} />}
+      {trip && <DailyLogForm onSuccess={navigateToTrip} onCancel={navigateToTrip} mode="New" />}
     </div>
   );
 }
@@ -35,11 +35,6 @@ export function EditDailyLogScreen() {
   let navigate = useNavigate();
   let navigateToTrip = () => navigate("/trips/" + tripId);
   let { data: trip } = useAsyncData<TripModel>(TripModel.load, [tripId], null);
-
-  return (
-    <div>
-      <h2>Edit Daily Log</h2>
-      {trip && <DailyLogForm onSuccess={navigateToTrip} onCancel={navigateToTrip} />}
-    </div>
-  );
+  if (!trip) return null;
+  return <DailyLogForm onSuccess={navigateToTrip} onCancel={navigateToTrip} mode="Edit" />;
 }

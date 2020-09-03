@@ -5,7 +5,7 @@ import { useModelForm } from "../shared/useModelForm";
 import { TagsInput, TagsDisplay } from "../components/tags/tags";
 import { HighlightsInput, HightlightsDisplay } from "./highlights";
 import { useParams, useNavigate } from "react-router-dom";
-import useAsyncData from "../shared/useAsyncData";
+import useAsyncData from "../hooks/useAsyncData";
 
 export function useDailyLogForm() {
   let navigate = useNavigate();

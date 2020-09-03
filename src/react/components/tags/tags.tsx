@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import slugify from "slugify";
+import "./tags.scss";
 
 export function TagsInput({ onChange, initialTags = [] }) {
   let [value, setValue] = useState(initialTags.join(", "));
@@ -24,9 +25,9 @@ export function TagsInput({ onChange, initialTags = [] }) {
 
 export function TagsDisplay({ tags, ...rest }) {
   return (
-    <div className="tags row tight" {...rest}>
+    <div className="tags" {...rest}>
       {tags?.map((tag) => (
-        <div key={tag} className="badge secondary">
+        <div key={tag} className="tag">
           {tag}
         </div>
       ))}

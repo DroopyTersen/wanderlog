@@ -34,13 +34,14 @@ const getStore = () => createIdbStore<DailyLogItem>("dailyLogs");
 export class DailyLogModel {
   item: DailyLogItem;
   photos: PhotoModel[] = [];
-
+  trip: TripModel = null;
   constructor(item: DailyLogItem = NEW_DAILY_LOG) {
     this.item = item;
   }
 
   static async create(item: DailyLogItem) {
     let model = new DailyLogModel(item);
+    model.trip = await TripModel.loadByDate(item.date);
     model.photos = await PhotoModel.loadByDate(model.item.date);
     return model;
   }
@@ -55,7 +56,7 @@ export class DailyLogModel {
       return logItem.date >= trip.item.start && logItem.date <= trip.item.end;
     });
 
-    let tripLogs = Promise.all(filteredItems.map(DailyLogModel.create));
+    let tripLogs = await Promise.all(filteredItems.map(DailyLogModel.create));
 
     return tripLogs;
   }
@@ -65,6 +66,12 @@ export class DailyLogModel {
     let item = await getStore().getById(id);
     if (!item) throw new Error("Daily Log not found: " + id);
     return DailyLogModel.create(item);
+  }
+
+  static async loadRecent() {
+    let items = await getStore().getAll();
+
+    return Promise.all(items.sort((a, b) => (a.date > b.date ? -1 : 1)).map(DailyLogModel.create));
   }
 
   static async loadByDate(date: string | Date) {

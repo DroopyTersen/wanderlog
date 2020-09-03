@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { TripModel } from "../../models";
 import { Link } from "react-router-dom";
 import { useSyncListener } from "../shared/useSyncListener";
-import useAsyncData from "../shared/useAsyncData";
+import useAsyncData from "../hooks/useAsyncData";
 import dayjs from "dayjs";
-import { LinkButton } from "../global/Header/Header";
-import { getCloudinaryImageUrl } from "../Images/cloudinary";
+import { getCloudinaryImageUrl } from "../Photos/cloudinary";
 
 export default function TripsList() {
   let { data: trips, isLoading } = useTrips();
@@ -68,8 +67,8 @@ function TripCard({ trip }: { trip: TripModel }) {
           </h5>
           <p className="card-text"></p>
 
-          <LinkButton to={trip.item.id + "/dailyLogs/new"}>+ Daily Log</LinkButton>
-          <LinkButton to={trip.item.id + "/edit"}>Edit Trip</LinkButton>
+          <Link to={trip.item.id + "/dailyLogs/new"}>+ Daily Log</Link>
+          <Link to={trip.item.id + "/edit"}>Edit Trip</Link>
           <button
             onClick={(e) => {
               e.preventDefault();

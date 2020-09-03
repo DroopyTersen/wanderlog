@@ -1,24 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NewDailyLogScreen, EditDailyLogScreen } from "./DailyLogs/dailyLogsScreens";
-import { BrowserRouter as Router, Routes, Route, Outlet, useParams, Link } from "react-router-dom";
-import TripsList from "./Trips/TripsList";
-import TripDetails from "./Trips/TripDetails";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+  useParams,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import NetworkStatusProvider, { useNetworkStatus } from "./global/NetworkStatusProvider";
 import DailyLogDetails from "./DailyLogs/DailyLogDetails";
-import UploadPhotosForm from "./Images/UploadPhotosForm";
 import AppBackground from "./global/AppBackground/AppBackground";
 import Nav from "./global/Nav/Nav";
 import { ScreenModeProvider } from "./hooks/useScreenMode";
 import Footer from "./global/Footer/Footer";
 import AddButton from "./global/AddButton/AddButton";
 import { OvermindProvider, useOvermind, useOvermindState } from "../overmind";
+import DailyLogsList from "./DailyLogs/DailyLogsList";
 function App({}) {
   return (
     <div className="app">
       <OvermindProvider>
         <NetworkStatusProvider>
           <ScreenModeProvider>
-            <AppRoutes />
+            <Router>
+              <AppRoutes />
+            </Router>
           </ScreenModeProvider>
         </NetworkStatusProvider>
       </OvermindProvider>
@@ -28,8 +36,9 @@ function App({}) {
 
 function AppRoutes() {
   let { auth } = useOvermindState();
+  let navigate = useNavigate();
   console.log("AppRoutes -> auth", auth);
-  if (!auth.isLoggedIn && auth.status === "pending") {
+  if (!auth.isLoggedIn) {
     return (
       <>
         <AppBackground />
@@ -40,15 +49,23 @@ function AppRoutes() {
       </>
     );
   }
-
-  if (!auth.isLoggedIn && auth.status === "idle") {
-    return <LoginScreen />;
-  }
+  useEffect(() => {
+    if (!auth.isLoggedIn && auth.status === "idle") {
+      navigate("/login");
+    }
+  }, [auth.isLoggedIn, auth.status]);
 
   return (
-    <Router>
+    <>
       <Routes>
         <Route path="*" element={<HomeScreen />} />
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/dailyLogs" element={<Layout />}>
+          <Route path="/" element={<DailyLogsList />} />
+          <Route path="new" element={<NewDailyLogScreen />} />
+          <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
+          <Route path="/:logId" element={<DailyLogDetails />} />
+        </Route>
 
         {/* <Route path="/trips" element={<TripsLayout />}>
       <Route path="/" element={<TripsList />} />
@@ -79,7 +96,7 @@ function AppRoutes() {
     </Route> */}
       </Routes>
       <Nav />
-    </Router>
+    </>
   );
 }
 

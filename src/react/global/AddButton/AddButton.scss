@@ -5,15 +5,15 @@
   justify-content: flex-end;
   padding: 30px;
   > * {
-    margin: 25px 0;
+    margin: 15px 0;
   }
 }
 .add-links a {
-  padding: 18px;
+  padding: 16px;
   width: 100%;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 40px;
-  font-size: 20px;
+  font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
@@ -21,4 +21,5 @@
   height: 40px;
   padding: 0;
   border: none;
+  background: transparent;
 }
