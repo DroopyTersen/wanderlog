@@ -1,6 +1,6 @@
 import React from "react";
 import { IConfig, createOvermind, IAction, IOnInitialize, Config } from "overmind";
-import { namespaced } from "overmind/config";
+import { namespaced, merge } from "overmind/config";
 import * as auth from "./auth";
 import { onInitialize } from "./onInitialize";
 import {
@@ -14,9 +14,9 @@ import {
 
 export const config = {
   onInitialize,
-  ...namespaced({
-    auth,
-  }),
+  state: { auth: auth.state },
+  actions: { auth: auth.actions },
+  effects: { auth: auth.effects },
 };
 
 declare module "overmind" {
@@ -24,7 +24,7 @@ declare module "overmind" {
 }
 
 export const useOvermind = createHook<typeof config>();
-export const useState = createStateHook<typeof config>();
+export const useOvermindState = createStateHook<typeof config>();
 export const useActions = createActionsHook<typeof config>();
 export const useEffects = createEffectsHook<typeof config>();
 export const useReaction = createReactionHook<typeof config>();

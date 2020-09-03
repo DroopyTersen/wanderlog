@@ -3,7 +3,7 @@ import React from "react";
 import useWindowSize from "./useWindowSize";
 
 const calcScreenMode = (width?, height?): ScreenMode => {
-  console.log("calcScreenMode", width, height);
+  // console.log("calcScreenMode", width, height);
   width = width || window.innerWidth;
   height = height || window.innerHeight;
   let orientation: DeviceOrientation = width >= height ? "landscape" : "portrait";
@@ -27,11 +27,11 @@ export function useScreenMode() {
 
 function useScreenModeData(dataParams = "") {
   let [data, setData] = useState(defaultValues);
-  console.log("useScreenModeData -> data", data);
+  // console.log("useScreenModeData -> data", data);
   let { width, height } = useWindowSize();
   useEffect(() => {
     let mode = calcScreenMode(width, height);
-    console.log("useScreenModeData -> mode", mode);
+    // console.log("useScreenModeData -> mode", mode);
     setData((oldData) => {
       if (oldData.orientation !== mode.orientation || oldData.size != mode.size) {
         return mode;

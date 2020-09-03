@@ -14,18 +14,32 @@ var firebaseConfig = {
 };
 
 export const intialize = function () {
+  console.log("intialize -> intialize", firebaseConfig);
   return Firebase.initializeApp(firebaseConfig);
+};
+
+export const getCurrentUser = async function () {
+  let user = await Firebase.auth().currentUser;
+  return parseUser(user);
 };
 
 export const login = async function (email, password) {
   let userCredential = await Firebase.auth().signInWithEmailAndPassword(email, password);
-  return {
-    email: userCredential.user.email,
-    name: userCredential.user.displayName,
-    uid: userCredential.user.uid,
-  };
+  return parseUser(userCredential.user);
 };
 
 export const logout = async function () {
   await Firebase.auth().signOut();
+};
+
+const parseUser = function (user: Firebase.User) {
+  if (!user) return null;
+  return {
+    email: user.email,
+    name: user.displayName,
+    uid: user.uid,
+    metadata: user.metadata,
+    photoURL: user.photoURL,
+    phoneNumber: user.phoneNumber,
+  };
 };

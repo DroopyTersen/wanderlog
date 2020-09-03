@@ -11,7 +11,7 @@ import Nav from "./global/Nav/Nav";
 import { ScreenModeProvider } from "./hooks/useScreenMode";
 import Footer from "./global/Footer/Footer";
 import AddButton from "./global/AddButton/AddButton";
-import { OvermindProvider } from "../overmind";
+import { OvermindProvider, useOvermind, useOvermindState } from "../overmind";
 function App({}) {
   return (
     <div className="app">
@@ -27,6 +27,24 @@ function App({}) {
 }
 
 function AppRoutes() {
+  let { auth } = useOvermindState();
+  console.log("AppRoutes -> auth", auth);
+  if (!auth.isLoggedIn && auth.status === "pending") {
+    return (
+      <>
+        <AppBackground />
+        <div className="home content centered">
+          <h1 className="app-title">Wanderlog</h1>
+          <h3 className="tagline">Lust less. Remember more.</h3>
+        </div>
+      </>
+    );
+  }
+
+  if (!auth.isLoggedIn && auth.status === "idle") {
+    return <LoginScreen />;
+  }
+
   return (
     <Router>
       <Routes>
@@ -62,6 +80,26 @@ function AppRoutes() {
       </Routes>
       <Nav />
     </Router>
+  );
+}
+
+function LoginScreen() {
+  return (
+    <>
+      <AppBackground />
+      <div className="home content centered login">
+        <h1 className="app-title">Wanderlog</h1>
+        <h3 className="tagline">Lust less. Remember more.</h3>
+        <form className="login-form"></form>
+      </div>
+      <Footer>
+        <AddButton>
+          <Link to="/trip/new">Trip</Link>
+          <Link to="/photos/new">Photo</Link>
+          <Link to="/dailylogs/new">Daily Log</Link>
+        </AddButton>
+      </Footer>
+    </>
   );
 }
 
