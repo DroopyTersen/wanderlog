@@ -13,9 +13,25 @@ var firebaseConfig = {
   measurementId: "G-QGDEZVCCGP",
 };
 
-export const intialize = function () {
+let app: Firebase.app.App = null;
+export const getApp = () => app;
+
+export const intialize = function (): Firebase.app.App {
   console.log("intialize -> intialize", firebaseConfig);
-  return Firebase.initializeApp(firebaseConfig);
+  app = Firebase.initializeApp(firebaseConfig);
+  app
+    .firestore()
+    .enablePersistence()
+    .catch(function (err) {
+      if (err.code == "failed-precondition") {
+        alert("Multiple tabs open, persistence can only be enabled in one tab at a a time.");
+      } else if (err.code == "unimplemented") {
+        console.log(
+          "The current browser does not support all of the features required to enable persistence"
+        );
+      }
+    });
+  return app;
 };
 
 export const getCurrentUser = async function () {
@@ -33,14 +49,14 @@ export const logout = async function () {
   await Firebase.auth().signOut();
 };
 
+export const onAuthChange = (cb) => Firebase.auth().onAuthStateChanged(cb);
+
 const parseUser = function (user: Firebase.User) {
   if (!user) return null;
   return {
     email: user.email,
-    name: user.displayName,
+    displayName: user.displayName,
     uid: user.uid,
-    metadata: user.metadata,
     photoURL: user.photoURL,
-    phoneNumber: user.phoneNumber,
   };
 };

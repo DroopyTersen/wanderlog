@@ -1,0 +1,63 @@
+html a,
+html a:visited {
+  color: var(--white);
+  transition: color 0.2s ease-out;
+  text-decoration: none;
+}
+html a:hover {
+  color: var(--gold-700);
+}
+
+html button {
+  margin: 0;
+  align-self: initial !important;
+  font-family: var(--textFont);
+}
+
+input,
+textarea,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-internal-autofill-selected,
+select {
+  background-color: #0000003d !important;
+  color: var(--white);
+  padding: 8px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  width: 100%;
+  margin: 5px 0 30px 0;
+}
+textarea {
+  height: 200px;
+}
+
+form {
+  // width: 600px;
+  max-width: 100%;
+}
+.form-actions {
+  display: flex;
+  // justify-content: flex-end;
+  text-align: center;
+  > * {
+    margin-left: 5px;
+  }
+  button {
+    min-width: 100px;
+    // margin: 10px;
+  }
+}
+
+a.button {
+  border: 1px solid var(--white);
+  padding: 5px 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  letter-spacing: 2px;
+}

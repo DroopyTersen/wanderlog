@@ -18,7 +18,7 @@
     <div id="root"></div>
     <script src="/app.js"></script>
     <script>
-      if ("serviceWorker" in navigator) {
+      if ("serviceWorker" in navigator && !location.host.includes("local")) {
         window.addEventListener("load", function () {
           navigator.serviceWorker.register("/sw.js");
         });
