@@ -8,7 +8,7 @@ export function HomeScreen() {
   let { state } = useOvermind();
   return (
     <>
-      <AppBackground />
+      <AppBackground variant="sharp" />
       <div className="home content centered">
         <h1 className="app-title">Wanderlog</h1>
         <h3 className="tagline">Lust less. Remember more.</h3>

@@ -12,9 +12,9 @@ export function ProfileScreen() {
 
   return (
     <>
-      <AppBackground />
+      <AppBackground variant="sharp" />
       <Header title="Profile" />
-      <div className="content">
+      <div className="content profile-screen">
         <Card>
           <p>{user.displayName || user.email}</p>
         </Card>

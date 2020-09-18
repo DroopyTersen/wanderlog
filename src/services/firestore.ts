@@ -121,7 +121,7 @@ const decorateItem = (item: FirestoreItem, email: string): FirestoreItem => {
   return item;
 };
 
-let _service = null;
+let _service: FirestoreService = null;
 export const getService = () => {
   if (!_service) {
     _service = new FirestoreService();
@@ -129,16 +129,6 @@ export const getService = () => {
   return _service;
 };
 
-export const createFirestoreEffects = (collection) => {
-  return {
-    save: (item: any) => getService().saveDbItem(collection, item),
-    getAll: () => getService().getDbItems(collection),
-    remove: (key) => getService().removeDbItem(collection, key),
-    subscribe: (handler: FirestoreChangeHandler | FirestoreChangeHandlers) => {
-      getService().subscribe(getService().getRef(collection), handler);
-    },
-  };
-};
 export type FirestoreChanges = { type: firestore.DocumentChangeType; data: any }[];
 export type FirestoreChangeHandlers = {
   onAdded: (items: any[]) => void;
@@ -146,3 +136,37 @@ export type FirestoreChangeHandlers = {
   onRemoved: (items: any[]) => void;
 };
 export type FirestoreChangeHandler = (changes: FirestoreChanges) => void;
+
+export class FirestoreModel {
+  item: FirestoreItem;
+  static collection: string;
+  static get firestore() {
+    return getService();
+  }
+  static create;
+  static load = async (id) => {
+    let firestore = getService();
+    let item = await firestore.getDbItem(FirestoreModel.collection, id);
+    return FirestoreModel.create(item);
+  };
+  constructor(item: FirestoreItem) {
+    this.item = item;
+  }
+  update(key: string, value: any) {
+    this.item[key] = value;
+  }
+  checkIsValid() {
+    return true;
+  }
+  async save() {
+    if (this.checkIsValid()) {
+      this.item._timestamp = Date.now();
+      await getService().saveDbItem(FirestoreModel.collection, this.item);
+    }
+  }
+  async remove() {
+    if (this.item.key) {
+      await getService().removeDbItem(FirestoreModel.collection, this.item.key);
+    }
+  }
+}

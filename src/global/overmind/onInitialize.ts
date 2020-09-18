@@ -10,6 +10,7 @@ export const onInitialize: OnInitialize = async ({ state, actions, effects }) =>
       actions.auth.setUser({ user });
       // User is logged in so start hitting DB
       actions.dailyLogs.initialize();
+      actions.trips.initialize();
     } else {
       console.log("USER IS NOT LOGGED IN");
       actions.auth.logout();

@@ -1,0 +1,23 @@
+.login-screen {
+  .card {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    border: none;
+    /* border-top: 5px solid var(--pink-500); */
+    background: #274255f2;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.profile-screen {
+  display: flex;
+  flex-direction: center;
+  align-items: center;
+  justify-content: center;
+  .card {
+    width: 100%;
+  }
+}

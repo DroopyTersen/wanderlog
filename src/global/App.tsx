@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ScreenModeProvider } from "core/hooks/useScreenMode";
 import { OvermindProvider, useOvermindState } from "./overmind";
@@ -9,6 +9,8 @@ import AuthenticatedRoutes from "./AuthenticatedRoutes";
 function App({}) {
   return (
     <div className="app">
+      <AppBackground variant="blurred" />
+
       <OvermindProvider>
         <ScreenModeProvider>
           <Router>
@@ -24,15 +26,7 @@ function AppRoutes() {
   let { auth } = useOvermindState();
   // Not sure if they are logged in yet
   if (auth.matches({ UNKNOWN: true })) {
-    return (
-      <>
-        <AppBackground variant="blurred" />
-        <div className="home content centered">
-          <h1 className="app-title">Wanderlog</h1>
-          <h3 className="tagline">Lust less. Remember more.</h3>
-        </div>
-      </>
-    );
+    return null;
   }
 
   if (auth.matches({ AUTHENTICATED: false })) {

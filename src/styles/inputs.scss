@@ -38,6 +38,9 @@ textarea {
 form {
   // width: 600px;
   max-width: 100%;
+  label {
+    letter-spacing: 2px;
+  }
 }
 .form-actions {
   display: flex;

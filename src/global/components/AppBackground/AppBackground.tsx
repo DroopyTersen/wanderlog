@@ -2,14 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import "./AppBackground.scss";
 import { useScreenMode } from "core/hooks/useScreenMode";
 
-export function AppBackground({ variant = "sharp" }) {
+export function AppBackground({ variant = "blurred" }) {
   let [status, setStatus] = useState("loading");
   let { orientation } = useScreenMode();
   let src = `/images/mountain-road.${orientation}.jpg`;
   return (
     <div className={["app-background", variant, status].join(" ")}>
       <img src={BASE_64[orientation]} className="placeholder blurred" />
-      <img onLoad={() => setStatus("success")} src={src} className={variant} />
+      {variant === "sharp" && (
+        <img onLoad={() => setStatus("success")} src={src} className={variant} />
+      )}
       <div className="overlay" />
     </div>
   );

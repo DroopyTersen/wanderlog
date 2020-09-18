@@ -1,18 +1,18 @@
 import { createFirestoreActions, createFirestoreEffects } from "global/overmind/overmind.firestore";
-import { DailyLogItem } from "./dailyLogs.models";
+import { TripItem } from "./trips.models";
 
-const COLLECTION = "dailyLogs";
+const COLLECTION = "trips";
 
-export interface DailyLogsState {
-  items: DailyLogItem[];
+export interface TripsState {
+  items: TripItem[];
 }
 
-const state: DailyLogsState = {
+const state: TripsState = {
   items: [],
 };
 
 const actions = {
-  ...createFirestoreActions<DailyLogItem>(COLLECTION),
+  ...createFirestoreActions<TripItem>(COLLECTION),
 };
 
 const effects = {

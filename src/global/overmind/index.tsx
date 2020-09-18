@@ -3,6 +3,7 @@ import { IConfig, createOvermind, IAction, IOnInitialize, Config } from "overmin
 import { namespaced, merge } from "overmind/config";
 import auth from "features/auth/auth.overmind";
 import dailyLogs from "features/dailyLogs/dailyLogs.overmind";
+import trips from "features/trips/trips.overmind";
 
 import { onInitialize } from "./onInitialize";
 import {
@@ -13,12 +14,14 @@ import {
   createReactionHook,
   Provider,
 } from "overmind-react";
+import { FirestoreItem } from "services/firestore";
 
 export const config = merge(
   { onInitialize, state: {} },
   namespaced({
     auth,
     dailyLogs,
+    trips,
   })
 );
 console.log("config", config);

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useActions } from "global/overmind";
 import { AppBackground } from "global/components";
 import { Card } from "core/components";
+import "./auth.scss";
 
 export function LoginScreen() {
   let [email, setEmail] = useState("");
@@ -16,8 +17,8 @@ export function LoginScreen() {
   };
   return (
     <>
-      <AppBackground />
-      <div className="home content centered login">
+      <AppBackground variant="sharp" />
+      <div className="home content centered login-screen">
         <h1 className="app-title">Wanderlog</h1>
         <h3 className="tagline">Lust less. Remember more.</h3>
         <Card>
