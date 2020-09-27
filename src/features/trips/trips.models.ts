@@ -32,7 +32,7 @@ export const createEmptyTrip = (): TripItem => {
   };
 };
 
-export class TripModel extends FirestoreModel {
+export class TripModel extends FirestoreModel<TripItem> {
   //   photos: PhotoModel[] = [];
   static collection = "trips";
   static async create(item: TripItem = createEmptyTrip()) {

@@ -8,9 +8,10 @@ html {
 .content {
   padding: 10px 10px;
   padding-top: 40px;
-  padding-bottom: 60px;
+  padding-bottom: 90px;
 }
 
-@import "./typography.scss";
-@import "./inputs.scss";
-@import "./layout.scss";
+@import "../core/components/typography/typography.scss";
+@import "../core/components/inputs/inputs.scss";
+@import "../core/components/layout/layout.scss";
+@import "../core/components/surfaces/surfaces.scss";

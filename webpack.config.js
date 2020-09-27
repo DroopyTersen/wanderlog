@@ -14,7 +14,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: "ts-loader",
-        exclude: /node_modules/,
+        include: path.join(__dirname, "src"),
       },
       {
         test: /\.css$/i,
@@ -44,6 +44,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath: "/"
   },
   plugins: [
     new BundleAnalyzerPlugin({

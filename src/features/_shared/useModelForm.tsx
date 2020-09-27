@@ -1,46 +1,22 @@
 import React, { useReducer, useEffect, useMemo } from "react";
-import { FirestoreModel } from "services/firestore";
+import { FirestoreItem, FirestoreModel } from "services/firestore";
 
 type FormUIStatus = "loading" | "clean" | "valid" | "invalid" | "saving" | "error" | "success";
 
-export interface ModelInputProps {
-  form: ModelForm;
-  name: string;
-  label: string;
-  [key: string]: any;
-  getValue?: (rawValue: any) => any;
-}
-
-function ModelInput({ form, name, label, getValue = (raw) => raw, ...rest }: ModelInputProps) {
-  return (
-    <label>
-      {label}
-      <input
-        autoComplete="off"
-        name={name}
-        value={getValue(form.model.item[name])}
-        onChange={(e) => {
-          form.update(name, e.target.value);
-        }}
-        {...rest}
-      />
-    </label>
-  );
-}
-export interface ModelFormState {
+export interface ModelFormState<T extends FirestoreModel<FirestoreItem>> {
   uiStatus: FormUIStatus;
-  model: FirestoreModel;
+  model: T;
   error: Error;
 }
 
-let DEFAULT_STATE: ModelFormState = {
+let DEFAULT_STATE: ModelFormState<FirestoreModel<FirestoreItem>> = {
   uiStatus: "loading",
   model: null,
   error: null,
 };
 
-function reducer(state: ModelFormState, action) {
-  let actionHandlers: { [key: string]: (action) => ModelFormState } = {
+function reducer<T extends FirestoreModel<FirestoreItem>>(state: ModelFormState<T>, action) {
+  let actionHandlers: { [key: string]: (action) => ModelFormState<T> } = {
     "load:start": () => ({
       ...state,
       error: null,
@@ -85,10 +61,10 @@ function reducer(state: ModelFormState, action) {
   return actionHandlers[action.type] ? actionHandlers[action.type](action) : state;
 }
 
-export function useModelForm<T extends FirestoreModel>(
+export function useModelForm<T extends FirestoreModel<FirestoreItem>>(
   loadArgs: any[],
   loadModel: (...loadArgs) => Promise<T>
-): ModelForm {
+) {
   let [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
 
   useEffect(() => {
@@ -112,7 +88,7 @@ export function useModelForm<T extends FirestoreModel>(
   let formProps = useMemo(() => {
     let onSubmit = async (event) => {
       try {
-        event.preventDefault();
+        event?.preventDefault();
         dispatch({ type: "save:start" });
         await state.model.save();
         dispatch({ type: "save:success" });
@@ -127,15 +103,13 @@ export function useModelForm<T extends FirestoreModel>(
   }, [state?.model]);
 
   return {
-    ...state,
+    ...(state as ModelFormState<T>),
     update: (key, value) => dispatch({ type: "update", key, value }),
     formProps,
-    ModelInput,
   };
 }
 
-export interface ModelForm extends ModelFormState {
+export interface ModelForm<T extends FirestoreModel<FirestoreItem>> extends ModelFormState<T> {
   update: (key: string, value: any) => void;
   formProps: any;
-  ModelInput: typeof ModelInput;
 }

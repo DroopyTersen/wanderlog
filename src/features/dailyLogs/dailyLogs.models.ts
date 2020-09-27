@@ -22,19 +22,28 @@ export const createEmptyDailyLog = (): DailyLogItem => {
   };
 };
 
-export class DailyLogModel extends FirestoreModel {
-  static collection = "dailyLogs";
+const COLLECTION = "dailyLogs";
 
-  static async create(item: DailyLogItem = createEmptyDailyLog()) {
+export class DailyLogModel extends FirestoreModel<DailyLogItem> {
+  static collection = COLLECTION;
+  collection = COLLECTION;
+
+  static async create(item?: DailyLogItem) {
+    item = item || createEmptyDailyLog();
+    console.log("DailyLogModel -> create -> item", item);
     let model = new DailyLogModel(item);
     // model.photos = PhotoModel.loadByDate(item.date);
     return model;
   }
   checkIsValid() {
-    return this.item.date && this.item.highlights && this.item.highlights.length > 0;
+    return this.item.date && this.item.memories && this.item.memories.length > 0;
+  }
+  static async load(id = "") {
+    let item = await DailyLogModel.loadItem("dailyLogs", id);
+    return DailyLogModel.create(item);
   }
   static loadByDate = async (date: string = "") => {
-    if (!date) return null;
+    if (!date) return DailyLogModel.create();
 
     let items = await DailyLogModel.firestore.getDbItems(DailyLogModel.collection, (ref) => {
       return ref.where("date", "==", date);

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useActions } from "global/overmind";
 import { AppBackground } from "global/components";
-import { Card } from "core/components";
 import "./auth.scss";
 
 export function LoginScreen() {
@@ -21,7 +20,7 @@ export function LoginScreen() {
       <div className="home content centered login-screen">
         <h1 className="app-title">Wanderlog</h1>
         <h3 className="tagline">Lust less. Remember more.</h3>
-        <Card>
+        <div className="card">
           <form
             className="login-form"
             autoComplete="new-password"
@@ -51,7 +50,7 @@ export function LoginScreen() {
               Login
             </button>
           </form>
-        </Card>
+        </div>
       </div>
     </>
   );

@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useOvermind } from "global/overmind";
-import { Card } from "core/components";
 import { AppBackground, Header, Footer, AddButton } from "global/components";
 
 export function ProfileScreen() {
@@ -15,9 +14,9 @@ export function ProfileScreen() {
       <AppBackground variant="sharp" />
       <Header title="Profile" />
       <div className="content profile-screen">
-        <Card>
+        <div className="card">
           <p>{user.displayName || user.email}</p>
-        </Card>
+        </div>
 
         <Footer>
           <button type="button" className="gold" onClick={() => actions.auth.logout()}>

@@ -1,8 +1,9 @@
 import React from "react";
 import "./dailyLogs.scss";
+import DailyLogForm from "./form/DailyLogForm";
 
 export const NewDailyLogScreen = () => {
-  return <h2>New Daily Log</h2>;
+  return <DailyLogForm title="Add new" />;
 };
 
 export const EditDailyLogScreen = () => {

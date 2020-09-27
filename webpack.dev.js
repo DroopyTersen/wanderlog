@@ -17,7 +17,8 @@ config.module.rules[0].use = [
 ]
 // Remove bundle analyzer from DEV
 config.plugins = [
-  new webpack.HotModuleReplacementPlugin(),
   new ReactRefreshWebpackPlugin(),
 ];
+console.log("WEBPACK!")
+console.log(JSON.stringify(config, null, 2))
 module.exports = config;

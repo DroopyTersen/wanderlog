@@ -137,23 +137,23 @@ export type FirestoreChangeHandlers = {
 };
 export type FirestoreChangeHandler = (changes: FirestoreChanges) => void;
 
-export class FirestoreModel {
-  item: FirestoreItem;
-  static collection: string;
+export class FirestoreModel<T extends FirestoreItem> {
+  item: T;
+  collection: string;
   static get firestore() {
     return getService();
   }
   static create;
-  static load = async (id) => {
+  static loadItem = async (collection, id) => {
+    if (!id) return null;
     let firestore = getService();
-    let item = await firestore.getDbItem(FirestoreModel.collection, id);
-    return FirestoreModel.create(item);
+    return firestore.getDbItem(collection, id);
   };
-  constructor(item: FirestoreItem) {
+  constructor(item: T) {
     this.item = item;
   }
   update(key: string, value: any) {
-    this.item[key] = value;
+    (this.item as FirestoreItem)[key] = value;
   }
   checkIsValid() {
     return true;
@@ -161,12 +161,12 @@ export class FirestoreModel {
   async save() {
     if (this.checkIsValid()) {
       this.item._timestamp = Date.now();
-      await getService().saveDbItem(FirestoreModel.collection, this.item);
+      await getService().saveDbItem(this.collection, this.item);
     }
   }
   async remove() {
     if (this.item.key) {
-      await getService().removeDbItem(FirestoreModel.collection, this.item.key);
+      await getService().removeDbItem(this.collection, this.item.key);
     }
   }
 }

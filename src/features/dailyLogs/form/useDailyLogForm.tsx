@@ -10,31 +10,20 @@ import dayjs from "dayjs";
 export function useDailyLogForm() {
   let navigate = useNavigate();
 
-  let { dailyLogId, tripId } = useParams();
-  let { data, isLoading } = useAsyncData<{ dailyLog: DailyLogModel; trip: TripModel }>(
-    async (dailyLogId, tripId) => {
-      let dailyLog = await DailyLogModel.load(dailyLogId);
-      let trip = tripId ? await TripModel.load(tripId) : null;
-      return { dailyLog, trip };
-    },
-    [dailyLogId, tripId],
-    null
-  );
+  let { dailyLogId, startDate, endDate } = useParams();
 
-  let [date, DateInput] = useDailyLogFormDate(data.trip, data.dailyLog);
-  let form = useModelForm([date], DailyLogModel.loadByDate);
+  let form = useModelForm<DailyLogModel>([dailyLogId], DailyLogModel.load);
   // redirect after success
-  if (form.uiStatus === "success" && data?.dailyLog?.item?.id) {
+  if (form.uiStatus === "success" && form?.model?.item?.key) {
     setTimeout(() => {
-      navigate("/dailyLogs/" + data.dailyLog.item.id);
+      navigate("/dailyLogs/" + form.model.item.key);
     }, 0);
   }
 
   return {
     form,
-    trip: data?.trip,
-    date,
-    DateInput,
+    // date,
+    // DateInput,
   };
 }
 
