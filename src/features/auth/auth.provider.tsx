@@ -21,50 +21,86 @@ const initialState: AuthState = {
   currentUser: null,
   error: "",
 };
-export type AuthStatus = "UNKNOWN" | "ANONYMOUS" | "AUTHENTICATING" | "AUTHENTICATED" | "ERRORED";
 
 const AuthContext = React.createContext<ReturnType<typeof useAuthState>>(null);
 export const useAuth = () => useContext(AuthContext);
 
-function useAuthState() {
-  let [authState, setAuthState] = useState(initialState);
-
-  let actions = useMemo(() => {
+const updaters = {
+  loginSuccess: (state, user: User) => {
+    cacheCurrentUser(user);
     return {
-      setUser: ({ user }) => {
-        cacheCurrentUser(user);
-        setAuthState({
-          error: "",
-          currentUser: user,
-        });
-      },
-      logout: () => {
-        cacheCurrentUser(null);
-        setAuthState({
-          error: "",
-          currentUser: null,
-        });
-      },
-      handleError: ({ error }) => {
-        setAuthState((prevState) => ({
-          ...prevState,
-          error: error.message,
-        }));
-      },
-      startLogin: () => {},
+      error: "",
+      currentUser: user,
     };
-  }, [setAuthState]);
+  },
+  setCachedUser: (state, user: User) => {
+    return {
+      error: "",
+      currentUser: user,
+    };
+  },
+  logout: (state) => {
+    cacheCurrentUser(null);
+    return {
+      error: "",
+      currentUser: null,
+    };
+  },
+  handleError: (state, error) => {
+    return {
+      ...state,
+      error: error.message,
+    };
+  },
+  loginStart: (state) => state,
+};
 
-  let stateMachine = useStateMachine(stateChart, actions);
+export type AuthStatus = "UNKNOWN" | "ANONYMOUS" | "AUTHENTICATING" | "AUTHENTICATED" | "ERRORED";
+
+const stateChart: StateChart<AuthStatus, typeof updaters> = {
+  initial: "UNKNOWN",
+  states: {
+    UNKNOWN: {
+      on: {
+        setCachedUser: "AUTHENTICATED",
+        logout: "ANONYMOUS",
+        handleError: "ERRORED",
+      },
+    },
+    ANONYMOUS: {
+      on: {
+        loginStart: "AUTHENTICATING",
+      },
+    },
+    AUTHENTICATING: {
+      on: {
+        loginSuccess: "AUTHENTICATED",
+        handleError: "ERRORED",
+      },
+    },
+    AUTHENTICATED: {
+      on: {
+        logout: "ANONYMOUS",
+      },
+    },
+    ERRORED: {
+      on: {
+        loginStart: "AUTHENTICATING",
+      },
+    },
+  },
+};
+
+function useAuthState() {
+  let stateMachine = useStateMachine(stateChart, initialState, updaters);
 
   const publicActions = useMemo(() => {
     let login = async (username: string, password: string) => {
-      stateMachine.actions.startLogin();
+      stateMachine.actions.loginStart();
       await api
         .login({ username, password })
         .then((user) => {
-          console.log("useAuthState -> user", user);
-          stateMachine.actions.setUser({ user });
+          stateMachine.actions.loginSuccess(user);
         })
         .catch((error) => {
           stateMachine.actions.handleError({ error });
@@ -78,15 +114,18 @@ function useAuthState() {
   }, [stateMachine.actions]);
 
   useEffect(() => {
-    let cachedUser = getCurrentUserFromCache();
-    if (cachedUser && cachedUser.token) {
-      stateMachine.actions.setUser({ user: cachedUser });
-    } else {
-      stateMachine.actions.logout();
+    if (stateMachine.status === "UNKNOWN") {
+      let cachedUser = getCurrentUserFromCache();
+      if (cachedUser && cachedUser.token) {
+        stateMachine.actions.setCachedUser(cachedUser);
+      } else {
+        stateMachine.actions.logout();
+      }
     }
-  }, []);
+  }, [stateMachine.status]);
+
   return {
-    ...authState,
+    ...stateMachine.state,
     status: stateMachine.status as AuthStatus,
     ...publicActions,
     isLoggedIn: stateMachine.status === "AUTHENTICATED",
@@ -97,37 +136,3 @@ export function AuthProvider({ children }) {
   let contextValue = useAuthState();
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 }
-
-const stateChart: StateChart = {
-  initial: "UNKNOWN",
-  states: {
-    UNKNOWN: {
-      on: {
-        setUser: "AUTHENTICATED",
-        logout: "ANONYMOUS",
-        handleError: "ERRORED",
-      },
-    },
-    ANONYMOUS: {
-      on: {
-        startLogin: "AUTHENTICATING",
-      },
-    },
-    AUTHENTICATING: {
-      on: {
-        setUser: "AUTHENTICATED",
-        handleError: "ERRORED",
-      },
-    },
-    AUTHENTICATED: {
-      on: {
-        logout: "ANONYMOUS",
-      },
-    },
-    ERRORED: {
-      on: {
-        startLogin: "AUTHENTICATING",
-      },
-    },
-  },
-};

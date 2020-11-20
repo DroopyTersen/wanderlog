@@ -7,27 +7,23 @@ import AuthenticatedRoutes from "./AuthenticatedRoutes";
 import UrqlProvider from "./UrqlProvider";
 import { AuthProvider, useAuth } from "features/auth/auth.provider";
 
-
 function App({}) {
   return (
     <div className="app">
       <AppBackground variant="blurred" />
 
-        <ScreenModeProvider>
-          <UrqlProvider>
-            <AuthProvider>
+      <ScreenModeProvider>
+        <UrqlProvider>
+          <AuthProvider>
             <Router>
               <AppRoutes />
             </Router>
-
-            </AuthProvider>
-
-          </UrqlProvider>
-        </ScreenModeProvider>
+          </AuthProvider>
+        </UrqlProvider>
+      </ScreenModeProvider>
     </div>
   );
 }
-
 
 function AppRoutes() {
   let auth = useAuth();

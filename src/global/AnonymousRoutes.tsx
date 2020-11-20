@@ -6,7 +6,8 @@ import { HomeScreen } from "features/home/HomeScreen";
 export default function AnonymousRoutes() {
   return (
     <Routes>
-      <Route path="*" element={<HomeScreen />} />
+      <Route path="*" element={<LoginScreen />} />
+      <Route path="/" element={<HomeScreen />} />
       <Route path="/login" element={<LoginScreen />} />
     </Routes>
   );

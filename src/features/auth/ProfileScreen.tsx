@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AppBackground, Header, Footer, AddButton } from "global/components";
 import { useAuth } from "./auth.provider";
-
 export function ProfileScreen() {
-  let { isLoggedIn,  currentUser:user, logout } = useAuth();
+  let { isLoggedIn, currentUser: user, logout } = useAuth();
   if (!isLoggedIn) return null;
-
 
   return (
     <>

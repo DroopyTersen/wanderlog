@@ -24,14 +24,20 @@ footer {
     height: 161px;
     pointer-events: none;
     margin-left: 0;
+    // background: linear-gradient(
+    //   180deg,
+    //   rgba(0, 0, 0, 0) 0%,
+    //   rgb(47 70 82 / 9%) 20%,
+    //   rgb(48 71 83 / 76%) 65.13%,
+    //   #2f4652 98.7%
+    // );
     background: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgb(47 70 82 / 9%) 20%,
-      rgb(48 71 83 / 76%) 65.13%,
-      #2f4652 98.7%
+      #3d5a6f00 0%,
+      #3d5a6f30 20%,
+      #3d5a6fbf 65.13%,
+      #3d5a6feb 98.7%
     );
-
     bottom: 0;
     right: 0;
     left: 0;
