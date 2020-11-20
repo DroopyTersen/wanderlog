@@ -1,18 +1,21 @@
 import { client } from "global/UrqlProvider"
 import { cacheCurrentUser, getCurrentUserFromCache } from "./auth.utils";
 
-const STATIC_TOKEN =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6ImYzZTU4ZjQ2LWY4ZWYtNDdiMC04MzIxLTAwZTY4ZmY3NGYyMCIsImlhdCI6MTYwNTgyMDg2MiwiZXhwIjoxNjA1ODI0NzUwLCJYLUhBU1VSQS1ST0xFIjoidXNlciIsIlgtSEFTVVJBLVVTRVJfSUQiOiJuYXRhbmRkcmV3In0.JRFVfInXLw76rKtbz5NrgDSXSzhW5UmYdELdot_1qWw";
-
 export const login = async ({ username, password }) => {
 console.log("username", username)
-
-  cacheCurrentUser({
-    token: STATIC_TOKEN,
-    username,
-    role: "user",
+  let resp = await fetch("/.netlify/functions/login", {
+    method: "POST",
+    body: JSON.stringify({ username, password })
   })
-  return getCurrentUser();
+  let data = await resp.json();
+  if (resp.ok) {
+    cacheCurrentUser(data);
+    console.log("user", data)
+    return getCurrentUser();
+  } else {
+    throw new Error(data?.message || "Please try again.");
+  }
+
 };
 
 const GET_USER_QUERY = `

@@ -19,6 +19,6 @@ config.module.rules[0].use = [
 config.plugins = [
   new ReactRefreshWebpackPlugin(),
 ];
-console.log("WEBPACK!")
-console.log(JSON.stringify(config, null, 2))
+// console.log("WEBPACK!")
+// console.log(JSON.stringify(config, null, 2))
 module.exports = config;

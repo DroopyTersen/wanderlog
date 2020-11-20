@@ -17,5 +17,5 @@
     "sourceMap": true,
     "moduleResolution": "node"
   },
-  "exclude": ["src_old", "node_modules"]
+  "exclude": [ "node_modules"]
 }

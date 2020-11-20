@@ -7,7 +7,8 @@
     "prebuild": "npm run clean && node tasks/build.js",
     "build": "webpack",
     "prestart": "node tasks/build.js",
-    "start": "webpack-dev-server --hot --open --config webpack.dev.js",
+    "start": "netlify dev",
+    "webpack": "webpack-dev-server --hot --config webpack.dev.js",
     "predeploy": "npm run build",
     "deploy": "netlify deploy --prod --dir=dist",
     "clean": "rimraf dist"
@@ -17,6 +18,8 @@
   "dependencies": {
     "dayjs": "^1.8.26",
     "graphql": "^15.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.10.0",

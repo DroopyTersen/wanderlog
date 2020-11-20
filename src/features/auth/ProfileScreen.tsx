@@ -14,7 +14,11 @@ export function ProfileScreen() {
       <Header title="Profile" />
       <div className="content profile-screen">
         <div className="card">
+          <p>Name: {user.name}</p>
+          <p>Username: {user.username}</p>
+          <p>Email: {user.email}</p>
           <p>{user.name || user.email || user.username}</p>
+          <img src={user.imageUrl} />
         </div>
 
         <Footer>

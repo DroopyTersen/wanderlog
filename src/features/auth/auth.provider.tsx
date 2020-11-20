@@ -65,6 +65,7 @@ function useAuthState() {
     let login = async (username:string, password:string) => {
       stateMachine.actions.startLogin();
       await api.login({username, password}).then((user) => {
+      console.log("useAuthState -> user", user)
         stateMachine.actions.setUser({ user });
       }).catch(error => {
         stateMachine.actions.handleError({error});
