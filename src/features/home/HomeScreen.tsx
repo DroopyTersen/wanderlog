@@ -16,7 +16,7 @@ export function HomeScreen() {
       <Footer>
         {isLoggedIn && (
           <AddButton>
-            <Link to="/trip/new">Trip</Link>
+            <Link to="/trips/new">Trip</Link>
             <Link to="/photos/new">Photo</Link>
             <Link to="/dailylogs/new">Daily Log</Link>
           </AddButton>

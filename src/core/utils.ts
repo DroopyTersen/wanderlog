@@ -39,3 +39,21 @@ export function getFiles(fileList: FileList): File[] {
   }
   return files;
 }
+
+export function formToObject(form: HTMLFormElement) {
+  if (!form) return null;
+  let formData = new FormData(form);
+  var object = {};
+  formData.forEach((value, key) => {
+    // Reflect.has in favor of: object.hasOwnProperty(key)
+    if (!Reflect.has(object, key)) {
+      object[key] = value;
+      return;
+    }
+    if (!Array.isArray(object[key])) {
+      object[key] = [object[key]];
+    }
+    object[key].push(value);
+  });
+  return object;
+}

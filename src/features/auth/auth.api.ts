@@ -1,21 +1,24 @@
-import { client } from "global/UrqlProvider"
+import { client } from "global/UrqlProvider";
 import { cacheCurrentUser, getCurrentUserFromCache } from "./auth.utils";
 
 export const login = async ({ username, password }) => {
-console.log("username", username)
+  console.log("username", username);
   let resp = await fetch("/.netlify/functions/login", {
     method: "POST",
-    body: JSON.stringify({ username, password })
-  })
+    body: JSON.stringify({ username, password }),
+  });
   let data = await resp.json();
   if (resp.ok) {
     cacheCurrentUser(data);
-    console.log("user", data)
-    return getCurrentUser();
+    console.log("user", data);
+    let user = await getCurrentUser();
+    return {
+      ...data,
+      ...user,
+    };
   } else {
     throw new Error(data?.message || "Please try again.");
   }
-
 };
 
 const GET_USER_QUERY = `
@@ -31,21 +34,23 @@ const GET_USER_QUERY = `
 `;
 
 export const getCurrentUser = () => {
-    let user = getCurrentUserFromCache();
-    if (!user) throw new Error("User is not logged in");
-    return getUser(user.username);
-}
+  let user = getCurrentUserFromCache();
+  if (!user) throw new Error("User is not logged in");
+  return getUser(user.username);
+};
 
 export const getUser = async (username) => {
-    console.log("getUser -> username", username)
-    let { data, error }  = await client.query(GET_USER_QUERY, {
-        username
-    }).toPromise()
+  console.log("getUser -> username", username);
+  let { data, error } = await client
+    .query(GET_USER_QUERY, {
+      username,
+    })
+    .toPromise();
 
-    if (error) {
-      console.error("Error getting user", error);
-      throw error
-    } else if (data.user) {
-      return data.user;
-    }
+  if (error) {
+    console.error("Error getting user", error);
+    throw error;
+  } else if (data.user) {
+    return data.user;
+  }
 };

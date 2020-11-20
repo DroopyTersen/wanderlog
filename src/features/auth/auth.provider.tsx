@@ -17,87 +17,85 @@ export interface AuthState {
   currentUser: User;
 }
 
-
-
 const initialState: AuthState = {
   currentUser: null,
   error: "",
 };
-export type AuthStatus = "UNKNOWN" | "ANONYMOUS" | "AUTHENTICATING" | "AUTHENTICATED" | "ERRORED"
-
+export type AuthStatus = "UNKNOWN" | "ANONYMOUS" | "AUTHENTICATING" | "AUTHENTICATED" | "ERRORED";
 
 const AuthContext = React.createContext<ReturnType<typeof useAuthState>>(null);
 export const useAuth = () => useContext(AuthContext);
 
 function useAuthState() {
-  let [authState, setAuthState] = useState(initialState); 
+  let [authState, setAuthState] = useState(initialState);
 
-  
   let actions = useMemo(() => {
     return {
-      setUser: ({user}) => {
+      setUser: ({ user }) => {
         cacheCurrentUser(user);
         setAuthState({
           error: "",
-          currentUser: user
-        })
+          currentUser: user,
+        });
       },
       logout: () => {
         cacheCurrentUser(null);
         setAuthState({
           error: "",
           currentUser: null,
-        })
+        });
       },
-      handleError: ({ error } ) => {
-        setAuthState(prevState => ({
+      handleError: ({ error }) => {
+        setAuthState((prevState) => ({
           ...prevState,
-          error: error.message
-        }))
+          error: error.message,
+        }));
       },
-      startLogin: () => {}
+      startLogin: () => {},
     };
   }, [setAuthState]);
 
   let stateMachine = useStateMachine(stateChart, actions);
 
   const publicActions = useMemo(() => {
-    let login = async (username:string, password:string) => {
+    let login = async (username: string, password: string) => {
       stateMachine.actions.startLogin();
-      await api.login({username, password}).then((user) => {
-      console.log("useAuthState -> user", user)
-        stateMachine.actions.setUser({ user });
-      }).catch(error => {
-        stateMachine.actions.handleError({error});
-      });
-    }
+      await api
+        .login({ username, password })
+        .then((user) => {
+          console.log("useAuthState -> user", user);
+          stateMachine.actions.setUser({ user });
+        })
+        .catch((error) => {
+          stateMachine.actions.handleError({ error });
+        });
+    };
 
     return {
       login,
       logout: stateMachine.actions.logout,
-    }
+    };
   }, [stateMachine.actions]);
-  
-  
+
   useEffect(() => {
     let cachedUser = getCurrentUserFromCache();
-    if (cachedUser) {
+    if (cachedUser && cachedUser.token) {
       stateMachine.actions.setUser({ user: cachedUser });
     } else {
       stateMachine.actions.logout();
     }
-  }, [])
+  }, []);
   return {
     ...authState,
     status: stateMachine.status as AuthStatus,
     ...publicActions,
     isLoggedIn: stateMachine.status === "AUTHENTICATED",
-  }
+  };
 }
 
 export function AuthProvider({ children }) {
   let contextValue = useAuthState();
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 }
 
 const stateChart: StateChart = {
