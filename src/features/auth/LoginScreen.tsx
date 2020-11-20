@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { useActions } from "global/overmind";
 import { AppBackground } from "global/components";
 import "./auth.scss";
+import { useAuth } from "./auth.provider";
 
 export function LoginScreen() {
-  let [email, setEmail] = useState("");
+  let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
 
-  let actions = useActions();
+  let { login, status, error } = useAuth();
+  console.log("LoginScreen -> error", error)
   const onSubmit = (e) => {
     e.preventDefault();
-    if (email && password) {
-      actions.auth.submitLogin({ email, password });
+    if (username && password) {
+      login(username, password);
     }
   };
   return (
@@ -27,14 +28,14 @@ export function LoginScreen() {
             aria-autocomplete="none"
             onSubmit={onSubmit}
           >
-            <label htmlFor="email">
-              Email
+            <label htmlFor="username">
+              Username
               <input
-                name="email"
-                type="email"
+                name="username"
+                type="username"
                 autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </label>
             <label htmlFor="password">
@@ -46,7 +47,8 @@ export function LoginScreen() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </label>
-            <button className="gold" disabled={!email || !password}>
+            { error && <div className='error'>{error+""}</div>}
+            <button className="gold" disabled={!username || !password || status === "AUTHENTICATING"}>
               Login
             </button>
           </form>

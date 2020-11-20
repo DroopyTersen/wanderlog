@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useOvermind } from "global/overmind";
 import { AppBackground, Header, Footer, AddButton } from "global/components";
+import { useAuth } from "./auth.provider";
 
 export function ProfileScreen() {
-  let { state, actions } = useOvermind();
-  if (!state.auth.isLoggedIn) return null;
+  let { isLoggedIn,  currentUser:user, logout } = useAuth();
+  if (!isLoggedIn) return null;
 
-  let user = state.auth.currentUser;
 
   return (
     <>
@@ -15,11 +14,11 @@ export function ProfileScreen() {
       <Header title="Profile" />
       <div className="content profile-screen">
         <div className="card">
-          <p>{user.displayName || user.email}</p>
+          <p>{user.name || user.email || user.username}</p>
         </div>
 
         <Footer>
-          <button type="button" className="gold" onClick={() => actions.auth.logout()}>
+          <button type="button" className="gold" onClick={() => logout()}>
             SIGN OUT
           </button>
           <AddButton>

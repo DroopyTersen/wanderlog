@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useOvermind } from "global/overmind";
 import { AppBackground, Footer, AddButton } from "global/components";
 import "./home.scss";
+import { useAuth } from "features/auth/auth.provider";
 
 export function HomeScreen() {
-  let { state } = useOvermind();
+  let { isLoggedIn } = useAuth();
   return (
     <>
       <AppBackground variant="sharp" />
@@ -14,14 +14,14 @@ export function HomeScreen() {
         <h3 className="tagline">Lust less. Remember more.</h3>
       </div>
       <Footer>
-        {state.auth.isLoggedIn && (
+        {isLoggedIn && (
           <AddButton>
             <Link to="/trip/new">Trip</Link>
             <Link to="/photos/new">Photo</Link>
             <Link to="/dailylogs/new">Daily Log</Link>
           </AddButton>
         )}
-        {!state.auth.isLoggedIn && (
+        {!isLoggedIn && (
           <Link to="/login">
             <button className="gold">Log in</button>
           </Link>

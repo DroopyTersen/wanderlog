@@ -1,35 +1,42 @@
 import React, { useReducer } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ScreenModeProvider } from "core/hooks/useScreenMode";
-import { OvermindProvider, useOvermindState } from "./overmind";
 import { AppBackground } from "./components";
 import AnonymousRoutes from "./AnonymousRoutes";
 import AuthenticatedRoutes from "./AuthenticatedRoutes";
+import UrqlProvider from "./UrqlProvider";
+import { AuthProvider, useAuth } from "features/auth/auth.provider";
+
 
 function App({}) {
   return (
     <div className="app">
       <AppBackground variant="blurred" />
 
-      <OvermindProvider>
         <ScreenModeProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
+          <UrqlProvider>
+            <AuthProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+
+            </AuthProvider>
+
+          </UrqlProvider>
         </ScreenModeProvider>
-      </OvermindProvider>
     </div>
   );
 }
 
+
 function AppRoutes() {
-  let { auth } = useOvermindState();
+  let auth = useAuth();
   // Not sure if they are logged in yet
-  if (auth.matches({ UNKNOWN: true })) {
+  if (auth.status === "UNKNOWN") {
     return null;
   }
 
-  if (auth.matches({ AUTHENTICATED: false })) {
+  if (auth.status !== "AUTHENTICATED") {
     return <AnonymousRoutes />;
   }
 

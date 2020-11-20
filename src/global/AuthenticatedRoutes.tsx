@@ -3,12 +3,12 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import { HomeScreen } from "features/home/HomeScreen";
 import { ProfileScreen } from "features/auth/ProfileScreen";
 import Nav from "./components/Nav/Nav";
-import {
-  NewDailyLogScreen,
-  EditDailyLogScreen,
-  DailyLogDetailsScreen,
-  DailyLogsScreen,
-} from "features/dailyLogs/dailyLogs.screens";
+// import {
+//   NewDailyLogScreen,
+//   EditDailyLogScreen,
+//   DailyLogDetailsScreen,
+//   DailyLogsScreen,
+// } from "features/dailyLogs/dailyLogs.screens";
 
 export default function AuthenticatedRoutes() {
   return (
@@ -16,12 +16,12 @@ export default function AuthenticatedRoutes() {
       <Routes>
         <Route path="*" element={<HomeScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
-        <Route path="/dailyLogs" element={<Layout />}>
+        {/* <Route path="/dailyLogs" element={<Layout />}>
           <Route path="/" element={<DailyLogsScreen />} />
           <Route path="new" element={<NewDailyLogScreen />} />
           <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
           <Route path="/:logId" element={<DailyLogDetailsScreen />} />
-        </Route>
+        </Route> */}
       </Routes>
       <Nav />
     </>
