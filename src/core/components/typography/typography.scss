@@ -1,0 +1,29 @@
+html {
+  font-size: 16px;
+  font-family: var(--textFont);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+h1 {
+  font-family: var(--titleFont);
+  color: var(--gold);
+}
+
+h1 {
+  font-size: 3.2rem;
+  line-height: 3rem;
+  margin: 10px 0 20px;
+}
+
+h2 {
+  font-size: 3rem;
+  line-height: 2.5rem;
+  margin: 12px 0;
+}
+
+.page-title {
+  font-family: var(--textFont);
+  color: var(--white);
+  letter-spacing: 3px;
+  position: relative;
+}

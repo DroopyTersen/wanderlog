@@ -1,5 +1,7 @@
 const path = require("path");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 module.exports = {
   entry: {
     app: "./src/entry.ts",
@@ -12,7 +14,12 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: "ts-loader",
-        exclude: /node_modules/,
+        include: path.join(__dirname, "src"),
+      },
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto'
       },
       {
         test: /\.css$/i,
@@ -38,9 +45,11 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    plugins: [new TsconfigPathsPlugin()]
   },
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath: "/"
   },
   plugins: [
     new BundleAnalyzerPlugin({

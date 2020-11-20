@@ -1,0 +1,23 @@
+.card {
+  padding: 20px;
+  border-radius: 0 10px 10px 0;
+  border-left: 5px solid var(--pink-500);
+  background: #274255ad;
+  //   background: linear-gradient(180deg, rgba(38, 61, 74, 0.93) 0%, rgba(50, 82, 101, 0.91) 100%);
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  margin-top: -10px;
+  list-style: none;
+  padding: 0;
+  > * {
+    flex: 1 1 450px;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+}
+a > .card {
+  height: 100%;
+}

@@ -1,8 +1,15 @@
 import dayjs from "dayjs";
 
-export const generateId = () => {
-  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-};
+function dec2hex(dec) {
+  return dec < 10 ? "0" + String(dec) : dec.toString(16);
+}
+
+// generateId :: Integer -> String
+export function generateId(len = 6) {
+  var arr = new Uint8Array((len || 40) / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, dec2hex).join("");
+}
 
 export const wait = (delay = 100) => {
   return new Promise((resolve, reject) => {

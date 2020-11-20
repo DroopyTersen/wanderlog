@@ -1,7 +1,17 @@
-[context.production]
+[build]
+  command = "npm run build"
+  functions = "functions"  
   publish = "dist"
-  
+
+[dev]
+  command = "yarn webpack"
+  targetPort = 8080
+  publish = "dist"
+  autoLaunch = true
+  framework = "#custom"
+
 [[redirects]]
   from = "/*"
   to = "/"
   status = 200
+

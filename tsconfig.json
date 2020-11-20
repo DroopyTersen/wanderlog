@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "outDir": "./dist/",
     "target": "es5",
     "forceConsistentCasingInFileNames": true,
@@ -15,5 +16,6 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "moduleResolution": "node"
-  }
+  },
+  "exclude": [ "node_modules"]
 }
