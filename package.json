@@ -7,7 +7,7 @@
     "prebuild": "npm run clean && node tasks/build.js",
     "build": "webpack",
     "prewebpack": "node tasks/build.js",
-    "start": "netlify dev",
+    "start": "netlify dev --live",
     "webpack": "webpack-dev-server --hot --config webpack.dev.js",
     "predeploy": "npm run build",
     "deploy": "netlify deploy --prod --dir=dist",
