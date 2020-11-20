@@ -47,7 +47,7 @@ export function LoginScreen() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </label>
-            { error && <div className='error'>{error+""}</div>}
+            { status === "ERRORED" && <div className='error'>{error+"" || "Login Error"}</div>}
             <button className="gold" disabled={!username || !password || status === "AUTHENTICATING"}>
               Login
             </button>

@@ -107,7 +107,7 @@ const stateChart: StateChart = {
       on: {
         setUser: "AUTHENTICATED",
         logout: "ANONYMOUS",
-        handleError: "ERROR",
+        handleError: "ERRORED",
       },
     },
     ANONYMOUS: {
@@ -118,7 +118,7 @@ const stateChart: StateChart = {
     AUTHENTICATING: {
       on: {
         setUser: "AUTHENTICATED",
-        handleError: "ERROR",
+        handleError: "ERRORED",
       },
     },
     AUTHENTICATED: {
@@ -128,7 +128,7 @@ const stateChart: StateChart = {
     },
     ERRORED: {
       on: {
-        logout: "ANONYMOUS",
+        startLogin: "AUTHENTICATING",
       },
     },
   },
