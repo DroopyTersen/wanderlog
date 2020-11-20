@@ -1,13 +1,12 @@
 /// <reference lib="webworker"/>
-import {} from "core/utils";
 
-const CACHE_KEY = "v0.4";
+const CACHE_KEY = "v0.5";
 
-declare const self: Window & ServiceWorkerGlobalScope;
+// declare const self: Window & ServiceWorkerGlobalScope;
 
 self.skipWaiting();
 
-self.addEventListener("fetch", function (event: FetchEvent) {
+self.addEventListener("fetch", function (event) {
   if (event.request.method !== "GET") {
     return;
   }

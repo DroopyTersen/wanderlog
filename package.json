@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "npm run clean && node tasks/build.js",
     "build": "webpack",
-    "prestart": "node tasks/build.js",
+    "prewebpack": "node tasks/build.js",
     "start": "netlify dev",
     "webpack": "webpack-dev-server --hot --config webpack.dev.js",
     "predeploy": "npm run build",

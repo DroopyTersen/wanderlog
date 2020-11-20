@@ -1,11 +1,10 @@
 const path = require("path");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
   entry: {
     app: "./src/entry.ts",
-    sw: "./src/entry.sw.ts",
   },
   mode: "production",
   devtool: "source-map",
@@ -19,7 +18,7 @@ module.exports = {
       {
         test: /\.mjs$/,
         include: /node_modules/,
-        type: 'javascript/auto'
+        type: "javascript/auto",
       },
       {
         test: /\.css$/i,
@@ -45,11 +44,11 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-    plugins: [new TsconfigPathsPlugin()]
+    plugins: [new TsconfigPathsPlugin()],
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/"
+    publicPath: "/",
   },
   plugins: [
     new BundleAnalyzerPlugin({
