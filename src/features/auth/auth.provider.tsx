@@ -26,14 +26,14 @@ const AuthContext = React.createContext<ReturnType<typeof useAuthState>>(null);
 export const useAuth = () => useContext(AuthContext);
 
 const updaters = {
-  loginSuccess: (state, user: User) => {
+  loginSuccess: (state, { user }) => {
     cacheCurrentUser(user);
     return {
       error: "",
       currentUser: user,
     };
   },
-  setCachedUser: (state, user: User) => {
+  setCachedUser: (state, { user }) => {
     return {
       error: "",
       currentUser: user,
@@ -46,13 +46,13 @@ const updaters = {
       currentUser: null,
     };
   },
-  handleError: (state, error) => {
+  handleError: (state, { error }) => {
     return {
       ...state,
       error: error.message,
     };
   },
-  loginStart: (state) => state,
+  loginStart: (state, { username, password }) => state,
 };
 
 export type AuthStatus = "UNKNOWN" | "ANONYMOUS" | "AUTHENTICATING" | "AUTHENTICATED" | "ERRORED";
@@ -82,43 +82,34 @@ const stateChart: StateChart<AuthStatus, typeof updaters> = {
 };
 
 function useAuthState() {
-  let stateMachine = useStateMachine(stateChart, initialState, updaters);
-
-  const publicActions = useMemo(() => {
-    let login = async (username: string, password: string) => {
-      stateMachine.actions.loginStart();
-      await api
-        .login({ username, password })
-        .then((user) => {
-          console.log("useAuthState -> loginSuccess", user);
-          stateMachine.actions.loginSuccess(user);
-        })
-        .catch((error) => {
-          stateMachine.actions.handleError(error);
-        });
-    };
-
-    return {
-      login,
-      logout: stateMachine.actions.logout,
-    };
-  }, [stateMachine.actions]);
-
-  useEffect(() => {
-    if (stateMachine.status === "UNKNOWN") {
-      let cachedUser = getCurrentUserFromCache();
-      if (cachedUser && cachedUser.token) {
-        stateMachine.actions.setCachedUser(cachedUser);
-      } else {
-        stateMachine.actions.logout();
-      }
-    }
-  }, [stateMachine.status]);
+  let stateMachine = useStateMachine(stateChart, initialState, updaters, {
+    AUTHENTICATING: {
+      enter: async ({ action, actions }) => {
+        try {
+          let user = await api.login({ username: action.username, password: action.password });
+          actions.loginSuccess({ user });
+        } catch (error) {
+          actions.handleError({ error });
+        }
+      },
+    },
+    UNKNOWN: {
+      enter: () => {
+        let cachedUser = getCurrentUserFromCache();
+        if (cachedUser && cachedUser.token) {
+          stateMachine.actions.setCachedUser({ user: cachedUser });
+        } else {
+          stateMachine.actions.logout();
+        }
+      },
+    },
+  });
 
   return {
     ...stateMachine.state,
     status: stateMachine.status as AuthStatus,
-    ...publicActions,
+    login: (username, password) => stateMachine.actions.loginStart({ username, password }),
+    logout: stateMachine.actions.logout,
     isLoggedIn: stateMachine.status === "AUTHENTICATED",
   };
 }
