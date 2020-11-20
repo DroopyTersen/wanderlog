@@ -8,7 +8,6 @@ export function LoginScreen() {
   let [password, setPassword] = useState("");
 
   let { login, status, error } = useAuth();
-  console.log("LoginScreen -> error", error)
   const onSubmit = (e) => {
     e.preventDefault();
     if (username && password) {
@@ -47,8 +46,11 @@ export function LoginScreen() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </label>
-            { status === "ERRORED" && <div className='error'>{error+"" || "Login Error"}</div>}
-            <button className="gold" disabled={!username || !password || status === "AUTHENTICATING"}>
+            {status === "ERRORED" && <div className="error">{error + "" || "Login Error"}</div>}
+            <button
+              className="gold"
+              disabled={!username || !password || status === "AUTHENTICATING"}
+            >
               Login
             </button>
           </form>

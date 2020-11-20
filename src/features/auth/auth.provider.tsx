@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { StateChart, useStateMachine } from "core/stateMachine/stateMachine";
+import { StateChart, useStateMachine } from "core/hooks/useStateMachine";
 import * as api from "./auth.api";
 import { cacheCurrentUser, getCurrentUserFromCache } from "./auth.utils";
 
@@ -61,32 +61,22 @@ const stateChart: StateChart<AuthStatus, typeof updaters> = {
   initial: "UNKNOWN",
   states: {
     UNKNOWN: {
-      on: {
-        setCachedUser: "AUTHENTICATED",
-        logout: "ANONYMOUS",
-        handleError: "ERRORED",
-      },
+      setCachedUser: "AUTHENTICATED",
+      logout: "ANONYMOUS",
+      handleError: "ERRORED",
     },
     ANONYMOUS: {
-      on: {
-        loginStart: "AUTHENTICATING",
-      },
+      loginStart: "AUTHENTICATING",
     },
     AUTHENTICATING: {
-      on: {
-        loginSuccess: "AUTHENTICATED",
-        handleError: "ERRORED",
-      },
+      loginSuccess: "AUTHENTICATED",
+      handleError: "ERRORED",
     },
     AUTHENTICATED: {
-      on: {
-        logout: "ANONYMOUS",
-      },
+      logout: "ANONYMOUS",
     },
     ERRORED: {
-      on: {
-        loginStart: "AUTHENTICATING",
-      },
+      loginStart: "AUTHENTICATING",
     },
   },
 };
@@ -100,10 +90,11 @@ function useAuthState() {
       await api
         .login({ username, password })
         .then((user) => {
+          console.log("useAuthState -> loginSuccess", user);
           stateMachine.actions.loginSuccess(user);
         })
         .catch((error) => {
-          stateMachine.actions.handleError({ error });
+          stateMachine.actions.handleError(error);
         });
     };
 

@@ -10,8 +10,8 @@ export const login = async ({ username, password }) => {
   let data = await resp.json();
   if (resp.ok) {
     cacheCurrentUser(data);
-    console.log("user", data);
     let user = await getCurrentUser();
+    console.log("user", data, user);
     return {
       ...data,
       ...user,
