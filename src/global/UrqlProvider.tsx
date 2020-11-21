@@ -1,10 +1,17 @@
-import { getCurrentUserFromCache } from "features/auth/auth.utils";
 import React from "react";
-import { createClient, Provider as GraphQLProvider } from "urql";
-
+import { createClient, Provider as GraphQLProvider, dedupExchange, fetchExchange } from "urql";
+import { cacheExchange } from '@urql/exchange-graphcache';
+import { devtoolsExchange } from '@urql/devtools';
+import { getCurrentUserFromCache } from "features/auth/auth.utils";
 
 export const client = createClient({
     url: "https://hasura.wanderlog.app/v1/graphql",
+    exchanges: [
+        devtoolsExchange,
+        dedupExchange,
+        cacheExchange({}),
+        fetchExchange
+    ],
     fetchOptions: () => {
         let user = getCurrentUserFromCache();
         return {
