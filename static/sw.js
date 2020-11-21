@@ -1,6 +1,6 @@
 /// <reference lib="webworker"/>
 
-const CACHE_KEY = "v0.5";
+const CACHE_KEY = "v0.5.1";
 
 // declare const self: Window & ServiceWorkerGlobalScope;
 
@@ -75,6 +75,7 @@ function precache() {
       "/images/mountain-road.portrait.jpg",
       "/images/mountain-road.portrait.tiny.jpg",
       "/fonts/Monoton/Monoton-Regular.woff2",
+      "/fonts/Open_Sans/OpenSans-Regular.woff2",
     ]);
   });
 }

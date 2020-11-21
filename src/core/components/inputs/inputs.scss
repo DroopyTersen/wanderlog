@@ -18,18 +18,23 @@ input,
 textarea,
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active,
+// input:focus,
+// input:active,
 input:-internal-autofill-selected,
 select {
   background-color: #0000003d !important;
   color: var(--white);
-  padding: 8px;
+  padding: 10px 20px;
   border: none;
   outline: none;
-  border-radius: 5px;
+  border-radius: 25px;
   width: 100%;
-  margin: 5px 0 30px 0;
+  margin: 0.5rem 0 2rem;
+  font-size: 1rem;
+}
+input:focus,
+input:active {
+  box-shadow: 0 0 0 1pt var(--pink);
 }
 textarea {
   height: 200px;
@@ -39,7 +44,11 @@ form {
   // width: 600px;
   max-width: 100%;
   label {
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
+  }
+
+  .error {
+    padding: 1rem 0;
   }
 }
 .form-actions {

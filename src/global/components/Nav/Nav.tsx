@@ -24,11 +24,11 @@ export default function Nav() {
       <div ref={menuRef}>
         <MenuTrigger isActive={isOpen} setIsActive={setIsOpen} />
 
-        <Popup className="menu-items" title="Wanderlog" isOpen={isOpen} close={close}>{links}</Popup>
+        <Popup className="menu-items" title="Wanderlog" titleHref="/" isOpen={isOpen} close={close}>
+          {links}
+        </Popup>
       </div>
-      <div className="desktop-links">
-        {links}
-      </div>
+      <div className="desktop-links">{links}</div>
     </nav>
   );
 }

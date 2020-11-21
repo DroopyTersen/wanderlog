@@ -1,15 +1,24 @@
-.login-screen {
-  .card {
-    margin-top: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    border: none;
-    /* border-top: 5px solid var(--pink-500); */
-    background: #274255f2;
-  }
+.login-form {
+  box-sizing: border-box;
+  width: 100%;
   form {
+    text-align: left;
     display: flex;
     flex-direction: column;
+  }
+  button {
+    margin-top: 1rem;
+  }
+  @media (min-width: 1024px) {
+    margin: 30px auto 30vh;
+  }
+}
+.login-popup {
+  .popup {
+    height: calc(100vh - 20px);
+  }
+  .popup-content {
+    justify-content: center;
   }
 }
 .profile-screen {

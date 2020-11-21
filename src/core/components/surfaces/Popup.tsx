@@ -3,8 +3,8 @@ import "./Popup.scss";
 import { Button } from "../inputs/buttons";
 import { IoMdClose } from "react-icons/io";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
-
-export function Popup({ isOpen, close, title, children, className = "" }) {
+import { Link } from "react-router-dom";
+export function Popup({ isOpen, close, title, children, className = "", titleHref = "" }) {
   let handleClick = useCallback(
     (event) => {
       if (event.target.tagName === "A") {
@@ -18,7 +18,12 @@ export function Popup({ isOpen, close, title, children, className = "" }) {
       <Button className="popup-close" onClick={close}>
         <IoMdClose />
       </Button>
-      {title && <h2 className="popup-title">{title}</h2>}
+      {titleHref && (
+        <Link to={titleHref} onClick={() => close()}>
+          <h2 className="popup-title">{title}</h2>
+        </Link>
+      )}
+      {!titleHref && <h2 className="popup-title">{title}</h2>}
       <div className="popup-content" onClick={handleClick}>
         {children}
       </div>
