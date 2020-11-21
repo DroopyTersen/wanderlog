@@ -3,7 +3,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import { HomeScreen } from "features/home/HomeScreen";
 import { ProfileScreen } from "features/auth/ProfileScreen";
 import Nav from "./components/Nav/Nav";
-import { NewTripForm } from "features/trips/TripForm";
+import { EditTripForm, NewTripForm } from "features/trips/TripForm";
 // import {
 //   NewDailyLogScreen,
 //   EditDailyLogScreen,
@@ -19,6 +19,7 @@ export default function AuthenticatedRoutes() {
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/trips" element={<Layout />}>
           <Route path="new" element={<NewTripForm />} />
+          <Route path="/:tripId/edit" element={<EditTripForm />} />
           {/* <Route path="/" element={<DailyLogsScreen />} />
           <Route path="new" element={<NewDailyLogScreen />} />
           <Route path="/:logId/edit" element={<EditDailyLogScreen />} />

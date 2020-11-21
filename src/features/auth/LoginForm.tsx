@@ -26,7 +26,12 @@ export function LoginForm() {
           {status === "ERRORED" && <div className="error">{error + "" || "Login Error"}</div>}
           <label htmlFor="username">
             Username
-            <input autoFocus value={username} onChange={(e) => setUsername(e.target.value)} />
+            <input
+              autoFocus
+              autoCapitalize="none"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </label>
           <label htmlFor="password">
             Password

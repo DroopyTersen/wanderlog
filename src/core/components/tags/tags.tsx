@@ -2,23 +2,31 @@ import React, { useState, useEffect } from "react";
 import slugify from "slugify";
 import "./tags.scss";
 
-export function TagsInput({ onChange, initialTags = [] }) {
+export interface TagsInputProps {
+  onChange: (tagNames: string[]) => void;
+  initialTags: string[];
+}
+const processTags = (tagsStr) => {
+  return tagsStr
+    .replace(/, /g, ",")
+    .replace(/ /g, ",")
+    .split(",")
+    .map((tag) => slugify(tag.trim().toLowerCase()))
+    .filter(Boolean);
+};
+export function TagsInput({ onChange, initialTags = [], ...rest }) {
   let [value, setValue] = useState(initialTags.join(", "));
 
   useEffect(() => {
-    let tags = value
-      .replace(/, /g, ",")
-      .replace(/ /g, ",")
-      .split(",")
-      .map((tag) => slugify(tag.trim().toLowerCase()))
-      .filter(Boolean);
+    let tags = processTags(value);
     onChange(tags);
   }, [value]);
 
   return (
     <label>
       Tags
-      <input name={name} value={value} onChange={(e) => setValue(e.target.value)} />
+      <TagsDisplay tags={processTags(value)} style={{ margin: "10px 0 0" }} />
+      <textarea {...rest} value={value} onChange={(e) => setValue(e.target.value)} />
     </label>
   );
 }

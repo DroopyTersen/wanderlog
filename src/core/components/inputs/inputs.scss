@@ -22,26 +22,31 @@ input:-webkit-autofill:hover,
 // input:active,
 input:-internal-autofill-selected,
 select {
-  background-color: #0000003d !important;
+  background-color: #00000024 !important;
   color: var(--white);
-  padding: 10px 20px;
+  padding: 10px;
   border: none;
   outline: none;
-  border-radius: 25px;
+  border-radius: 5px;
   width: 100%;
   margin: 0.5rem 0 2rem;
   font-size: 1rem;
 }
 input:focus,
-input:active {
+input:active,
+textarea:focus,
+textarea:active {
   box-shadow: 0 0 0 1pt var(--pink);
 }
 textarea {
-  height: 200px;
+  resize: none;
+}
+textarea.resizable {
+  resize: vertical;
 }
 
 form {
-  // width: 600px;
+  width: 600px;
   max-width: 100%;
   label {
     letter-spacing: 1.5px;

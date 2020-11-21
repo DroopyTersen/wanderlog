@@ -68,7 +68,7 @@ const createReducer = <S>(updaters: StateUpdaters<S>) => {
       return state;
     }
     let updatedContext = updaters?.[action.type]?.(state.context, action);
-    console.log("STATE_MACHINE", state.status, nextStatus, action, updatedContext);
+    // console.log("STATE_MACHINE", state.status, nextStatus, action, updatedContext);
     return {
       ...state,
       status: nextStatus,
