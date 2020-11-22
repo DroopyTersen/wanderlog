@@ -21,7 +21,9 @@ exports.handler = async function (event, context) {
       },
     };
     console.log("claims", claims);
-    var token = jwt.sign(claims, process.env.JWT_SECRET);
+    var token = jwt.sign(claims, process.env.JWT_SECRET, {
+      noTimestamp: true,
+    });
     return {
       statusCode: 200,
       body: JSON.stringify({
