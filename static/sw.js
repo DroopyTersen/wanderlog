@@ -76,6 +76,10 @@ function precache() {
       "/images/mountain-road.portrait.tiny.jpg",
       "/fonts/Monoton/Monoton-Regular.woff2",
       "/fonts/Open_Sans/OpenSans-Regular.woff2",
+      "/fonts/Open_Sans/OpenSans-Light.woff2",
+      "/fonts/Open_Sans/OpenSans-ExtraBold.ttf",
+      "/fonts/Open_Sans/OpenSans-Bold.ttf",
+      "/fonts/Open_Sans/OpenSans-Italic.ttf",
     ]);
   });
 }

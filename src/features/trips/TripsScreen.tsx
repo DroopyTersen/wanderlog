@@ -14,11 +14,13 @@ query getTrips {
         start
         end
         tags {
-            tag {
-                name
-                id
-            }
-        }
+          tag_id
+          trip_id
+          tag {
+              name
+              id
+          }
+      }
     }
 }   
 `;
@@ -31,7 +33,7 @@ export const TripsScreen = () => {
       {data?.trips && (
         <Grid width="500px">
           {data.trips.map((trip) => (
-            <TripCard {...trip} />
+            <TripCard key={trip.id} {...trip} />
           ))}
         </Grid>
       )}
