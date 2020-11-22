@@ -30,3 +30,15 @@
     text-align: center;
   }
 }
+.big-month {
+  .month {
+    letter-spacing: -1px;
+    font-size: 28px;
+    line-height: 28px;
+  }
+  .year {
+    font-size: 16px;
+    letter-spacing: 6px;
+    line-height: 16px;
+  }
+}

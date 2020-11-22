@@ -20,16 +20,24 @@
   align-items: center;
   > *:not(.row) {
     margin: 0 10px 0 0;
-    flex: 1;
   }
+  // &:not(.inline) > *:not(.row) {
+  //   flex: 1;
+  // }
   > .row {
     margin: 0;
   }
   &.align-right {
     justify-content: flex-end;
   }
+  &.align-left {
+    justify-content: flex-start;
+  }
   &.space-between {
     justify-content: space-between;
+  }
+  &.reverse {
+    flex-direction: row-reverse;
   }
   &.tight {
     margin-right: -5px;

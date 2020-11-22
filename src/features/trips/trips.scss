@@ -1,0 +1,27 @@
+.trip-card {
+  .big-month {
+    flex: 0;
+  }
+  .trip-title {
+    font-weight: 100;
+    font-size: 1.7rem;
+    flex: 2;
+  }
+  .num-days {
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+  .num-days span {
+    font-weight: bold;
+  }
+  .row2 {
+    margin: 20px 0;
+    align-items: flex-start;
+  }
+  .destination {
+    font-style: italic;
+  }
+  .destination-tags > *:nth-child(2) {
+    margin-top: 15px;
+  }
+}

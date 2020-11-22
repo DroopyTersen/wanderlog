@@ -25,7 +25,7 @@ export function ProfileScreen() {
           </button>
           <AddButton>
             <Link to="/places/new">Place</Link>
-            <Link to="/trip/new">Trip</Link>
+            <Link to="/trips/new">Trip</Link>
             <Link to="/photos/new">Photo</Link>
             <Link to="/dailylogs/new">Daily Log</Link>
           </AddButton>

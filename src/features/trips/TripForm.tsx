@@ -82,7 +82,6 @@ function TripForm({ values, save }: TripFormProps) {
   console.log("TripForm -> form.status", form.status);
   return (
     <>
-      <Header title={`Trips`} />
       <PageTitle>{values.id ? "Edit Trip" : "New Trip"}</PageTitle>
       <form onSubmit={form.onSubmit}>
         <label htmlFor="title">
