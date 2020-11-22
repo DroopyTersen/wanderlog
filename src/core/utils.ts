@@ -22,6 +22,13 @@ export const wait = (delay = 100) => {
 export function displayDate(date: string | Date, format = "M/DD/YYYY") {
   return dayjs(date).format(format);
 }
+export function displayDateRange(start: string | Date, end: string | Date) {
+  if (calcNumDays(start, end) === 1) {
+    return displayDate(start);
+  }
+  // TODO: Make this better
+  return `${displayDate(start)} - ${displayDate(end)}`;
+}
 
 export function calcNumDays(start: string | Date, end: string | Date): number {
   return dayjs(end).diff(dayjs(start), "day") + 1;

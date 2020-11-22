@@ -16,16 +16,18 @@
 
 .row {
   display: flex;
-  margin: 10px -10px 10px 0px;
+  margin: 10px 0 10px 0px;
   align-items: center;
-  > *:not(.row) {
-    margin: 0 10px 0 0;
-  }
+  gap: 10px;
+
   // &:not(.inline) > *:not(.row) {
   //   flex: 1;
   // }
   > .row {
     margin: 0;
+  }
+  &.align-top {
+    align-items: flex-start;
   }
   &.align-right {
     justify-content: flex-end;
@@ -44,5 +46,8 @@
     > * {
       margin-right: 5px;
     }
+  }
+  .greedy {
+    flex: 1;
   }
 }

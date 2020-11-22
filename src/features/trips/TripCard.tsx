@@ -14,9 +14,9 @@ export interface TripCardProps {
 export const TripCard = (trip: TripCardProps) => {
   return (
     <Link to={"/trips/" + trip.id}>
-      <div className="card trip-card">
-        <div className="row align-left">
-          <h2 className="trip-title">{trip.title}</h2>
+      <div className="card trip-card trip">
+        <div className="row align-top">
+          <h2 className="trip-title greedy">{trip.title}</h2>
           <BigMonth date={trip.start} />
         </div>
         <div className="row2 row space-between">
@@ -24,8 +24,10 @@ export const TripCard = (trip: TripCardProps) => {
             {trip.destination && <div className="destination">{trip.destination}</div>}
             {!!trip.tags.length && <TagsDisplay tags={trip.tags.map((t) => t.tag.name)} />}
           </div>
-          <div className="num-days">
-            <span>{calcNumDays(trip.start, trip.end)}</span> days
+          <div className="trip-dates">
+            <div className="num-days">
+              <span>{calcNumDays(trip.start, trip.end)}</span> days
+            </div>
           </div>
         </div>
       </div>

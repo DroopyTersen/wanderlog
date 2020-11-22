@@ -6,6 +6,7 @@ import Nav from "./components/Nav/Nav";
 import { EditTripForm, NewTripForm } from "features/trips/TripForm";
 import { Header } from "./components";
 import { TripsScreen } from "features/trips/TripsScreen";
+import { TripDetailsScreen } from "features/trips/TripDetails";
 // import {
 //   NewDailyLogScreen,
 //   EditDailyLogScreen,
@@ -22,6 +23,7 @@ export default function AuthenticatedRoutes() {
         <Route path="/trips" element={<TripsLayout />}>
           <Route path="/" element={<TripsScreen />} />
           <Route path="/*" element={<TripsScreen />} />
+          <Route path=":tripId" element={<TripDetailsScreen />} />
           <Route path="new" element={<NewTripForm />} />
           <Route path=":tripId/edit" element={<EditTripForm />} />
           {/* <Route path="/" element={<DailyLogsScreen />} />

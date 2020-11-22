@@ -60,6 +60,9 @@ html body a[role="button"] {
       border-color: #ffc97d38;
     }
   }
+  &.scary {
+    --color: #ffacac;
+  }
   &.large {
     padding: 0.8rem 1rem;
     font-size: 1.1rem;

@@ -1837,6 +1837,11 @@
     "@urql/core" ">=1.15.0"
     wonka "^4.0.14"
 
+"@urql/introspection@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@urql/introspection/-/introspection-0.1.1.tgz#a5f57d029952f262e151bc52de910cc281821a33"
+  integrity sha512-FqHKhIVCp36Avz5KOli7Be8VJN4QtY8LppbhghPCHHxVDj60nhSdxHpbZl91zvgmQPn/Z+U37yiwsr33yq4bkw==
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"

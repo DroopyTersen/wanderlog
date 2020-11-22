@@ -62,7 +62,7 @@ function useSuccessRedirect(data) {
   useEffect(() => {
     console.log("useSuccessRedirect -> data", data);
     if (data?.trip?.id) {
-      navigate(`/trips/${data.trip.id}/edit`);
+      navigate(`/trips/${data.trip.id}`);
     }
   }, [data]);
 }

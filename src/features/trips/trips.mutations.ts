@@ -13,6 +13,20 @@ const TRIP_FIELDS_FRAGMENT = `
         }
     }
 `;
+export const DELETE_TRIP_MUTATION = `
+mutation DeleteTrip($id:Int!) {
+  delete_tag_trip(where: {trip_id: {_eq: $id }}) {
+    affected_rows
+  }
+  delete_trips(where: {id: {_eq: $id }}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+`;
 export const INSERT_TRIP_MUTATION = `
 mutation insertTrip($object: trips_insert_input!) {
     trip: insert_trips_one(object: $object) {
