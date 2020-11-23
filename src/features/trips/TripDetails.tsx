@@ -63,7 +63,7 @@ export const TripDetailsScreen = () => {
             <AddButton>
               <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
               <Link to={"/photos/new?tripId=" + trip.id}>Photo</Link>
-              <Link to={"/dailyLogs/new?tripId=" + trip.id}>Daily Log</Link>
+              <Link to={"dailylogs/new"}>Daily Log</Link>
             </AddButton>
           </Footer>
         </>

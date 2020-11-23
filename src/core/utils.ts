@@ -41,6 +41,19 @@ export function checkInDateRange(date: string | Date, start: string | Date, end:
   );
 }
 
+export function getDaysInRange(start: string | Date, end: string | Date) {
+  if (!start || !end) return [];
+  let cur = dayjs(start);
+  let endDate = dayjs(end);
+  let dates = [];
+
+  while (cur.isBefore(endDate) || cur.isSame(endDate)) {
+    dates.push(cur.toDate());
+    cur = cur.add(1, "day");
+  }
+  return dates;
+}
+
 export function getFiles(fileList: FileList): File[] {
   if (!fileList || !fileList.length) return [];
   let files = [];

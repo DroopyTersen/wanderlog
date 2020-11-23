@@ -7,6 +7,7 @@ import { EditTripForm, NewTripForm } from "features/trips/TripForm";
 import { Header } from "./components";
 import { TripsScreen } from "features/trips/TripsScreen";
 import { TripDetailsScreen } from "features/trips/TripDetails";
+import { NewDailyLogScreen } from "features/dailyLogs/DailyLogForm";
 // import {
 //   NewDailyLogScreen,
 //   EditDailyLogScreen,
@@ -20,10 +21,11 @@ export default function AuthenticatedRoutes() {
       <Routes>
         <Route path="*" element={<HomeScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
-        <Route path="/trips" element={<TripsLayout />}>
+        <Route path="/trips" element={<Layout title="Trips" />}>
           <Route path="/" element={<TripsScreen />} />
           <Route path="/*" element={<TripsScreen />} />
           <Route path=":tripId" element={<TripDetailsScreen />} />
+          <Route path=":tripId/dailylogs/new" element={<NewDailyLogScreen />} />
           <Route path="new" element={<NewTripForm />} />
           <Route path=":tripId/edit" element={<EditTripForm />} />
           {/* <Route path="/" element={<DailyLogsScreen />} />
@@ -31,16 +33,19 @@ export default function AuthenticatedRoutes() {
           <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
           <Route path="/:logId" element={<DailyLogDetailsScreen />} /> */}
         </Route>
+        <Route path="/dailylogs" element={<Layout title="Daily Logs" />}>
+          <Route path="new" element={<NewDailyLogScreen />} />
+        </Route>
       </Routes>
       <Nav />
     </>
   );
 }
 
-function TripsLayout() {
+function Layout({ title }) {
   return (
     <div className="content">
-      <Header title={`Trips`} />
+      <Header title={title} />
 
       <Outlet />
     </div>

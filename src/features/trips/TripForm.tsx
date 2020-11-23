@@ -12,6 +12,7 @@ import {
   updateTrip,
 } from "./trips.mutations";
 import { EMPTY_TRIP, toTripFormValues, TripFormValues, validateTrip } from "./trips.data";
+import useTags from "features/tags/useTags";
 
 export function NewTripForm() {
   let [insertResult, mutation] = useMutation(INSERT_TRIP_MUTATION);
@@ -41,20 +42,6 @@ export function EditTripForm() {
     return <TripForm values={toTripFormValues(data.trip)} save={save} />;
   }
   return <h1>{tripId}</h1>;
-}
-
-const TAGS_QUERY = `query GetTags {
-    tags {
-      name
-      id
-      author_id
-    }
-  }
-`;
-
-function useTags() {
-  let [{ data }] = useQuery({ query: TAGS_QUERY });
-  return data?.tags ?? [];
 }
 
 function useSuccessRedirect(data) {
