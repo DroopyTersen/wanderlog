@@ -80,3 +80,10 @@ export function formToObject(form: HTMLFormElement) {
   });
   return object;
 }
+
+export function pick(obj: any, keys: string[]): any {
+  return keys.reduce((newObj, key) => {
+    newObj[key] = obj[key];
+    return newObj;
+  }, {});
+}

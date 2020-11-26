@@ -15,14 +15,18 @@ import { cacheExchange } from "@urql/exchange-graphcache";
 
 const cache = cacheExchange({
   schema,
-  //   storage,
+  //  storage,
   keys: {
     tag_trip: (data) => `${data.tag_id}_${data.trip_id}`,
+    tag_dailylog: (data) => `${data.tag_id}_${data.dailylog_id}`,
   },
   updates: {
     Mutation: {
       delete_trips: (result, args, cache, info) => {
         cache.invalidate({ __typename: "trips", id: info.variables.id + "" });
+      },
+      delete_dailylogs: (result, args, cache, info) => {
+        cache.invalidate({ __typename: "dailylogs", id: info.variables.id + "" });
       },
     },
   },
@@ -34,6 +38,7 @@ const cache = cacheExchange({
 export const client = createClient({
   url: "https://hasura.wanderlog.app/v1/graphql",
   exchanges: [devtoolsExchange, dedupExchange, cache, retryExchange({}), fetchExchange],
+  requestPolicy: "cache-and-network",
   fetchOptions: () => {
     let user = getCurrentUserFromCache();
     return {

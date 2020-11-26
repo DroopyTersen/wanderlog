@@ -74,6 +74,7 @@ function precache() {
       "/images/mountain-road.landscape.tiny.jpg",
       "/images/mountain-road.portrait.jpg",
       "/images/mountain-road.portrait.tiny.jpg",
+      "/images/mountain-road.thumbnail.jpg",
       "/fonts/Monoton/Monoton-Regular.woff2",
       "/fonts/Open_Sans/OpenSans-Regular.woff2",
       "/fonts/Open_Sans/OpenSans-Light.woff2",

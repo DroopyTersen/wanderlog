@@ -6,7 +6,6 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
-import { DELETE_TRIP_MUTATION, GET_TRIP_BY_ID_QUERY } from "./trips.mutations";
 
 function useDelete(id) {
   let navigate = useNavigate();
@@ -71,3 +70,42 @@ export const TripDetailsScreen = () => {
     </div>
   );
 };
+
+export const TRIP_FIELDS_FRAGMENT = `
+    id
+    title
+    start
+    end
+    destination
+    tags {
+        tag_id
+        trip_id
+        tag {
+            name
+            id
+        }
+    }
+`;
+
+export const GET_TRIP_BY_ID_QUERY = `
+query getTripById($id:Int!) {
+    trip: trips_by_pk(id: $id) {
+      ${TRIP_FIELDS_FRAGMENT}
+    }
+}
+  `;
+
+export const DELETE_TRIP_MUTATION = `
+mutation DeleteTrip($id:Int!) {
+  delete_tag_trip(where: {trip_id: {_eq: $id }}) {
+    affected_rows
+  }
+  delete_trips(where: {id: {_eq: $id }}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+`;

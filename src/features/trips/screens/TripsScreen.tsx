@@ -3,7 +3,7 @@ import { AddButton, Footer } from "global/components";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "urql";
-import { TripCard } from "./TripCard";
+import { TripCard } from "../components/TripCard";
 
 const QUERY = `
 query getTrips {
