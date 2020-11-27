@@ -17,6 +17,7 @@
   "author": "Andrew Petersen",
   "license": "ISC",
   "dependencies": {
+    "@azure/storage-blob": "^12.3.0",
     "@urql/devtools": "^2.0.2",
     "@urql/exchange-graphcache": "^3.1.11",
     "@urql/exchange-retry": "^0.2.0",
@@ -30,6 +31,7 @@
     "react-icons": "^3.10.0",
     "react-router": "^6.0.0-alpha.4",
     "react-router-dom": "^6.0.0-alpha.4",
+    "sharp": "^0.26.3",
     "slugify": "^1.4.0",
     "urql": "^1.11.3"
   },
