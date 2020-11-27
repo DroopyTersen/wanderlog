@@ -10,6 +10,7 @@
   autoLaunch = true
   framework = "#custom"
 
+
 [[redirects]]
   from = '/api/*'
   to = '/.netlify/functions/:splat'

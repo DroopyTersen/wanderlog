@@ -1,19 +1,38 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
-const AZURE_STORAGE_CONNECTION =
-  "DefaultEndpointsProtocol=https;AccountName=wanderlogstorage;AccountKey=MCf1TVZGfEf8kemyjcBDqUJSeyMcNtwTeEXBn+FGeHJK913di9BXHa28Rpk0vxMcPkefJpRbEGK0ffm832jdYQ==;EndpointSuffix=core.windows.net";
 const AZURE_STORAGE_CONTAINER = "photos";
+
 exports.handler = async function (event) {
-  let filename = event.queryStringParameters.path;
+  let filepath = event.path.replace("/api/photos/", "");
+  console.log(event);
+  if (filepath) {
+    if (event.httpMethod === "GET") {
+      return getPhoto(filepath);
+    } else if (event.httpMethod === "POST" && event.body) {
+      return uploadPhoto({ filepath, body: event.body });
+    }
+  }
 
   return {
-    statusCode: 200,
-    body: JSON.stringify({
-      filename,
-    }),
+    statusCode: 400,
+    body: JSON.stringify({ message: "Invalid Request" }),
   };
-  let blobClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION)
+};
+
+async function uploadPhoto({ filepath, body }) {
+  let blobClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION)
     .getContainerClient(AZURE_STORAGE_CONTAINER)
-    .getBlobClient(filename);
+    .getBlockBlobClient(filepath);
+
+  await blobClient.upload(body, Buffer.byteLength(body));
+  return {
+    statusCode: "204",
+  };
+}
+
+async function getPhoto(filepath) {
+  let blobClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION)
+    .getContainerClient(AZURE_STORAGE_CONTAINER)
+    .getBlobClient(filepath);
 
   const downloadBlockBlobResponse = await blobClient.download();
   const base64Image = (await streamToBuffer(downloadBlockBlobResponse.readableStreamBody)).toString(
@@ -28,7 +47,7 @@ exports.handler = async function (event) {
     body: base64Image,
     isBase64Encoded: true,
   };
-};
+}
 
 async function streamToBuffer(readableStream) {
   return new Promise((resolve, reject) => {

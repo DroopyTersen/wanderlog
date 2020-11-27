@@ -6,11 +6,15 @@ const CACHE_KEY = "v0.5.1";
 
 self.skipWaiting();
 
+let validPaths = ["/api"];
+function checkIsValidPath(url) {
+  return !!validPaths.find((path) => url.indexOf(path) !== -1);
+}
 self.addEventListener("fetch", function (event) {
   if (event.request.method !== "GET") {
     return;
   }
-  if (event.request.mode === "navigate") {
+  if (event.request.mode === "navigate" && !checkIsValidPath(event.request.url)) {
     event.respondWith(caches.match("index.html"));
     return;
   }
