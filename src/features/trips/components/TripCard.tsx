@@ -15,21 +15,15 @@ export const TripCard = (trip: TripCardProps) => {
   return (
     <Link to={"/trips/" + trip.id}>
       <div className="card trip-card trip">
-        <div className="row align-top">
-          <h2 className="trip-title greedy">{trip.title}</h2>
-          <BigMonth date={trip.start} />
+        <div>
+          <h2 className="trip-title">{trip.title}</h2>
+          <div className="destination">{trip.destination || "Destination Unknown"}</div>
         </div>
-        <div className="row2 row space-between">
-          <div className="destination-tags">
-            {trip.destination && <div className="destination">{trip.destination}</div>}
-            {!!trip.tags.length && <TagsDisplay tags={trip.tags.map((t) => t.tag.name)} />}
-          </div>
-          <div className="trip-dates">
-            <div className="num-days">
-              <span>{calcNumDays(trip.start, trip.end)}</span> days
-            </div>
-          </div>
+        <div className="card-thumbnail">
+          <img src="/images/mountain-road.thumbnail.jpg" />
+          <BigMonth date={trip.start} className="shadowed" />
         </div>
+        {!!trip.tags.length && <TagsDisplay tags={trip.tags} />}
       </div>
     </Link>
   );

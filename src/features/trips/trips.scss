@@ -1,7 +1,39 @@
-.trip-card {
+.card.trip-card {
+  // background-image: url("/images/mountain-road.landscape.jpg");
+  display: grid;
+  grid-template-columns: 1fr 70px;
+  gap: 20px;
+
+  .card-thumbnail {
+    position: relative;
+    height: 70px;
+    display: grid;
+    place-items: center;
+    background: #000;
+    border-radius: 5px;
+    overflow: hidden;
+    img {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      z-index: 0;
+      object-fit: cover;
+      height: 100%;
+      opacity: 0.75;
+    }
+    .big-date {
+      z-index: 1;
+    }
+  }
+  .tags {
+    grid-column: 1/3;
+  }
   .trip-title {
     font-size: 1.4rem;
     line-height: 1.4rem;
+    margin-bottom: 10px;
   }
 
   .trip-dates {
@@ -17,6 +49,9 @@
   .row:first-child {
     margin-top: 0;
   }
+  .right-column {
+    text-align: right;
+  }
 }
 .trip {
   .trip-title {
@@ -26,7 +61,7 @@
   .num-days span {
     font-weight: bold;
   }
-  .date {
+  .trip-dates .date {
     color: #ccc;
   }
   .num-days {
@@ -35,17 +70,21 @@
   .destination {
     font-style: italic;
   }
-  .destination-tags > *:nth-child(2) {
-    margin-top: 15px;
-  }
 }
+
 .trip-details {
   .trip-title {
     font-size: 1.8rem;
     line-height: 1.8rem;
-    margin: 10px 0 30px;
+    margin: 10px 0 40px;
   }
   .date-row {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+  }
+  section {
+    margin-top: 40px;
+  }
+  .tags {
+    margin-top: 10px;
   }
 }

@@ -30,6 +30,9 @@
   }
 }
 .big-month {
+  &.shadowed {
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.45);
+  }
   .month {
     letter-spacing: -1px;
     font-size: 28px;
@@ -38,7 +41,7 @@
   }
   .year {
     font-size: 16px;
-    letter-spacing: 5px;
+    letter-spacing: 5.5px;
     line-height: 16px;
   }
 }

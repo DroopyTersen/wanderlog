@@ -1,6 +1,7 @@
-import { BigMonth, PageTitle, TagsDisplay } from "core/components";
+import { BigMonth, Grid, PageTitle, TagsDisplay } from "core/components";
 import { calcNumDays, displayDate, displayDateRange } from "core/utils";
 import dayjs from "dayjs";
+import { DailyLogCard } from "features/dailyLogs/components/DailyLogCard";
 import { AddButton, Footer } from "global/components";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -9,7 +10,7 @@ import { useMutation, useQuery } from "urql";
 
 function useDelete(id) {
   let navigate = useNavigate();
-  let [deleteResult, deleteMutation] = useMutation(DELETE_TRIP_MUTATION);
+  let [deleteResult, deleteMutation] = useMutation(DELETE_MUTATION);
   useEffect(() => {
     if (deleteResult?.data?.delete_trips) {
       navigate("/trips");
@@ -24,7 +25,7 @@ export const TripDetailsScreen = () => {
   let [deleteTrip, isDeleting] = useDelete(tripId);
 
   let [{ data, fetching, error }] = useQuery({
-    query: GET_TRIP_BY_ID_QUERY,
+    query: QUERY,
     variables: { id: tripId },
     pause: !tripId,
   });
@@ -45,16 +46,23 @@ export const TripDetailsScreen = () => {
             </div>
             <BigMonth date={trip.start} />
           </div>
-          <div className="destination-tags">
-            {trip.destination && <div className="destination">{trip.destination}</div>}
-            {!!trip.tags.length && <TagsDisplay tags={trip.tags.map((t) => t.tag.name)} />}
-          </div>
+          {/* <div className="destination">{trip.destination || "Destination Unknown"}</div> */}
+          {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
+
+          <section className="daily-logs">
+            <Grid width="400px" className="daily-logs-grid" gap="20px">
+              {data.dailyLogs.map((dailyLog) => (
+                <DailyLogCard key={dailyLog.id} dailyLog={dailyLog} trip={trip} />
+              ))}
+            </Grid>
+          </section>
+
           <Footer>
             <button className="scary" onClick={deleteTrip} disabled={isDeleting}>
               Delete
             </button>
 
-            <Link to="edit">
+            <Link to={`/trips/${trip.id}/edit`}>
               <button disabled={isDeleting} className="gold">
                 Edit
               </button>
@@ -62,7 +70,7 @@ export const TripDetailsScreen = () => {
             <AddButton>
               <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
               <Link to={"/photos/new?tripId=" + trip.id}>Photo</Link>
-              <Link to={"dailylogs/new"}>Daily Log</Link>
+              <Link to={`/trips/${trip.id}/dailylogs/new`}>Daily Log</Link>
             </AddButton>
           </Footer>
         </>
@@ -71,31 +79,41 @@ export const TripDetailsScreen = () => {
   );
 };
 
-export const TRIP_FIELDS_FRAGMENT = `
+export const QUERY = `
+query getTripById($id: Int!) {
+  trip: trips_by_pk(id: $id) {
     id
     title
     start
     end
     destination
     tags {
-        tag_id
-        trip_id
-        tag {
-            name
-            id
-        }
+      tag_id
+      trip_id
+      tag {
+        name
+        id
+      }
     }
-`;
-
-export const GET_TRIP_BY_ID_QUERY = `
-query getTripById($id:Int!) {
-    trip: trips_by_pk(id: $id) {
-      ${TRIP_FIELDS_FRAGMENT}
+  }
+  dailyLogs: dailylogs_by_trip(args: {trip_id: $id}, order_by: {date: asc}) {
+    id
+    date
+    memories
+    tags {
+      tag_id
+      dailylog_id
+      tag {
+        name
+        id
+      }
     }
+  }
 }
+
   `;
 
-export const DELETE_TRIP_MUTATION = `
+export const DELETE_MUTATION = `
 mutation DeleteTrip($id:Int!) {
   delete_tag_trip(where: {trip_id: {_eq: $id }}) {
     affected_rows
@@ -107,5 +125,4 @@ mutation DeleteTrip($id:Int!) {
     }
   }
 }
-
 `;

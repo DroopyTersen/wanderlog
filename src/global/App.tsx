@@ -1,10 +1,10 @@
 import React, { useReducer } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ScreenModeProvider } from "core/hooks/useScreenMode";
+import { ScreenModeProvider } from "global/providers/ScreenModeProvider";
 import { AppBackground } from "./components";
 import AnonymousRoutes from "./AnonymousRoutes";
 import AuthenticatedRoutes from "./AuthenticatedRoutes";
-import UrqlProvider from "./UrqlProvider";
+import UrqlProvider from "./providers/UrqlProvider";
 import { AuthProvider, useAuth } from "features/auth/auth.provider";
 
 function App({}) {

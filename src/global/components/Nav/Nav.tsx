@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react";
 import "./Nav.scss";
 import { Link } from "react-router-dom";
 import MenuTrigger from "./MenuTrigger";
-import { useScreenMode } from "core/hooks/useScreenMode";
+import { useScreenMode } from "global/providers/ScreenModeProvider";
 import { Popup } from "core/components";
 
 export default function Nav() {
