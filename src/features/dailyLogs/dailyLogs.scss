@@ -5,11 +5,11 @@
     margin-top: 5px;
   }
   .row-two {
-    display: flex;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 20px;
     .photo {
-      flex: 0 0 90px;
       height: 90px;
-      margin-right: 10px;
       img {
         object-fit: cover;
         height: 100%;
@@ -17,16 +17,32 @@
         border-radius: 4px;
       }
     }
-    .daily-log-trip {
-      margin-bottom: 8px;
+    .day-count {
+      font-weight: 600;
     }
     .tags .tag {
       font-size: 12px;
       line-height: 8px;
     }
+    .column-two {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      gap: 5px;
+      align-items: center;
+    }
   }
   .dailyLog-title {
     margin-bottom: 15px;
+  }
+  .memories {
+    margin-top: 2rem;
+    color: #eee;
+    font-size: 0.87rem;
+
+    &.preview > div {
+      border-top: 1px solid #ffffff4a;
+      padding: 15px 0;
+    }
   }
 }
 
@@ -40,7 +56,7 @@
   // display: flex;
   // justify-content: space-between;
   .date {
-    font-weight: bold;
+    font-weight: 600;
     letter-spacing: -2px;
   }
   .day {
@@ -64,15 +80,17 @@
 }
 
 .dailyLog-details {
-  margin-top: 10px;
+  .dailyLog-title {
+    margin: 30px 0;
+  }
   .daily-log-trip {
     margin: 10px 2px;
   }
   .memories {
-    margin: 20px 0;
-  }
-  .edit-button {
-    margin-right: 10px;
+    margin: 40px 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.2px;
+    line-height: 1.25rem;
   }
 }
 footer.dailyLog-details {

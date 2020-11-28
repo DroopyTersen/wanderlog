@@ -31,7 +31,7 @@ export const TripsScreen = () => {
     <>
       {error && <div className="error">{error}</div>}
       {data?.trips && (
-        <Grid width="500px">
+        <Grid width="500px" gap="20px">
           {data.trips.map((trip) => (
             <TripCard key={trip.id} {...trip} />
           ))}

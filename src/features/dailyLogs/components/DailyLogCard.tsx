@@ -1,14 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import { TagsDisplay } from "core/components";
+import { MemoriesDisplay, MemoriesPreview } from "./Memories";
 
 interface Props {
   dailyLog: {
     id: number;
-    title: string;
     date: string;
     tags: { tag: { name: string; id: number } }[];
+    memories: string;
   };
   trip: {
     id: number;
@@ -18,9 +19,12 @@ interface Props {
 }
 
 export function DailyLogCard({ dailyLog, trip }: Props) {
-  const imgSrc = "/images/mountain-road.thumbnail.png";
+  let { pathname } = useLocation();
+  console.log("🚀 ~ file: DailyLogCard.tsx ~ line 23 ~ DailyLogCard ~ pathname", pathname);
+  let linkPrefix = pathname.toLowerCase().indexOf("/dailylogs") > -1 ? "" : "dailylogs/";
+  const imgSrc = "/images/mountain-road.thumbnail.jpg";
   return (
-    <Link to={dailyLog.id + ""}>
+    <Link to={linkPrefix + dailyLog.id + ""}>
       <div className="card daily-log-card">
         <h2 className="dailyLog-title">
           <span className="day">{dayjs(dailyLog.date).format("ddd")}</span>
@@ -30,18 +34,20 @@ export function DailyLogCard({ dailyLog, trip }: Props) {
           <div className="photo">
             <img src={imgSrc} />
           </div>
-          <div>
-            {trip?.title && (
-              <div className="daily-log-trip">
-                <span className="day-count">
-                  Day {dayjs(dailyLog.date).diff(dayjs(trip?.start), "day") + 1}:
-                </span>
-                <Link to={"/trips/" + trip.id}>{trip.title}</Link>
-              </div>
-            )}
-            <TagsDisplay tags={dailyLog.tags.map((t) => t.tag.name)} />
+          <div className="column-two">
+            <div className="day-count">
+              Day {dayjs(dailyLog.date).diff(dayjs(trip?.start), "day") + 1}
+            </div>
+            <div>
+              <i>Places will go here</i>
+            </div>
+            <TagsDisplay tags={dailyLog.tags} />
           </div>
         </div>
+        {/* <MemoriesPreview
+          memories={dailyLog.memories.slice(0)}
+          className="preview"
+        ></MemoriesPreview> */}
       </div>
     </Link>
   );

@@ -3,7 +3,7 @@ import { createClient, Provider as GraphQLProvider, dedupExchange, fetchExchange
 import { devtoolsExchange } from "@urql/devtools";
 import { getCurrentUserFromCache } from "features/auth/auth.utils";
 import { retryExchange } from "@urql/exchange-retry";
-const schema = require("./gql.schema.json");
+const schema = require("../gql.schema.json");
 import { cacheExchange } from "@urql/exchange-graphcache";
 // import { offlineExchange } from "@urql/exchange-graphcache";
 // import { makeDefaultStorage } from "@urql/exchange-graphcache/default-storage";

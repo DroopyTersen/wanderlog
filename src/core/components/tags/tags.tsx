@@ -35,8 +35,8 @@ export function TagsDisplay({ tags, ...rest }) {
   return (
     <div className="tags" {...rest}>
       {tags?.map((tag) => (
-        <div key={tag} className="tag">
-          {tag}
+        <div key={tag?.tag?.id ?? tag} className="tag">
+          {tag?.tag?.name || tag}
         </div>
       ))}
     </div>

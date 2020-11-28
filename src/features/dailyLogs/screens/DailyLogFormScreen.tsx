@@ -16,9 +16,17 @@ export function DailyLogFormScreen() {
     successRedirect: (data) =>
       tripId ? `/trips/${tripId}/dailyLogs/${data.dailyLog.id}` : `/dailyLogs/${data.dailyLog.id}`,
   });
+  console.log("🚀 | DailyLogFormScreen | tripId", tripId, data, fetching);
 
-  if (!fetching) {
-    return <DailyLogForm values={toFormValues(data?.dailyLog)} save={save} trip={data?.trip} />;
+  if (!dailyLogId || data?.dailyLog) {
+    return (
+      <DailyLogForm
+        key={tripId}
+        values={toFormValues(data?.dailyLog)}
+        save={save}
+        trip={data?.trip}
+      />
+    );
   }
   return <div>Loading...</div>;
 }

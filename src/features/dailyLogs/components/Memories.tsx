@@ -1,11 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-export function MemoriesDisplay({ memories, ...rest }) {
+export function MemoriesDisplay({ memories, className = "", ...rest }) {
   let items = typeof memories === "string" ? memories.trim().split("\n").filter(Boolean) : memories;
   return (
-    <div {...rest} className="memories stack">
+    <div {...rest} className={"memories stack " + className}>
       {items?.map((item) => (
         <div key={item} className="card">
+          {item}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function MemoriesPreview({ memories, className = "", ...rest }) {
+  let items = typeof memories === "string" ? memories.trim().split("\n").filter(Boolean) : memories;
+  return (
+    <div {...rest} className={"memories " + className}>
+      {items?.map((item) => (
+        <div key={item} className="truncate">
           {item}
         </div>
       ))}
