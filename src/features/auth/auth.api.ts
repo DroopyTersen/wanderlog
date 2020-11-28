@@ -1,4 +1,4 @@
-import { client } from "global/UrqlProvider";
+import { client } from "global/providers/UrqlProvider";
 import { cacheCurrentUser, getCurrentUserFromCache } from "./auth.utils";
 
 export const login = async ({ username, password }) => {
