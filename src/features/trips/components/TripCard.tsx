@@ -19,7 +19,7 @@ export const TripCard = (trip: TripCardProps) => {
           <h2 className="trip-title">{trip.title}</h2>
           <div className="destination">{trip.destination || "Destination Unknown"}</div>
         </div>
-        <div className="card-thumbnail">
+        <div className="overlay card-thumbnail">
           <img src="/images/mountain-road.thumbnail.jpg" />
           <BigMonth date={trip.start} className="shadowed" />
         </div>

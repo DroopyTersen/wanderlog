@@ -5,24 +5,9 @@
   gap: 20px;
 
   .card-thumbnail {
-    position: relative;
     height: 70px;
-    display: grid;
-    place-items: center;
-    background: #000;
     border-radius: 5px;
-    overflow: hidden;
-    img {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      z-index: 0;
-      object-fit: cover;
-      height: 100%;
-      opacity: 0.75;
-    }
+
     .big-date {
       z-index: 1;
     }

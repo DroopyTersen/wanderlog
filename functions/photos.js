@@ -3,7 +3,7 @@ const AZURE_STORAGE_CONTAINER = "photos";
 
 exports.handler = async function (event) {
   let filepath = event.path.replace("/api/photos/", "");
-  console.log(event);
+  // console.log(event);
   if (filepath) {
     if (event.httpMethod === "GET") {
       return getPhoto(filepath);
@@ -19,11 +19,16 @@ exports.handler = async function (event) {
 };
 
 async function uploadPhoto({ filepath, body }) {
+  var matches = body.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+  var type = matches[1];
+  var buffer = Buffer.from(matches[2], "base64");
+
   let blobClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION)
     .getContainerClient(AZURE_STORAGE_CONTAINER)
     .getBlockBlobClient(filepath);
 
-  await blobClient.upload(body, Buffer.byteLength(body));
+  await blobClient.uploadData(buffer, buffer.length);
+
   return {
     statusCode: "204",
   };

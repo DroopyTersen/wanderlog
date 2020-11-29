@@ -8,10 +8,13 @@ html {
 .content {
   padding: 50px 15px 120px;
 }
-
+.shadowed {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+}
 @import "../core/components/typography/typography.scss";
 @import "../core/components/inputs/inputs.scss";
 @import "../core/components/layout/layout.scss";
 @import "../core/components/surfaces/surfaces.scss";
 @import "../features/trips/trips.scss";
 @import "../features/dailyLogs/dailyLogs.scss";
+@import "../features/photos/photos.scss";

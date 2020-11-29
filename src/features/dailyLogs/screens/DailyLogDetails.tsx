@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { AddButton, AppBackground, Footer } from "global/components";
-import { TagsDisplay } from "core/components";
+import { Grid, TagsDisplay } from "core/components";
 import { useMutation, useQuery } from "urql";
 import { MemoriesDisplay } from "../components/Memories";
+import { PhotoUploader } from "features/photos/PhotoUploader";
 
 function useDelete(id, tripId) {
   let navigate = useNavigate();
@@ -27,6 +28,12 @@ export default function DailyLogDetails() {
     query: QUERY,
     variables: { dailyLogId, tripId },
     pause: !dailyLogId,
+  });
+
+  let [{ data: secondaryData }, reexecuteSecondaryQuery] = useQuery({
+    query: SECONDARY_QUERY,
+    variables: { date: data?.dailyLog?.date },
+    pause: !data?.dailyLog?.date,
   });
   let trip = data?.trip || null;
   let dailyLog = data?.dailyLog;
@@ -53,7 +60,19 @@ export default function DailyLogDetails() {
         <div className="memories">
           <MemoriesDisplay memories={dailyLog.memories} />
         </div>
+
+        <section className="photos">
+          <div className="photo-grid">
+            <PhotoUploader date={dailyLog.date} onSuccess={() => reexecuteSecondaryQuery()} />
+            {(secondaryData?.photos || []).map((photo) => (
+              <div key={photo.id}>
+                <img src={photo.thumbnail} />
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
+
       <Footer>
         <button className="scary" onClick={deleteDailyLog} disabled={isDeleting}>
           Delete
@@ -97,6 +116,17 @@ const QUERY = `query GetDailyLog($dailyLogId:Int!, $tripId: Int!) {
       end
     }
   }`;
+
+const SECONDARY_QUERY = `
+query getContentByDate($date: date!) {
+    photos(where: {date: {_eq: $date}}, order_by: {created_at: desc}) {
+      thumbnail
+      url
+      id
+    }
+  }
+   
+  `;
 
 const DELETE_MUTATION = `
 mutation DeleteDailyLog($id:Int!) {
