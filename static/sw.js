@@ -18,6 +18,15 @@ self.addEventListener("fetch", function (event) {
     event.respondWith(caches.match("index.html"));
     return;
   }
+  if (event.request.url.toLowerCase().indexOf("/api/photos") > -1) {
+    event.respondWith(
+      getFromCache(event.request).then((res) => {
+        if (res) return res;
+        return fetchAndSetCache(event.request);
+      })
+    );
+    return;
+  }
   event.respondWith(
     fetch(event.request).catch(function () {
       return caches.match(event.request);
@@ -50,6 +59,7 @@ function clearOldCache() {
 function fetchAndSetCache(request) {
   return caches.open(CACHE_KEY).then(function (cache) {
     return fetch(request).then(function (response) {
+      console.log("CACHING", request.url);
       cache.put(request, response.clone());
       return response;
     });
