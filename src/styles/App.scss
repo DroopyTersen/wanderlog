@@ -5,6 +5,10 @@ html {
   background: var(--gradientBackground);
 }
 
+body.noscroll {
+  overflow: hidden;
+}
+
 .content {
   padding: 50px 15px 120px;
 }

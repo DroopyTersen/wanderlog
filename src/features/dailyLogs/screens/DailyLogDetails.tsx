@@ -32,7 +32,6 @@ export default function DailyLogDetails() {
   });
 
   let dailyLog = data?.dailyLog;
-  console.log("🚀 | DailyLogDetails | dailyLog", tripId, dailyLogId, dailyLog);
 
   if (!dailyLog) return null;
   let trip = dailyLog?.trip || null;
@@ -108,7 +107,7 @@ query GetDailyLog($id: Int!) {
       start
       end
     }
-    photos {
+    photos(order_by: {date: desc, created_at: desc}) {
       id
       thumbnail
       url

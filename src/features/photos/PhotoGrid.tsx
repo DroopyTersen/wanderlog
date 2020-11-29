@@ -1,12 +1,14 @@
 import { Button } from "core/components";
+import { useDisableBodyScroll } from "core/hooks/useDisableBodyScroll";
 import { Footer } from "global/components";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { PhotoUploader } from "./PhotoUploader";
 
 export function PhotoGrid({ photos = [], date, onSuccess }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  useDisableBodyScroll(selectedPhoto !== null);
   return (
     <>
       <div className="photo-grid">

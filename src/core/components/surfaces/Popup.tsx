@@ -4,6 +4,7 @@ import { Button } from "../inputs/buttons";
 import { IoMdClose } from "react-icons/io";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import { Link } from "react-router-dom";
+import { useDisableBodyScroll } from "core/hooks/useDisableBodyScroll";
 export function Popup({ isOpen, close, title, children, className = "", titleHref = "" }) {
   let handleClick = useCallback(
     (event) => {
@@ -13,6 +14,7 @@ export function Popup({ isOpen, close, title, children, className = "", titleHre
     },
     [children, close]
   );
+  useDisableBodyScroll(isOpen);
   return (
     <div className={["popup", className, isOpen ? "open" : "closed"].filter(Boolean).join(" ")}>
       <Button className="popup-close" onClick={close}>

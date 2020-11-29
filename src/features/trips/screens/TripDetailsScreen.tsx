@@ -95,7 +95,7 @@ query getTripById($id: Int!) {
         id
       }
     }
-    dailyLogs {
+    dailyLogs(order_by: {date: asc}) {
       id
       date
       memories
@@ -107,7 +107,7 @@ query getTripById($id: Int!) {
           id
         }
       }
-      photos {
+      photos(order_by: {date: desc, created_at: desc}) {
         id
         thumbnail
         url
@@ -115,8 +115,6 @@ query getTripById($id: Int!) {
     }
   }
 }
-
-
   `;
 
 export const DELETE_MUTATION = `
