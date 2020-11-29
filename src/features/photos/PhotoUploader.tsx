@@ -72,8 +72,9 @@ export function PhotoUploader({ date, onSuccess }: Props) {
           </Button>
         </>
       )}
-      {status !== "empty" && status !== "previewing" && <div className="status">{status}</div>}
-
+      {status !== "empty" && status !== "previewing" && (
+        <div className="status opacity-pulse">{status}</div>
+      )}
       {imgSrc && <img src={imgSrc} />}
     </div>
   );
