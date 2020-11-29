@@ -6,6 +6,7 @@ import { Grid, TagsDisplay } from "core/components";
 import { useMutation, useQuery } from "urql";
 import { MemoriesDisplay } from "../components/Memories";
 import { PhotoUploader } from "features/photos/PhotoUploader";
+import { PhotoGrid } from "features/photos/PhotoGrid";
 
 function useDelete(id, tripId) {
   let navigate = useNavigate();
@@ -62,14 +63,11 @@ export default function DailyLogDetails() {
         </div>
 
         <section className="photos">
-          <div className="photo-grid">
-            <PhotoUploader date={dailyLog.date} onSuccess={() => reexecuteSecondaryQuery()} />
-            {(secondaryData?.photos || []).map((photo) => (
-              <div key={photo.id}>
-                <img src={photo.thumbnail} />
-              </div>
-            ))}
-          </div>
+          <PhotoGrid
+            photos={secondaryData?.photos}
+            date={dailyLog?.date}
+            onSuccess={() => reexecuteSecondaryQuery()}
+          />
         </section>
       </div>
 
