@@ -10,6 +10,11 @@ interface Props {
     date: string;
     tags: { tag: { name: string; id: number } }[];
     memories: string;
+    photos?: {
+      id: number;
+      date: string;
+      thumbnail: string;
+    }[];
   };
   trip: {
     id: number;
@@ -18,11 +23,17 @@ interface Props {
   };
 }
 
+const getRandomPhoto = (photos = []) => {
+  if (!photos.length) return "/images/mountain-road.thumbnail.jpg";
+
+  return photos.map((p) => p.thumbnail)[Math.floor(Math.random() * photos.length)];
+};
+
 export function DailyLogCard({ dailyLog, trip }: Props) {
   let { pathname } = useLocation();
   console.log("🚀 ~ file: DailyLogCard.tsx ~ line 23 ~ DailyLogCard ~ pathname", pathname);
   let linkPrefix = pathname.toLowerCase().indexOf("/dailylogs") > -1 ? "" : "dailylogs/";
-  const imgSrc = "/images/mountain-road.thumbnail.jpg";
+  const imgSrc = getRandomPhoto(dailyLog.photos);
   return (
     <Link to={linkPrefix + dailyLog.id + ""}>
       <div className="card daily-log-card">

@@ -7,22 +7,27 @@ import { TripCard } from "../components/TripCard";
 
 const QUERY = `
 query getTrips {
-    trips(order_by: {end: desc, title: asc}) {
+  trips(order_by: {end: desc, title: asc}) {
+    id
+    title
+    destination
+    start
+    end
+    tags {
+      tag_id
+      trip_id
+      tag {
+        name
         id
-        title
-        destination
-        start
-        end
-        tags {
-          tag_id
-          trip_id
-          tag {
-              name
-              id
-          }
       }
     }
-}   
+    photos {
+      id
+      thumbnail
+    }
+  }
+}
+ 
 `;
 
 export const TripsScreen = () => {

@@ -25,22 +25,17 @@ export default function DailyLogDetails() {
   let { tripId = 0, dailyLogId } = useParams();
   let [deleteDailyLog, isDeleting] = useDelete(dailyLogId, tripId);
 
-  let [{ data, fetching, error }] = useQuery({
+  let [{ data, fetching, error }, reexecuteQuery] = useQuery({
     query: QUERY,
-    variables: { dailyLogId, tripId },
+    variables: { id: dailyLogId },
     pause: !dailyLogId,
   });
 
-  let [{ data: secondaryData }, reexecuteSecondaryQuery] = useQuery({
-    query: SECONDARY_QUERY,
-    variables: { date: data?.dailyLog?.date },
-    pause: !data?.dailyLog?.date,
-  });
-  let trip = data?.trip || null;
   let dailyLog = data?.dailyLog;
   console.log("🚀 | DailyLogDetails | dailyLog", tripId, dailyLogId, dailyLog);
 
   if (!dailyLog) return null;
+  let trip = dailyLog?.trip || null;
 
   return (
     <>
@@ -64,9 +59,9 @@ export default function DailyLogDetails() {
 
         <section className="photos">
           <PhotoGrid
-            photos={secondaryData?.photos}
+            photos={dailyLog?.photos}
             date={dailyLog?.date}
-            onSuccess={() => reexecuteSecondaryQuery()}
+            onSuccess={() => reexecuteQuery()}
           />
         </section>
       </div>
@@ -93,37 +88,33 @@ export default function DailyLogDetails() {
   );
 }
 
-const QUERY = `query GetDailyLog($dailyLogId:Int!, $tripId: Int!) {
-    dailyLog: dailylogs_by_pk(id: $dailyLogId) {
-      id
-      date
-      memories
-      tags {
-        tag_id
-        dailylog_id
-        tag {
-          name
-          id
-        }
+const QUERY = `
+query GetDailyLog($id: Int!) {
+  dailyLog: dailylogs_by_pk(id: $id) {
+    id
+    date
+    memories
+    tags {
+      tag_id
+      dailylog_id
+      tag {
+        name
+        id
       }
     }
-    trip: trips_by_pk(id: $tripId) {
+    trip {
       id
       title
       start
       end
     }
-  }`;
-
-const SECONDARY_QUERY = `
-query getContentByDate($date: date!) {
-    photos(where: {date: {_eq: $date}}, order_by: {created_at: desc}) {
+    photos {
+      id
       thumbnail
       url
-      id
     }
   }
-   
+}
   `;
 
 const DELETE_MUTATION = `

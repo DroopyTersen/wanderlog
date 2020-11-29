@@ -10,7 +10,17 @@ export interface TripCardProps {
   start: string;
   end: string;
   tags: { tag: { name: string; id: number } }[];
+  photos?: {
+    id: number;
+    thumbnail: string;
+  }[];
 }
+
+const getRandomPhoto = (photos = []) => {
+  if (!photos.length) return "/images/mountain-road.thumbnail.jpg";
+
+  return photos.map((p) => p.thumbnail)[Math.floor(Math.random() * photos.length)];
+};
 export const TripCard = (trip: TripCardProps) => {
   return (
     <Link to={"/trips/" + trip.id}>
@@ -20,7 +30,7 @@ export const TripCard = (trip: TripCardProps) => {
           <div className="destination">{trip.destination || "Destination Unknown"}</div>
         </div>
         <div className="overlay card-thumbnail">
-          <img src="/images/mountain-road.thumbnail.jpg" />
+          <img src={getRandomPhoto(trip.photos)} />
           <BigMonth date={trip.start} className="shadowed" />
         </div>
         {!!trip.tags.length && <TagsDisplay tags={trip.tags} />}

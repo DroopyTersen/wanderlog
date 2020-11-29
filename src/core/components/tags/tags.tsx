@@ -7,12 +7,16 @@ export interface TagsInputProps {
   initialTags: string[];
 }
 const processTags = (tagsStr) => {
-  return tagsStr
-    .replace(/, /g, ",")
-    .replace(/ /g, ",")
-    .split(",")
-    .map((tag) => slugify(tag.trim().toLowerCase()))
-    .filter(Boolean);
+  return Array.from(
+    new Set(
+      tagsStr
+        .replace(/, /g, ",")
+        .replace(/ /g, ",")
+        .split(",")
+        .map((tag) => slugify(tag.trim().toLowerCase()))
+        .filter(Boolean)
+    )
+  );
 };
 export function TagsInput({ onChange, initialTags = [], ...rest }) {
   let [value, setValue] = useState(initialTags.join(", "));

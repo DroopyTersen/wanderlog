@@ -51,7 +51,7 @@ export const TripDetailsScreen = () => {
 
           <section className="daily-logs">
             <Grid width="400px" className="daily-logs-grid" gap="20px">
-              {data.dailyLogs.map((dailyLog) => (
+              {trip.dailyLogs.map((dailyLog) => (
                 <DailyLogCard key={dailyLog.id} dailyLog={dailyLog} trip={trip} />
               ))}
             </Grid>
@@ -95,21 +95,27 @@ query getTripById($id: Int!) {
         id
       }
     }
-  }
-  dailyLogs: dailylogs_by_trip(args: {trip_id: $id}, order_by: {date: asc}) {
-    id
-    date
-    memories
-    tags {
-      tag_id
-      dailylog_id
-      tag {
-        name
+    dailyLogs {
+      id
+      date
+      memories
+      tags {
+        tag_id
+        dailylog_id
+        tag {
+          name
+          id
+        }
+      }
+      photos {
         id
+        thumbnail
+        url
       }
     }
   }
 }
+
 
   `;
 
