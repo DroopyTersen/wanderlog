@@ -31,6 +31,9 @@ const cache = cacheExchange({
       insert_photos_one: (result, args, cache, info) => {
         cache.invalidate({ __typename: "photos", id: info.variables.id + "" });
       },
+      delete_photos_by_pk: (result, args, cache, info) => {
+        cache.invalidate({ __typename: "photos", id: info.variables.id + "" });
+      },
     },
   },
   optimistic: {

@@ -9,6 +9,8 @@ exports.handler = async function (event) {
       return getPhoto(filepath);
     } else if (event.httpMethod === "POST" && event.body) {
       return uploadPhoto({ filepath, body: event.body });
+    } else if (event.httpMethod === "DELETE") {
+      return deletePhoto(filepath);
     }
   }
 
@@ -18,6 +20,17 @@ exports.handler = async function (event) {
   };
 };
 
+async function deletePhoto(filepath) {
+  let blobClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION)
+    .getContainerClient(AZURE_STORAGE_CONTAINER)
+    .getBlobClient(filepath);
+
+  await blobClient.deleteIfExists();
+
+  return {
+    statusCode: "204",
+  };
+}
 async function uploadPhoto({ filepath, body }) {
   var matches = body.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
   var type = matches[1];

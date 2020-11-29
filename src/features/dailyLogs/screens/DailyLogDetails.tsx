@@ -60,7 +60,7 @@ export default function DailyLogDetails() {
           <PhotoGrid
             photos={dailyLog?.photos}
             date={dailyLog?.date}
-            onSuccess={() => reexecuteQuery()}
+            onChange={() => reexecuteQuery()}
           />
         </section>
       </div>
@@ -111,6 +111,7 @@ query GetDailyLog($id: Int!) {
       id
       thumbnail
       url
+      date
     }
   }
 }

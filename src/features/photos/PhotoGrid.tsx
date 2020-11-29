@@ -1,18 +1,28 @@
 import { Button } from "core/components";
 import { useDisableBodyScroll } from "core/hooks/useDisableBodyScroll";
-import { Footer } from "global/components";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import { useMutation } from "urql";
 import { PhotoUploader } from "./PhotoUploader";
 
-export function PhotoGrid({ photos = [], date, onSuccess }) {
+export function PhotoGrid({ photos = [], date, onChange }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [{ fetching: isDeleting }, deleteMutation] = useMutation(DELETE_MUTATION);
+
+  const deletePhoto = async () => {
+    let photo = photos[selectedPhoto];
+    if (photo) {
+      await Promise.all([await deletePhotoBlobs(photo), await deleteMutation({ id: photo.id })]);
+      setSelectedPhoto(null);
+      // onChange();
+    }
+  };
   useDisableBodyScroll(selectedPhoto !== null);
   return (
     <>
       <div className="photo-grid">
-        <PhotoUploader date={date} onSuccess={onSuccess} />
+        <PhotoUploader date={date} onSuccess={onChange} />
         {(photos || []).map((photo, index) => (
           <div key={photo.id} onClick={() => setSelectedPhoto(index)}>
             <img src={photo.thumbnail} />
@@ -25,9 +35,25 @@ export function PhotoGrid({ photos = [], date, onSuccess }) {
             <IoMdClose />
           </Button>
           <img src={photos[selectedPhoto].url} />
-          <button className="delete scary">Delete</button>
+          <div className="footer">
+            <button className="delete scary" disabled={isDeleting} onClick={deletePhoto}>
+              Delete
+            </button>
+          </div>
         </div>
       )}
     </>
   );
 }
+
+async function deletePhotoBlobs({ id, url, thumbnail }) {
+  return Promise.all([fetch(url, { method: "DELETE" }), fetch(thumbnail, { method: "DELETE" })]);
+}
+
+const DELETE_MUTATION = `
+mutation deletePhoto($id: Int!) {
+  delete_photos_by_pk(id: $id) {
+    id
+  }
+}
+`;

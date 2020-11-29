@@ -49,9 +49,7 @@ export function DailyLogCard({ dailyLog, trip }: Props) {
             <div className="day-count">
               Day {dayjs(dailyLog.date).diff(dayjs(trip?.start), "day") + 1}
             </div>
-            <div>
-              <i>Places will go here</i>
-            </div>
+            <div className="places">Places will go here</div>
             <TagsDisplay tags={dailyLog.tags} />
           </div>
         </div>

@@ -76,9 +76,13 @@
     top: 10px;
     right: 10px;
   }
-  .delete {
+  .footer {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
   }
 }
