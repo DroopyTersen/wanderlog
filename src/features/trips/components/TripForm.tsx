@@ -1,9 +1,9 @@
 import React from "react";
-import { PageTitle, TagsInput } from "core/components";
+import { PageTitle, Tag, TagPicker, TagsInput } from "core/components";
 import { useFormStateMachine } from "core/hooks/useForm";
 import { Footer } from "global/components";
 
-export function TripForm({ values, save }: TripFormProps) {
+export function TripForm({ values, save, availableTags }: TripFormProps) {
   let form = useFormStateMachine<TripFormValues>({
     values,
     validate: validateTrip,
@@ -33,11 +33,14 @@ export function TripForm({ values, save }: TripFormProps) {
           Primary Destination
           <textarea rows={3} {...form.getInputProps("destination")} />
         </label>
-        <TagsInput
-          name="tags"
-          initialTags={form.values.tags}
-          onChange={(value) => form.actions.updateField({ field: "tags", value })}
-        />
+        <label htmlFor="tags">
+          Tags
+          <TagPicker
+            availableTags={availableTags}
+            values={values.tags.map((t) => t.id)}
+            onChange={(value) => form.actions.updateField({ field: "tags", value })}
+          />
+        </label>
       </form>
       <Footer>
         <button type="button" onClick={() => window.history.back()}>
@@ -61,12 +64,13 @@ export interface TripFormValues {
   start: string;
   end: string;
   destination?: string;
-  tags: string[];
+  tags: Tag[];
 }
 
 interface TripFormProps {
   values: TripFormValues;
   save: (values: TripFormValues) => Promise<any>;
+  availableTags: Tag[];
 }
 
 export const validateTrip = (values: TripFormValues) => {

@@ -1,5 +1,5 @@
 import { useConditionalRedirect } from "core/hooks/useConditionalEffect";
-import { processTags } from "features/tags/tags.data";
+// import { processTags } from "features/tags/tags.data";
 import { useMutation, useQuery, UseQueryArgs, UseQueryState } from "urql";
 
 export interface ResourceWithTagsHookConfig<T> {
@@ -34,9 +34,9 @@ export function useResourceWithTags<T extends { tags: any } = any>({
   const save = (values) => {
     console.log("SAVE", resourceId, values);
     if (parseInt(resourceId + "")) {
-      return updateWithTags(values, updateMutation, queryResult.data.tags, tagKey);
+      return updateWithTags(values, updateMutation, tagKey);
     } else {
-      return insertWithTags(values, insertMutation, queryResult.data.tags);
+      return insertWithTags(values, insertMutation);
     }
   };
 
@@ -48,10 +48,12 @@ export function useResourceWithTags<T extends { tags: any } = any>({
   };
 }
 
-export const updateWithTags = async (values: any, mutation, existingTags, tagKey) => {
+export const updateWithTags = async (values: any, mutation, tagKey) => {
   let { tags = [], id, ...formFields } = values;
 
-  let { existingTagIds, newTagNames } = processTags(tags, existingTags);
+  let existingTagIds = tags.filter((t) => t.id !== -1).map((t) => t.id);
+  let newTagNames = tags.filter((t) => t.id === -1).map((t) => t.name);
+
   let tagsInput = [
     ...newTagNames.map((name) => ({
       tag: {
@@ -71,9 +73,11 @@ export const updateWithTags = async (values: any, mutation, existingTags, tagKey
   return data;
 };
 
-export const insertWithTags = async (values: any, mutation, existingTags) => {
-  let { tags: tagNames = [], ...formFields } = values;
-  let { newTagNames, existingTagIds } = processTags(tagNames, existingTags);
+export const insertWithTags = async (values: any, mutation) => {
+  let { tags = [], ...formFields } = values;
+  let existingTagIds = tags.filter((t) => t.id !== -1).map((t) => t.id);
+  let newTagNames = tags.filter((t) => t.id === -1).map((t) => t.name);
+
   let tagsInput = [
     ...newTagNames.map((name) => ({ tag: { data: { name } } })),
     ...existingTagIds.map((tag_id) => ({ tag_id })),

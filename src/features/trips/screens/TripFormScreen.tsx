@@ -17,7 +17,7 @@ export function TripFormScreen() {
   });
 
   if (!fetching && !error) {
-    return <TripForm values={toFormValues(data?.trip)} save={save} />;
+    return <TripForm values={toFormValues(data?.trip)} save={save} availableTags={data?.tags} />;
   }
 
   return <div>Loading...</div>;
@@ -120,6 +120,6 @@ const toFormValues = (item): TripFormValues => {
   if (!item) return EMPTY_TRIP;
   return {
     ...pick(item, ["id", "title", "destination", "start", "end"]),
-    tags: item?.tags?.map((data) => data?.tag?.name).filter(Boolean),
+    tags: item?.tags?.map(({ tag }) => tag),
   };
 };
