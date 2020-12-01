@@ -11,6 +11,8 @@
   framework = "#custom"
 
 
+
+
 [[redirects]]
   from = '/api/*'
   to = '/.netlify/functions/:splat'
@@ -18,5 +20,5 @@
 
 [[redirects]]
   from = '/*'
-  to = '/:splat'
+  to = '/index.html'
   status = 200

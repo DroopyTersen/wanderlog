@@ -5,7 +5,16 @@ import { IoMdClose } from "react-icons/io";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import { Link } from "react-router-dom";
 import { useDisableBodyScroll } from "core/hooks/useDisableBodyScroll";
-export function Popup({ isOpen, close, title, children, className = "", titleHref = "" }) {
+export function Popup({
+  isOpen,
+  close,
+  title,
+  children,
+  elem = undefined,
+  className = "",
+  titleHref = "",
+  ...rest
+}) {
   let handleClick = useCallback(
     (event) => {
       if (event.target.tagName === "A") {
@@ -15,8 +24,12 @@ export function Popup({ isOpen, close, title, children, className = "", titleHre
     [children, close]
   );
   useDisableBodyScroll(isOpen);
+  let Elem = elem || "div";
   return (
-    <div className={["popup", className, isOpen ? "open" : "closed"].filter(Boolean).join(" ")}>
+    <Elem
+      className={["popup", className, isOpen ? "open" : "closed"].filter(Boolean).join(" ")}
+      {...rest}
+    >
       <Button className="popup-close" onClick={close}>
         <IoMdClose />
       </Button>
@@ -29,7 +42,7 @@ export function Popup({ isOpen, close, title, children, className = "", titleHre
       <div className="popup-content" onClick={handleClick}>
         {children}
       </div>
-    </div>
+    </Elem>
   );
 }
 

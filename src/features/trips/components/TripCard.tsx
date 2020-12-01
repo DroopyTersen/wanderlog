@@ -2,6 +2,7 @@ import { BigMonth, Img, TagsDisplay } from "core/components";
 import React from "react";
 import { Link } from "react-router-dom";
 import { BLURRED_PHOTOS } from "global/components/AppBackground/AppBackground";
+import { motion } from "framer-motion";
 
 export interface TripCardProps {
   id: number;
@@ -27,9 +28,11 @@ export const TripCard = (trip: TripCardProps) => {
   const randomPhoto = getRandomPhoto(trip.photos);
   return (
     <Link to={"/trips/" + trip.id}>
-      <div className="card trip-card trip">
+      <motion.div className="card trip-card trip" layoutId={`trip-container-${trip.id}`}>
         <div>
-          <h2 className="trip-title">{trip.title}</h2>
+          <motion.h2 className="trip-title" layoutId={`trip-title-${trip.id}`}>
+            {trip.title}
+          </motion.h2>
           <div className="destination">{trip.destination || "Destination Unknown"}</div>
         </div>
         <div className="overlay card-thumbnail">
@@ -37,7 +40,7 @@ export const TripCard = (trip: TripCardProps) => {
           <BigMonth date={trip.start} className="text-shadowed" />
         </div>
         {!!trip.tags.length && <TagsDisplay tags={trip.tags} />}
-      </div>
+      </motion.div>
     </Link>
   );
 };

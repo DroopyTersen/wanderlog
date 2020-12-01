@@ -9,7 +9,6 @@ export function Img({ initial = "", src = DEFAULT, fallback = DEFAULT, opacity =
   // console.log("🚀 | Img | src", src, initial);
   let [imgSrc, setImgSrc] = useState(initial);
   let fallbackRef = useRef(fallback);
-  console.log("imgSrc", imgSrc, initial, src);
   useEffect(() => {
     fallbackRef.current = fallback;
   });

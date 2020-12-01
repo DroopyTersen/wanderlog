@@ -1,4 +1,4 @@
-import { BigMonth, Grid, PageTitle, TagsDisplay } from "core/components";
+import { BigMonth, Grid, Loader, PageTitle, TagsDisplay } from "core/components";
 import { calcNumDays, displayDate, displayDateRange } from "core/utils";
 import dayjs from "dayjs";
 import { DailyLogCard } from "features/dailyLogs/components/DailyLogCard";
@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
+import { motion, AnimatePresence } from "framer-motion";
 
 function useDelete(id) {
   let navigate = useNavigate();
@@ -30,57 +31,58 @@ export const TripDetailsScreen = () => {
     pause: !tripId,
   });
   let trip = data?.trip || null;
+  if (error) return <div className="error">{error}</div>;
+  if (!trip) return <Loader />;
 
   return (
-    <div className="trip trip-details">
-      {error && <div className="error">{error}</div>}
-      {trip && (
-        <>
+    <AnimatePresence>
+      <motion.div className="trip trip-details" layoutId={`trip-container-${trip.id}`}>
+        <motion.div layoutId={`trip-title-${trip.id}`}>
           <PageTitle className="trip-title greedy">{trip.title}</PageTitle>
-          <div className="row space-between date-row">
-            <div className="trip-dates">
-              <div className="num-days">
-                <span>{calcNumDays(trip.start, trip.end)}</span> days
-              </div>
-              <div className="date">{displayDateRange(trip.start, trip.end)}</div>
+        </motion.div>
+        <div className="row space-between date-row">
+          <div className="trip-dates">
+            <div className="num-days">
+              <span>{calcNumDays(trip.start, trip.end)}</span> days
             </div>
-            <BigMonth date={trip.start} />
+            <div className="date">{displayDateRange(trip.start, trip.end)}</div>
           </div>
-          {/* <div className="destination">{trip.destination || "Destination Unknown"}</div> */}
-          {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
+          <BigMonth date={trip.start} />
+        </div>
+        {/* <div className="destination">{trip.destination || "Destination Unknown"}</div> */}
+        {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
 
-          <section className="daily-logs">
-            <Grid width="400px" className="daily-logs-grid" gap="20px">
-              {trip.dailyLogs.map((dailyLog) => (
-                <DailyLogCard
-                  key={dailyLog.id}
-                  dailyLog={dailyLog}
-                  trip={trip}
-                  getLink={({ id }) => `dailylogs-${id}`}
-                />
-              ))}
-            </Grid>
-          </section>
+        <section className="daily-logs">
+          <Grid width="400px" className="daily-logs-grid" gap="20px">
+            {trip.dailyLogs.map((dailyLog) => (
+              <DailyLogCard
+                key={dailyLog.id}
+                dailyLog={dailyLog}
+                trip={trip}
+                getLink={({ id }) => `dailylogs-${id}`}
+              />
+            ))}
+          </Grid>
+        </section>
 
-          <Footer>
-            <button className="scary" onClick={deleteTrip} disabled={isDeleting}>
-              Delete
+        <Footer>
+          <button className="scary" onClick={deleteTrip} disabled={isDeleting}>
+            Delete
+          </button>
+
+          <Link to={`/trips/${trip.id}/edit`}>
+            <button disabled={isDeleting} className="gold">
+              Edit
             </button>
-
-            <Link to={`/trips/${trip.id}/edit`}>
-              <button disabled={isDeleting} className="gold">
-                Edit
-              </button>
-            </Link>
-            <AddButton>
-              <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
-              <Link to={"/photos/new?tripId=" + trip.id}>Photo</Link>
-              <Link to={`/trips/${trip.id}/dailylogs-new`}>Daily Log</Link>
-            </AddButton>
-          </Footer>
-        </>
-      )}
-    </div>
+          </Link>
+          <AddButton>
+            <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
+            <Link to={"/photos/new?tripId=" + trip.id}>Photo</Link>
+            <Link to={`/trips/${trip.id}/dailylogs-new`}>Daily Log</Link>
+          </AddButton>
+        </Footer>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

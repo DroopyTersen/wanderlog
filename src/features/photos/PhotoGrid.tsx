@@ -5,6 +5,7 @@ import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useMutation } from "urql";
 import { PhotoUploader } from "./PhotoUploader";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function PhotoGrid({ photos = [], date, onChange }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -24,24 +25,30 @@ export function PhotoGrid({ photos = [], date, onChange }) {
       <div className="photo-grid">
         <PhotoUploader date={date} onSuccess={onChange} />
         {(photos || []).map((photo, index) => (
-          <div key={photo.id} onClick={() => setSelectedPhoto(index)}>
+          <motion.div
+            layoutId={`photo-${photo.id}`}
+            key={photo.id}
+            onClick={() => setSelectedPhoto(index)}
+          >
             <Img initial={photo.blurred} src={photo.thumbnail} />
-          </div>
+          </motion.div>
         ))}
       </div>
-      {selectedPhoto !== null && (
-        <div className="photo-overlay">
-          <Button className="close" onClick={() => setSelectedPhoto(null)}>
-            <IoMdClose />
-          </Button>
-          <Img src={photos[selectedPhoto].url} />
-          <div className="footer">
-            <button className="delete scary" disabled={isDeleting} onClick={deletePhoto}>
-              Delete
-            </button>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {selectedPhoto !== null && (
+          <motion.div className="photo-overlay" layoutId={`photo-${photos[selectedPhoto].id}`}>
+            <Button className="close" onClick={() => setSelectedPhoto(null)}>
+              <IoMdClose />
+            </Button>
+            <Img src={photos[selectedPhoto].url} />
+            <div className="footer">
+              <button className="delete scary" disabled={isDeleting} onClick={deletePhoto}>
+                Delete
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
