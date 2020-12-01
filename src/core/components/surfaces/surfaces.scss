@@ -45,3 +45,9 @@ a > .card {
     z-index: 1;
   }
 }
+.loading {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}

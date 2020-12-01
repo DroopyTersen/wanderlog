@@ -1,4 +1,5 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
+const uuid = require("uuid").v4;
 const AZURE_STORAGE_CONTAINER = "photos";
 
 exports.handler = async function (event) {
@@ -60,6 +61,7 @@ async function getPhoto(filepath) {
   return {
     statusCode: 200,
     headers: {
+      "cache-control": "max-age=31540000",
       "Content-type": "image/jpeg",
     },
     body: base64Image,

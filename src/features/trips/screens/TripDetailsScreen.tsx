@@ -116,6 +116,7 @@ query getTripById($id: Int!) {
         id
         thumbnail
         url
+        blurred
       }
     }
   }

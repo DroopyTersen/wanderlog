@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import "./MenuTrigger.scss";
 
 const MenuTrigger = function ({ isActive, setIsActive }) {
   return (
     <>
-      <label className="menu-trigger">
+      <motion.label
+        className="menu-trigger"
+        initial={{ x: -10, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.25 }}
+      >
         <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />
         <div>
           <div>
@@ -14,7 +20,7 @@ const MenuTrigger = function ({ isActive, setIsActive }) {
           <svg dangerouslySetInnerHTML={{ __html: `<use xlink:href="#path"/>` }} />
           <svg dangerouslySetInnerHTML={{ __html: `<use xlink:href="#path"/>` }} />
         </div>
-      </label>
+      </motion.label>
 
       <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
         <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" id="path">

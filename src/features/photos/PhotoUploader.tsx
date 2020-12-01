@@ -4,6 +4,7 @@ import { useAuth } from "features/auth/auth.provider";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useMutation } from "urql";
+import { v4 as uuid } from "uuid";
 
 const FULL_SIZE = 1400;
 const THUMB_SIZE = 500;
@@ -36,8 +37,8 @@ export function PhotoUploader({ date, onSuccess }: Props) {
     if (hasFiles && date) {
       try {
         setStatus("saving");
-        let { url, thumbnail } = await resizeAndUpload(files[0], currentUser.username);
-        let photo = { date, url, thumbnail };
+        let { url, thumbnail, blurred } = await resizeAndUpload(files[0], currentUser.username);
+        let photo = { date, url, thumbnail, blurred };
         await insertMutation({ object: photo });
         clear();
         setStatus("empty");
@@ -81,16 +82,23 @@ export function PhotoUploader({ date, onSuccess }: Props) {
 }
 
 const resizeAndUpload = async (file: File, username: string) => {
-  let fullSizeUrl = `/api/photos/${username}/${file.name}`;
-  let thumbnailUrl = `/api/photos/${username}/thumbnail.${file.name}`;
-
-  let thumbnailImage = await resize(file, THUMB_SIZE);
+  let filename = uuid() + ".jpg";
+  let fullSizeUrl = `/api/photos/${username}/${filename}`;
+  let thumbnailUrl = `/api/photos/${username}/thumbnail.${filename}`;
+  let start = Date.now();
+  console.log("STARTING RESIZE", start);
+  let fullsizedImage = await resizeFile(file, FULL_SIZE);
+  let thumbnailImage = await resizeImage(fullsizedImage, THUMB_SIZE);
+  let blursizedImage = await resizeImage(thumbnailImage, 14);
+  console.log("BLUR SIZE BYTES= " + (blursizedImage + "").length);
+  console.log(blursizedImage);
+  let totalResizeTime = Date.now() - start;
+  console.log("TOTAL RESIZE TIME", totalResizeTime);
   await fetch(thumbnailUrl, {
     method: "POST",
     body: thumbnailImage,
   });
 
-  let fullsizedImage = await resize(file, FULL_SIZE);
   await fetch(fullSizeUrl, {
     method: "POST",
     body: fullsizedImage,
@@ -99,10 +107,11 @@ const resizeAndUpload = async (file: File, username: string) => {
   return {
     url: fullSizeUrl,
     thumbnail: thumbnailUrl,
+    blurred: blursizedImage,
   };
 };
 
-const resize = (file: File, maxSize): Promise<string> => {
+const resizeFile = (file: File, maxSize): Promise<string> => {
   return new Promise((resolve, reject) => {
     // Ensure it's an image
     if (file.type.match(/image.*/)) {
@@ -111,33 +120,39 @@ const resize = (file: File, maxSize): Promise<string> => {
       // Load the image
       var reader = new FileReader();
       reader.onload = function (readerEvent) {
-        var image = new Image();
-        image.onload = function (imageEvent) {
-          console.log("🚀 | doAsync | maxSize", maxSize);
-          // Resize the image
-          var canvas = document.createElement("canvas"),
-            width = image.width,
-            height = image.height;
-          if (width > height) {
-            if (width > maxSize) {
-              height *= maxSize / width;
-              width = maxSize;
-            }
-          } else {
-            if (height > maxSize) {
-              width *= maxSize / height;
-              height = maxSize;
-            }
-          }
-          canvas.width = width;
-          canvas.height = height;
-          canvas.getContext("2d").drawImage(image, 0, 0, width, height);
-          resolve(canvas.toDataURL("image/jpeg"));
-        };
-        image.src = readerEvent.target.result as any;
+        resolve(resizeImage(readerEvent?.target?.result as string, maxSize));
       };
       reader.readAsDataURL(file);
     }
+  });
+};
+
+const resizeImage = (imgSrc: string, maxSize): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    var image = new Image();
+    image.onload = function (imageEvent) {
+      console.log("🚀 | doAsync | maxSize", maxSize);
+      // Resize the image
+      var canvas = document.createElement("canvas"),
+        width = image.width,
+        height = image.height;
+      if (width > height) {
+        if (width > maxSize) {
+          height *= maxSize / width;
+          width = maxSize;
+        }
+      } else {
+        if (height > maxSize) {
+          width *= maxSize / height;
+          height = maxSize;
+        }
+      }
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+      resolve(canvas.toDataURL("image/jpeg"));
+    };
+    image.src = imgSrc;
   });
 };
 
@@ -148,6 +163,7 @@ mutation AddPhoto($object: photos_insert_input!) {
       thumbnail
       url
       date
+      blurred
     }
   }
   

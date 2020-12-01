@@ -1,7 +1,7 @@
-import { BigMonth, TagsDisplay } from "core/components";
-import { calcNumDays } from "core/utils";
+import { BigMonth, Img, TagsDisplay } from "core/components";
 import React from "react";
 import { Link } from "react-router-dom";
+import { BLURRED_PHOTOS } from "global/components/AppBackground/AppBackground";
 
 export interface TripCardProps {
   id: number;
@@ -13,15 +13,18 @@ export interface TripCardProps {
   photos?: {
     id: number;
     thumbnail: string;
+    blurred: string;
   }[];
 }
 
 const getRandomPhoto = (photos = []) => {
-  if (!photos.length) return "/images/mountain-road.thumbnail.jpg";
+  if (!photos.length)
+    return { thumbnail: "/images/mountain-road.thumbnail.jpg", blurred: BLURRED_PHOTOS.landscape };
 
-  return photos.map((p) => p.thumbnail)[Math.floor(Math.random() * photos.length)];
+  return photos[Math.floor(Math.random() * photos.length)];
 };
 export const TripCard = (trip: TripCardProps) => {
+  const randomPhoto = getRandomPhoto(trip.photos);
   return (
     <Link to={"/trips/" + trip.id}>
       <div className="card trip-card trip">
@@ -30,8 +33,8 @@ export const TripCard = (trip: TripCardProps) => {
           <div className="destination">{trip.destination || "Destination Unknown"}</div>
         </div>
         <div className="overlay card-thumbnail">
-          <img src={getRandomPhoto(trip.photos)} />
-          <BigMonth date={trip.start} className="shadowed" />
+          <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
+          <BigMonth date={trip.start} className="text-shadowed" />
         </div>
         {!!trip.tags.length && <TagsDisplay tags={trip.tags} />}
       </div>

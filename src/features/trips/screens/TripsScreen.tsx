@@ -24,6 +24,7 @@ query getTrips {
     photos {
       id
       thumbnail
+      blurred
     }
   }
 }

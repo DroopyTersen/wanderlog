@@ -1,8 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
-import { TagsDisplay } from "core/components";
+import { Img, TagsDisplay } from "core/components";
 import { MemoriesDisplay, MemoriesPreview } from "./Memories";
+import { BLURRED_PHOTOS } from "global/components";
 
 interface Props {
   dailyLog: {
@@ -25,16 +26,14 @@ interface Props {
 }
 
 const getRandomPhoto = (photos = []) => {
-  if (!photos.length) return "/images/mountain-road.thumbnail.jpg";
+  if (!photos.length)
+    return { thumbnail: "/images/mountain-road.thumbnail.jpg", blurred: BLURRED_PHOTOS.landscape };
 
-  return photos.map((p) => p.thumbnail)[Math.floor(Math.random() * photos.length)];
+  return photos[Math.floor(Math.random() * photos.length)];
 };
-
 export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs/${id}` }: Props) {
-  let { pathname } = useLocation();
-  console.log("🚀 ~ file: DailyLogCard.tsx ~ line 23 ~ DailyLogCard ~ pathname", pathname);
-  let linkPrefix = pathname.toLowerCase().indexOf("/dailylogs") > -1 ? "" : "dailylogs/";
-  const imgSrc = getRandomPhoto(dailyLog.photos);
+  const randomPhoto = getRandomPhoto(dailyLog.photos);
+  console.log("🚀 | DailyLogCard | randomPhoto", randomPhoto);
   return (
     <Link to={getLink(dailyLog)}>
       <div className="card daily-log-card">
@@ -44,7 +43,7 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
         </h2>
         <div className="row-two">
           <div className="photo">
-            <img src={imgSrc} />
+            <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
           </div>
           <div className="column-two">
             <div className="day-count">

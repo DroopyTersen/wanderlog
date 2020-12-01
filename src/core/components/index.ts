@@ -3,3 +3,4 @@ export * from "./surfaces";
 export * from "./layout";
 export * from "./tags/tags";
 export * from "./typography";
+export * from "./images/Img";

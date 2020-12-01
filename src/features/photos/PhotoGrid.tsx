@@ -1,4 +1,4 @@
-import { Button } from "core/components";
+import { Button, Img } from "core/components";
 import { useDisableBodyScroll } from "core/hooks/useDisableBodyScroll";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -25,7 +25,7 @@ export function PhotoGrid({ photos = [], date, onChange }) {
         <PhotoUploader date={date} onSuccess={onChange} />
         {(photos || []).map((photo, index) => (
           <div key={photo.id} onClick={() => setSelectedPhoto(index)}>
-            <img src={photo.thumbnail} />
+            <Img initial={photo.blurred} src={photo.thumbnail} />
           </div>
         ))}
       </div>
@@ -34,7 +34,7 @@ export function PhotoGrid({ photos = [], date, onChange }) {
           <Button className="close" onClick={() => setSelectedPhoto(null)}>
             <IoMdClose />
           </Button>
-          <img src={photos[selectedPhoto].url} />
+          <Img src={photos[selectedPhoto].url} />
           <div className="footer">
             <button className="delete scary" disabled={isDeleting} onClick={deletePhoto}>
               Delete

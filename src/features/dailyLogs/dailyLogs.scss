@@ -10,6 +10,7 @@
     gap: 20px;
     .photo {
       height: 90px;
+      position: relative;
       img {
         object-fit: cover;
         height: 100%;

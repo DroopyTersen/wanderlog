@@ -112,6 +112,7 @@ query GetDailyLog($id: Int!) {
       thumbnail
       url
       date
+      blurred
     }
   }
 }

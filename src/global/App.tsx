@@ -1,42 +1,24 @@
-import React, { useReducer } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import React, { useReducer, Suspense } from "react";
+// import { BrowserRouter as Router } from "react-router-dom";
 import { ScreenModeProvider } from "global/providers/ScreenModeProvider";
-import { AppBackground } from "./components";
-import AnonymousRoutes from "./AnonymousRoutes";
-import AuthenticatedRoutes from "./AuthenticatedRoutes";
-import UrqlProvider from "./providers/UrqlProvider";
-import { AuthProvider, useAuth } from "features/auth/auth.provider";
+import { AppBackground } from "./components/AppBackground/AppBackground";
+const DeferredApp = React.lazy(() => import("./DeferredApp"));
+// import AnonymousRoutes from "./AnonymousRoutes";
+// import AuthenticatedRoutes from "./AuthenticatedRoutes";
+// import UrqlProvider from "./providers/UrqlProvider";
+// import { AuthProvider, useAuth } from "features/auth/auth.provider";
 
 function App({}) {
   return (
     <div className="app">
-      <AppBackground variant="blurred" />
-
       <ScreenModeProvider>
-        <UrqlProvider>
-          <AuthProvider>
-            <Router>
-              <AppRoutes />
-            </Router>
-          </AuthProvider>
-        </UrqlProvider>
+        <AppBackground variant="blurred" />
+        <Suspense fallback={<div></div>}>
+          <DeferredApp />
+        </Suspense>
       </ScreenModeProvider>
     </div>
   );
-}
-
-function AppRoutes() {
-  let auth = useAuth();
-  // Not sure if they are logged in yet
-  if (auth.status === "UNKNOWN") {
-    return null;
-  }
-
-  if (auth.status !== "AUTHENTICATED") {
-    return <AnonymousRoutes />;
-  }
-
-  return <AuthenticatedRoutes />;
 }
 
 export default App;
