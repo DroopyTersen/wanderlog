@@ -9,7 +9,7 @@ export function DailyLogFormScreen() {
   let { tripId = 0, dailyLogId = 0 } = useParams();
   let { data, fetching, save } = useResourceWithTags<ScreenData>({
     resourceId: dailyLogId,
-    query: { query: QUERY, variables: { id: dailyLogId } },
+    query: { query: QUERY, variables: { id: dailyLogId, tripId } },
     INSERT,
     UPDATE,
     tagKey: "dailylog_id",
@@ -63,7 +63,7 @@ const toFormValues = (item: any): DailyLogFormValues => {
 };
 
 const QUERY = `
-query HydrateDailyLogForm($id: Int!) {
+query HydrateDailyLogForm($id: Int!, $tripId: Int!) {
   dailyLog: dailylogs_by_pk(id: $id) {
     id
     date
@@ -76,18 +76,19 @@ query HydrateDailyLogForm($id: Int!) {
         id
       }
     }
-    trip {
-      id
-      title
-      start
-      end
-    }
   }
   tags {
     name
     id
   }
+  trip: trips_by_pk(id: $tripId) {
+    id
+    title
+    start
+    end
+  }
 }
+
 `;
 
 const UPDATE = `
