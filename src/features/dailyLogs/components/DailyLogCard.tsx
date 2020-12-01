@@ -21,6 +21,7 @@ interface Props {
     title: string;
     start: string;
   };
+  getLink?: (dailyLog) => string;
 }
 
 const getRandomPhoto = (photos = []) => {
@@ -29,13 +30,13 @@ const getRandomPhoto = (photos = []) => {
   return photos.map((p) => p.thumbnail)[Math.floor(Math.random() * photos.length)];
 };
 
-export function DailyLogCard({ dailyLog, trip }: Props) {
+export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs/${id}` }: Props) {
   let { pathname } = useLocation();
   console.log("🚀 ~ file: DailyLogCard.tsx ~ line 23 ~ DailyLogCard ~ pathname", pathname);
   let linkPrefix = pathname.toLowerCase().indexOf("/dailylogs") > -1 ? "" : "dailylogs/";
   const imgSrc = getRandomPhoto(dailyLog.photos);
   return (
-    <Link to={linkPrefix + dailyLog.id + ""}>
+    <Link to={getLink(dailyLog)}>
       <div className="card daily-log-card">
         <h2 className="dailyLog-title">
           <span className="day">{dayjs(dailyLog.date).format("ddd")}</span>

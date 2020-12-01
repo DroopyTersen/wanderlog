@@ -52,7 +52,12 @@ export const TripDetailsScreen = () => {
           <section className="daily-logs">
             <Grid width="400px" className="daily-logs-grid" gap="20px">
               {trip.dailyLogs.map((dailyLog) => (
-                <DailyLogCard key={dailyLog.id} dailyLog={dailyLog} trip={trip} />
+                <DailyLogCard
+                  key={dailyLog.id}
+                  dailyLog={dailyLog}
+                  trip={trip}
+                  getLink={({ id }) => `dailylogs-${id}`}
+                />
               ))}
             </Grid>
           </section>
@@ -70,7 +75,7 @@ export const TripDetailsScreen = () => {
             <AddButton>
               <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
               <Link to={"/photos/new?tripId=" + trip.id}>Photo</Link>
-              <Link to={`/trips/${trip.id}/dailylogs/new`}>Daily Log</Link>
+              <Link to={`/trips/${trip.id}/dailylogs-new`}>Daily Log</Link>
             </AddButton>
           </Footer>
         </>

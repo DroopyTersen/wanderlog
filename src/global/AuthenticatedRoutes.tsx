@@ -15,22 +15,15 @@ export default function AuthenticatedRoutes() {
         <Route path="*" element={<HomeScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/trips" element={<ContentLayout title="Trips" />}>
-          <Route path="/" element={<TripsScreen />} />
           <Route path="/*" element={<TripsScreen />} />
+          <Route path="/" element={<TripsScreen />} />
           <Route path=":tripId" element={<TripDetailsScreen />} />
           <Route path="new" element={<TripFormScreen />} />
           <Route path=":tripId/edit" element={<TripFormScreen />} />
-
-          <Route path=":tripId/dailyLogs" element={<HeaderLayout title="Daily Logs" />}>
-            <Route path="/" element={<TripDetailsScreen />} />
-            <Route path="new" element={<DailyLogFormScreen />} />
-            <Route path=":dailyLogId" element={<DailyLogDetails />} />
-            <Route path=":dailyLogId/edit" element={<DailyLogFormScreen />} />
-          </Route>
-          {/* <Route path="/" element={<DailyLogsScreen />} />
-          <Route path="new" element={<NewDailyLogScreen />} />
-          <Route path="/:logId/edit" element={<EditDailyLogScreen />} />
-          <Route path="/:logId" element={<DailyLogDetailsScreen />} /> */}
+          {/* NESTED TRIP DAILY LOGS */}
+          <Route path=":tripId/dailylogs-new" element={<DailyLogFormScreen />} />
+          <Route path=":tripId/dailylogs-:dailyLogId" element={<DailyLogDetails />} />
+          <Route path=":tripId/dailylogs-:dailyLogId/edit" element={<DailyLogFormScreen />} />
         </Route>
         <Route path="/dailylogs" element={<ContentLayout title="Daily Logs" />}>
           <Route path="new" element={<DailyLogFormScreen />} />
