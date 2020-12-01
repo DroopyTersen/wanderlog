@@ -98,6 +98,12 @@ html .react-select__control {
     margin: 0;
     box-shadow: none !important;
   }
+  &.react-select__control--is-disabled {
+    background-color: rgba(0, 0, 0, 0.08);
+    .react-select__indicators {
+      opacity: 0.3;
+    }
+  }
 }
 html .react-select__menu {
   z-index: 2;

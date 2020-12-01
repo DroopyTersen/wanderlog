@@ -14,7 +14,7 @@ export function DailyLogFormScreen() {
     UPDATE,
     tagKey: "dailylog_id",
     successRedirect: (data) =>
-      tripId ? `/trips/${tripId}/dailyLogs/${data.dailyLog.id}` : `/dailyLogs/${data.dailyLog.id}`,
+      tripId ? `/trips/${tripId}/dailyLogs-${data.dailyLog.id}` : `/dailyLogs/${data.dailyLog.id}`,
   });
   console.log("🚀 | DailyLogFormScreen | tripId", tripId, data, fetching);
 
@@ -25,6 +25,8 @@ export function DailyLogFormScreen() {
         values={toFormValues(data?.dailyLog)}
         save={save}
         trip={data?.trip}
+        availableTags={data?.tags}
+        mode={dailyLogId ? "edit" : "new"}
       />
     );
   }
@@ -58,7 +60,7 @@ const toFormValues = (item: any): DailyLogFormValues => {
   }
   return {
     ...pick(item, ["id", "date", "memories"]),
-    tags: item?.tags?.map((data) => data?.tag?.name).filter(Boolean),
+    tags: item?.tags?.map(({ tag }) => tag),
   };
 };
 

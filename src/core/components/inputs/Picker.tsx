@@ -32,7 +32,7 @@ const colors = {
    * multiValue/backgroundColor
    * indicators(separator)/backgroundColor(disabled)
    */
-  neutral10: "var(--blue-500)",
+  neutral10: "var(--neutral-700)",
 
   /*
    * control/borderColor
@@ -121,6 +121,7 @@ export function PickerSingle(props: PickerSingleProps) {
       value={
         props.options.find((o) => o.value === selected) || { value: selected, label: selected }
       }
+      isDisabled={props.isDisabled}
       onChange={(option) => setSelected(option.value)}
       options={props.options}
       name={name}
@@ -162,6 +163,7 @@ export function PickerMulti(props: PickerMultiProps) {
       }}
       options={props.options}
       isMulti={true}
+      isDisabled={props.isDisabled}
       isClearable={true}
       theme={(theme) => ({
         ...theme,
@@ -185,6 +187,7 @@ export interface PickerProps {
   creatable?: boolean;
   options: PickerOption[];
   required?: boolean;
+  isDisabled?: boolean;
 }
 
 export interface PickerSingleProps extends PickerProps {
