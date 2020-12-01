@@ -29,10 +29,6 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
             <input {...form.getInputProps("end")} type="date" required autoComplete="off" />
           </label>
         </div>
-        <label htmlFor="destination">
-          Primary Destination
-          <textarea rows={3} {...form.getInputProps("destination")} />
-        </label>
         <label htmlFor="tags">
           Tags
           <TagPicker
@@ -40,6 +36,10 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
             values={values.tags.map((t) => t.id)}
             onChange={(value) => form.actions.updateField({ field: "tags", value })}
           />
+        </label>
+        <label htmlFor="destination">
+          Primary Destination
+          <textarea rows={3} {...form.getInputProps("destination")} />
         </label>
       </form>
       <Footer>
