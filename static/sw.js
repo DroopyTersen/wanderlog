@@ -1,6 +1,6 @@
 /// <reference lib="webworker"/>
 
-const CACHE_KEY = "v0.5.1";
+const CACHE_KEY = "v0.5.2";
 
 // declare const self: Window & ServiceWorkerGlobalScope;
 
@@ -10,7 +10,7 @@ let validPaths = ["/api"];
 function checkIsValidPath(url) {
   return !!validPaths.find((path) => url.indexOf(path) !== -1);
 }
-const checkPaths = (url, [paths]) => {
+const checkPaths = (url, paths) => {
   return !!paths.find((path) => (url + "").toLowerCase().indexOf(path) !== -1);
 };
 

@@ -18,7 +18,7 @@ export function DailyLogFormScreen() {
   });
   console.log("🚀 | DailyLogFormScreen | tripId", tripId, data, fetching);
 
-  if (!dailyLogId || data?.dailyLog) {
+  if (data?.tags) {
     return (
       <DailyLogForm
         key={tripId}
