@@ -1,6 +1,6 @@
 /// <reference lib="webworker"/>
 
-const CACHE_KEY = "v0.5.2";
+const CACHE_KEY = "v0.5.3";
 
 // declare const self: Window & ServiceWorkerGlobalScope;
 
