@@ -10,12 +10,23 @@ let validPaths = ["/api"];
 function checkIsValidPath(url) {
   return !!validPaths.find((path) => url.indexOf(path) !== -1);
 }
-self.addEventListener("fetch", function (event) {
-  return;
+const checkPaths = (url, [paths]) => {
+  return !!paths.find((path) => (url + "").toLowerCase().indexOf(path) !== -1);
+};
 
-  // if (event.request.method !== "GET") {
-  //   return;
-  // }
+self.addEventListener("fetch", function (event) {
+  if (event.request.method !== "GET") {
+    return;
+  } else if (checkPaths(event.request.url, ["/fonts", "/images"])) {
+    event.respondWith(
+      getFromCache(event.request).then((res) => {
+        if (res) return res;
+        return fetchAndSetCache(event.request);
+      })
+    );
+  } else {
+    return;
+  }
   // if (event.request.mode === "navigate" && !checkIsValidPath(event.request.url)) {
   //   event.respondWith(caches.match("index.html"));
   //   return;
@@ -87,12 +98,11 @@ function precache() {
         "app.js",
         "manifest.json",
         "/images/icons/icon-144x144.png",
-        "/images/mountain-road.thumbnail.png",
+        "/images/mountain-road.thumbnail.jpg",
         "/images/mountain-road.landscape.jpg",
         "/images/mountain-road.landscape.tiny.jpg",
         "/images/mountain-road.portrait.jpg",
         "/images/mountain-road.portrait.tiny.jpg",
-        "/images/mountain-road.thumbnail.jpg",
         "/fonts/Monoton/Monoton-Regular.woff2",
         "/fonts/Open_Sans/OpenSans-Regular.woff2",
         "/fonts/Open_Sans/OpenSans-Light.woff2",
