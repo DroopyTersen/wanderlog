@@ -12,34 +12,57 @@ import { AnimatePresence, motion, AnimateSharedLayout } from "framer-motion";
 export default function AuthenticatedRoutes() {
   return (
     <>
-      <AnimateSharedLayout type="crossfade">
-        <AnimatePresence>
-          <Routes>
-            <AnimatedRoute path="*" element={<HomeScreen />} />
-            <AnimatedRoute path="/profile" element={<ProfileScreen />} />
-            <Route path="/trips" element={<ContentLayout title="Trips" />}>
-              <AnimatedRoute path="/*" element={<TripsScreen />} />
-              <AnimatedRoute path="/" element={<TripsScreen />} />
-              <AnimatedRoute path=":tripId" element={<TripDetailsScreen />} />
-              <AnimatedRoute path="new" element={<TripFormScreen />} />
-              <AnimatedRoute path=":tripId/edit" element={<TripFormScreen />} />
-              {/* NESTED TRIP DAILY LOGS */}
-              <AnimatedRoute path=":tripId/dailylogs-new" element={<DailyLogFormScreen />} />
-              <AnimatedRoute path=":tripId/dailylogs-:dailyLogId" element={<DailyLogDetails />} />
-              <AnimatedRoute
-                path=":tripId/dailylogs-:dailyLogId/edit"
-                element={<DailyLogFormScreen />}
-              />
-            </Route>
-            <Route path="/dailylogs" element={<ContentLayout title="Daily Logs" />}>
-              <Route path="new" element={<DailyLogFormScreen />} />
-              <Route path=":dailyLogId" element={<DailyLogDetails />} />
-              <Route path=":dailyLogId/edit" element={<DailyLogFormScreen />} />
-            </Route>
-          </Routes>
-          <Nav />
-        </AnimatePresence>
-      </AnimateSharedLayout>
+      <AnimatePresence>
+        <Routes>
+          <AnimatedRoute path="*" element={<HomeScreen />} key="home" />
+          <AnimatedRoute path="/profile" element={<ProfileScreen />} key="profile" />
+          <Route path="/trips" element={<ContentLayout title="Trips" key="trips-layout" />}>
+            <AnimatedRoute path="/*" element={<TripsScreen />} key="trips-fallback" />
+            <AnimatedRoute path="/" element={<TripsScreen />} key="trips-index" />
+            <AnimatedRoute path=":tripId" element={<TripDetailsScreen />} key="trip-details" />
+            <AnimatedRoute path="new" element={<TripFormScreen />} key="new-trip" />
+            <AnimatedRoute path=":tripId/edit" element={<TripFormScreen />} key="edit-trip" />
+            {/* NESTED TRIP DAILY LOGS */}
+            <AnimatedRoute
+              key="new-daily-log-from-trip"
+              path=":tripId/dailylogs-new"
+              element={<DailyLogFormScreen />}
+            />
+            <AnimatedRoute
+              key="daily-log-from-trip"
+              path=":tripId/dailylogs-:dailyLogId"
+              element={<DailyLogDetails />}
+            />
+            <AnimatedRoute
+              path=":tripId/dailylogs-:dailyLogId/edit"
+              element={<DailyLogFormScreen />}
+            />
+          </Route>
+          <Route
+            key="dailylogs-layout"
+            path="/dailylogs"
+            element={<ContentLayout title="Daily Logs" />}
+          >
+            <AnimatedRoute
+              key="new-dailylog"
+              path="new"
+              element={<DailyLogFormScreen />}
+              id="new-dailylog"
+            />
+            <AnimatedRoute
+              key="dailylog-details"
+              path=":dailyLogId"
+              element={<DailyLogDetails />}
+            />
+            <AnimatedRoute
+              key="edit-dailylog"
+              path=":dailyLogId/edit"
+              element={<DailyLogFormScreen />}
+            />
+          </Route>
+        </Routes>
+      </AnimatePresence>
+      <Nav />
     </>
   );
 }
@@ -49,7 +72,6 @@ function AnimatedRoute({ path, element, children = undefined, ...props }) {
     <Route
       {...props}
       path={path}
-      key={path}
       element={
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           {element}

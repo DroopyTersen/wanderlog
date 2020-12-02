@@ -43,6 +43,7 @@ export function Img({ initial = "", src = DEFAULT, fallback = DEFAULT, opacity =
           src={imgSrc}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
           exit={{ opacity: 1 }}
         />
       )}

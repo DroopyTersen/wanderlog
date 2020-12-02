@@ -7,12 +7,7 @@ export function AddButton({ children }) {
   let { ref: popupRef, isOpen, setIsOpen, close } = Popup.usePopup();
 
   return (
-    <motion.div
-      ref={popupRef}
-      initial={{ y: 10, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.25 }}
-    >
+    <div ref={popupRef}>
       <Button onClick={() => setIsOpen((val) => !val)} className="add-trigger">
         <AiOutlinePlus size={22} />
       </Button>
@@ -24,6 +19,6 @@ export function AddButton({ children }) {
       >
         {children}
       </Popup>
-    </motion.div>
+    </div>
   );
 }

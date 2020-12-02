@@ -35,54 +35,52 @@ export const TripDetailsScreen = () => {
   if (!trip) return <Loader />;
 
   return (
-    <AnimatePresence>
-      <motion.div className="trip trip-details" layoutId={`trip-container-${trip.id}`}>
-        <motion.div layoutId={`trip-title-${trip.id}`}>
-          <PageTitle className="trip-title greedy">{trip.title}</PageTitle>
-        </motion.div>
-        <div className="row space-between date-row">
-          <div className="trip-dates">
-            <div className="num-days">
-              <span>{calcNumDays(trip.start, trip.end)}</span> days
-            </div>
-            <div className="date">{displayDateRange(trip.start, trip.end)}</div>
-          </div>
-          <BigMonth date={trip.start} />
-        </div>
-        {/* <div className="destination">{trip.destination || "Destination Unknown"}</div> */}
-        {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
-
-        <section className="daily-logs">
-          <Grid width="400px" className="daily-logs-grid" gap="20px">
-            {trip.dailyLogs.map((dailyLog) => (
-              <DailyLogCard
-                key={dailyLog.id}
-                dailyLog={dailyLog}
-                trip={trip}
-                getLink={({ id }) => `dailylogs-${id}`}
-              />
-            ))}
-          </Grid>
-        </section>
-
-        <Footer>
-          <button className="scary" onClick={deleteTrip} disabled={isDeleting}>
-            Delete
-          </button>
-
-          <Link to={`/trips/${trip.id}/edit`}>
-            <button disabled={isDeleting} className="gold">
-              Edit
-            </button>
-          </Link>
-          <AddButton>
-            <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
-            <Link to={"/photos/new?tripId=" + trip.id}>Photo</Link>
-            <Link to={`/trips/${trip.id}/dailylogs-new`}>Daily Log</Link>
-          </AddButton>
-        </Footer>
+    <motion.div className="trip trip-details">
+      <motion.div layoutId={`trip-title-${trip.id}`}>
+        <PageTitle className="trip-title greedy">{trip.title}</PageTitle>
       </motion.div>
-    </AnimatePresence>
+      <div className="row space-between date-row">
+        <div className="trip-dates">
+          <div className="num-days">
+            <span>{calcNumDays(trip.start, trip.end)}</span> days
+          </div>
+          <div className="date">{displayDateRange(trip.start, trip.end)}</div>
+        </div>
+        <BigMonth date={trip.start} />
+      </div>
+      {/* <div className="destination">{trip.destination || "Destination Unknown"}</div> */}
+      {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
+
+      <section className="daily-logs">
+        <Grid width="400px" className="daily-logs-grid" gap="20px">
+          {trip.dailyLogs.map((dailyLog) => (
+            <DailyLogCard
+              key={dailyLog.id}
+              dailyLog={dailyLog}
+              trip={trip}
+              getLink={({ id }) => `dailylogs-${id}`}
+            />
+          ))}
+        </Grid>
+      </section>
+
+      <Footer>
+        <button className="scary" onClick={deleteTrip} disabled={isDeleting}>
+          Delete
+        </button>
+
+        <Link to={`/trips/${trip.id}/edit`}>
+          <button disabled={isDeleting} className="gold">
+            Edit
+          </button>
+        </Link>
+        <AddButton>
+          <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
+          <Link to={"/photos/new?tripId=" + trip.id}>Photo</Link>
+          <Link to={`/trips/${trip.id}/dailylogs-new`}>Daily Log</Link>
+        </AddButton>
+      </Footer>
+    </motion.div>
   );
 };
 

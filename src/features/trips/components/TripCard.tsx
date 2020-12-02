@@ -28,11 +28,9 @@ export const TripCard = (trip: TripCardProps) => {
   const randomPhoto = getRandomPhoto(trip.photos);
   return (
     <Link to={"/trips/" + trip.id}>
-      <motion.div className="card trip-card trip" layoutId={`trip-container-${trip.id}`}>
+      <div className="card trip-card trip">
         <div>
-          <motion.h2 className="trip-title" layoutId={`trip-title-${trip.id}`}>
-            {trip.title}
-          </motion.h2>
+          <h2 className="trip-title">{trip.title}</h2>
           <div className="destination">{trip.destination || "Destination Unknown"}</div>
         </div>
         <div className="overlay card-thumbnail">
@@ -40,7 +38,7 @@ export const TripCard = (trip: TripCardProps) => {
           <BigMonth date={trip.start} className="text-shadowed" />
         </div>
         {!!trip.tags.length && <TagsDisplay tags={trip.tags} />}
-      </motion.div>
+      </div>
     </Link>
   );
 };

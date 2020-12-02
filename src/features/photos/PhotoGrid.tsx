@@ -5,7 +5,7 @@ import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useMutation } from "urql";
 import { PhotoUploader } from "./PhotoUploader";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
 export function PhotoGrid({ photos = [], date, onChange }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -22,33 +22,42 @@ export function PhotoGrid({ photos = [], date, onChange }) {
   useDisableBodyScroll(selectedPhoto !== null);
   return (
     <>
-      <div className="photo-grid">
-        <PhotoUploader date={date} onSuccess={onChange} />
-        {(photos || []).map((photo, index) => (
-          <motion.div
-            layoutId={`photo-${photo.id}`}
-            key={photo.id}
-            onClick={() => setSelectedPhoto(index)}
-          >
-            <Img initial={photo.blurred} src={photo.thumbnail} />
-          </motion.div>
-        ))}
-      </div>
-      <AnimatePresence>
-        {selectedPhoto !== null && (
-          <motion.div className="photo-overlay" layoutId={`photo-${photos[selectedPhoto].id}`}>
-            <Button className="close" onClick={() => setSelectedPhoto(null)}>
-              <IoMdClose />
-            </Button>
-            <Img src={photos[selectedPhoto].url} />
-            <div className="footer">
-              <button className="delete scary" disabled={isDeleting} onClick={deletePhoto}>
-                Delete
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AnimateSharedLayout type="crossfade">
+        <div className="photo-grid">
+          <PhotoUploader date={date} onSuccess={onChange} />
+          {(photos || []).map((photo, index) => (
+            <motion.div
+              layoutId={`photo-${photo.id}`}
+              key={photo.id}
+              onClick={() => setSelectedPhoto(index)}
+            >
+              <Img initial={photo.blurred} src={photo.thumbnail} />
+            </motion.div>
+          ))}
+        </div>
+        <AnimatePresence exitBeforeEnter={true}>
+          {selectedPhoto !== null && (
+            <motion.div
+              className="photo-overlay"
+              layoutId={`photo-${photos[selectedPhoto].id}`}
+              // initial={{ height: "50vw", opacity: 1, width: "50vw", y: "50vh" }}
+              // animate={{ height: "100vh", width: "100vw", opacity: 1 }}
+              // exit={{ opacity: 0 }}
+              transition={{ duration: 0.08 }}
+            >
+              <Button className="close" onClick={() => setSelectedPhoto(null)}>
+                <IoMdClose />
+              </Button>
+              <Img src={photos[selectedPhoto].url} />
+              <div className="footer">
+                <button className="delete scary" disabled={isDeleting} onClick={deletePhoto}>
+                  Delete
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </AnimateSharedLayout>
     </>
   );
 }
