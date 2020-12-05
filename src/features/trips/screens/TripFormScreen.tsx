@@ -110,8 +110,8 @@ mutation insertTrip($object: trips_insert_input!) {
 
 export const EMPTY_TRIP: TripFormValues = {
   title: "",
-  start: dayjs().add(-14, "day").startOf("day").format("YYYY-MM-DD"),
-  end: dayjs().startOf("day").format("YYYY-MM-DD"),
+  start: "", //dayjs().add(-14, "day").startOf("day").format("YYYY-MM-DD"),
+  end: "", //dayjs().startOf("day").format("YYYY-MM-DD"),
   destination: "",
   tags: [],
 };

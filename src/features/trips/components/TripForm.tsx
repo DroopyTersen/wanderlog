@@ -22,6 +22,7 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
         <label htmlFor="start">
           Start Date
           <DatePicker
+            placeholder="Start Date"
             value={form.values.start}
             onChange={(value) => form.actions.updateField({ field: "start", value })}
           />
@@ -29,6 +30,7 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
         <label htmlFor="end">
           End Date
           <DatePicker
+            placeholder="End Date"
             value={form.values.end}
             onChange={(value) => form.actions.updateField({ field: "end", value })}
           />
