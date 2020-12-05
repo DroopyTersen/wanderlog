@@ -66,12 +66,15 @@
   color: var(--primary);
 }
 .calendar__header button:focus {
-  box-shadow: 0 0 0 2px var(--primary);
+  color: var(--primary);
+  outline: none;
+  /* box-shadow: 0 0 0 2px var(--primary); */
 }
 .calendar__header button span {
   top: -2px;
 }
 .calendar__header button:active {
+  background: transparent;
   color: var(--primary);
   transform: scale(0.94);
 }
