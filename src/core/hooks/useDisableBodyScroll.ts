@@ -9,6 +9,9 @@ export function useDisableBodyScroll(condition: boolean) {
     } else if (!condition && hasNoScroll) {
       document.body.classList.remove("noscroll");
     }
+    () => {
+      document.body.classList.remove("noscroll");
+    };
   }, [condition]);
 }
 // Assumes a CSS rule like this
