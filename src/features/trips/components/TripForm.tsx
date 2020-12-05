@@ -2,6 +2,7 @@ import React from "react";
 import { PageTitle, Tag, TagPicker, TagsInput } from "core/components";
 import { useFormStateMachine } from "core/hooks/useForm";
 import { Footer } from "global/components";
+import { DatePicker } from "core/components/inputs/DatePicker";
 
 export function TripForm({ values, save, availableTags }: TripFormProps) {
   let form = useFormStateMachine<TripFormValues>({
@@ -10,6 +11,7 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
     submit: save,
   });
 
+  console.log("values", values);
   return (
     <>
       <PageTitle>{values.id ? "Edit Trip" : "New Trip"}</PageTitle>
@@ -18,22 +20,34 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
           Trip Title
           <textarea rows={2} {...form.getInputProps("title")} autoComplete="off" required />
         </label>
-        <div className="row">
-          <label htmlFor="start">
-            Start Date
-            <input {...form.getInputProps("start")} type="date" required />
-          </label>
+        <label htmlFor="start">
+          Start Date
+          <DatePicker
+            value={form.values.start}
+            onChange={(value) => form.actions.updateField({ field: "start", value })}
+          />
+        </label>
 
-          <label htmlFor="end">
-            End Date
-            <input {...form.getInputProps("end")} type="date" required autoComplete="off" />
-          </label>
-        </div>
+        <label htmlFor="start">
+          Start Date
+          <DatePicker
+            value={form.values.start}
+            onChange={(value) => form.actions.updateField({ field: "start", value })}
+          />
+        </label>
+
+        <label htmlFor="end">
+          End Date
+          <DatePicker
+            value={form.values.end}
+            onChange={(value) => form.actions.updateField({ field: "end", value })}
+          />
+        </label>
         <label htmlFor="tags">
           Tags
           <TagPicker
             availableTags={availableTags}
-            values={values.tags.map((t) => t.id)}
+            values={form.values.tags.map((t) => t.id)}
             onChange={(value) => form.actions.updateField({ field: "tags", value })}
           />
         </label>

@@ -10,13 +10,15 @@ export interface FormState<V = any> {
 }
 const updaters = {
   updateField: (state, { field, value }) => {
-    return {
+    let newState = {
       ...state,
       values: {
         ...state.values,
         [field]: value,
       },
     };
+    console.log("🚀 |  { field, value }", { field, value }, newState);
+    return newState;
   },
   updateValues: (state, { values }) => ({
     ...state,

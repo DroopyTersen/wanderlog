@@ -2,14 +2,12 @@ import { useEffect } from "react";
 
 export function useDisableBodyScroll(condition: boolean) {
   useEffect(() => {
-    const hasNoScroll = document.body.classList.contains("noscroll");
-
-    if (condition && !hasNoScroll) {
+    if (condition) {
       document.body.classList.add("noscroll");
-    } else if (!condition && hasNoScroll) {
+    } else {
       document.body.classList.remove("noscroll");
     }
-    () => {
+    return () => {
       document.body.classList.remove("noscroll");
     };
   }, [condition]);

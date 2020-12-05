@@ -72,7 +72,6 @@ export function TagPicker({ values = [], onChange, availableTags }: TagPickerPro
   let options = useMemo(() => {
     return availableTags.map(toOption);
   }, [availableTags]);
-  console.log("🚀 | TagPicker | values", values);
   return (
     <PickerMulti
       onChange={(options) => {
