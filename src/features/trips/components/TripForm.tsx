@@ -11,7 +11,6 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
     submit: save,
   });
 
-  console.log("values", values);
   return (
     <>
       <PageTitle>{values.id ? "Edit Trip" : "New Trip"}</PageTitle>
@@ -27,15 +26,6 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
             onChange={(value) => form.actions.updateField({ field: "start", value })}
           />
         </label>
-
-        <label htmlFor="start">
-          Start Date
-          <DatePicker
-            value={form.values.start}
-            onChange={(value) => form.actions.updateField({ field: "start", value })}
-          />
-        </label>
-
         <label htmlFor="end">
           End Date
           <DatePicker

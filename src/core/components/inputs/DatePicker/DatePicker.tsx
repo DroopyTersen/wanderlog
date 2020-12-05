@@ -1,10 +1,11 @@
+import { useDisableBodyScroll } from "core/hooks/useDisableBodyScroll";
 import * as React from "react";
 import { Calendar } from "./Calendar";
 import {
   useCalendarNavigation,
   useDatePickerDropdown,
   useDatePickerEvents,
-  useDatePickerInput
+  useDatePickerInput,
 } from "./calendar.hooks";
 
 import "./DatePicker.css";
@@ -15,7 +16,7 @@ interface DatePickerOptions {
   dropdownMode: "alwaysOpen" | "closeOnSelect";
 }
 const defaultOptions: DatePickerOptions = {
-  dropdownMode: "closeOnSelect"
+  dropdownMode: "closeOnSelect",
 };
 interface Props {
   value: string;
@@ -25,6 +26,8 @@ interface Props {
 }
 
 function DatePickerOverlay({ isShowing, setIsOpen }) {
+  useDisableBodyScroll(isShowing);
+
   return (
     <div
       className={`datepicker__theme datepicker__overlay datepicker__overlay--${
@@ -48,10 +51,7 @@ export function DatePicker({ value, onChange, options, ...props }: Props) {
   let { activeDate, actions } = useCalendarNavigation(value || TODAY, onChange);
 
   // TEXT INPUT
-  let [inputValue, setInputValue] = useDatePickerInput(
-    value,
-    actions.setActiveDate
-  );
+  let [inputValue, setInputValue] = useDatePickerInput(value, actions.setActiveDate);
 
   // Dropdown Management
   let { setIsOpen, isDropdownShowing, containerProps } = useDatePickerDropdown(
@@ -64,7 +64,7 @@ export function DatePicker({ value, onChange, options, ...props }: Props) {
     activeDate,
     setIsOpen,
     actions,
-    containerRef: containerProps.ref
+    containerRef: containerProps.ref,
   });
 
   return (
@@ -93,15 +93,11 @@ export function DatePicker({ value, onChange, options, ...props }: Props) {
           />
         </div>
         {isDropdownShowing && (
-          <div
-            className={`datepicker__dropdown datepicker__dropdown--${opts.dropdownMode}`}
-          >
+          <div className={`datepicker__dropdown datepicker__dropdown--${opts.dropdownMode}`}>
             <Calendar
               activeDate={activeDate}
               onSelect={actions.selectDate}
-              getDayClass={(day) =>
-                day === value ? "calendar__day--selected" : ""
-              }
+              getDayClass={(day) => (day === value ? "calendar__day--selected" : "")}
               prevMonth={actions.prevMonth}
               nextMonth={actions.nextMonth}
               options={{ displayActive: isKeyboarding }}
