@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { Img, TagsDisplay } from "core/components";
 import { MemoriesDisplay, MemoriesPreview } from "./Memories";
 import { BLURRED_PHOTOS } from "global/components";
+import { IoMdImages } from "react-icons/io";
 
 interface Props {
   dailyLog: {
@@ -44,6 +45,12 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
         <div className="row-two">
           <div className="photo">
             <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
+            {dailyLog.photos.length > 0 && (
+              <div className="photo-count">
+                <span className="photo-count-number">{dailyLog.photos.length}</span>
+                <IoMdImages />
+              </div>
+            )}
           </div>
           <div className="column-two">
             <div className="day-count">

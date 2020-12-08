@@ -31,6 +31,22 @@
       gap: 5px;
       align-items: center;
     }
+    .photo-count {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      opacity: 0.85;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+      background: transparent;
+      padding: 3px 5px;
+      border-radius: 11px;
+      .photo-count-number {
+        margin-right: 2px;
+      }
+    }
   }
   .dailyLog-title {
     margin-bottom: 15px;
