@@ -18,6 +18,7 @@ body.noscroll {
 body * {
   position: relative;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 @import "../core/components/typography/typography.scss";
 @import "../core/components/inputs/inputs.scss";
