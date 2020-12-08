@@ -1,11 +1,14 @@
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect } from "react";
 import { PageTitle, Tag, TagPicker, TagsInput } from "core/components";
 import { useFormStateMachine } from "core/hooks/useForm";
 import { getDaysInRange } from "core/utils";
 import { MemoriesDisplay } from "./Memories";
 import { Footer } from "global/components";
 import { PickerSingle } from "core/components/inputs/Picker";
+import { useNavigate } from "react-router";
+import { useMutation } from "urql";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 export function DailyLogForm({ trip, values, save, availableTags, mode }: DailyLogFormProps) {
   let form = useFormStateMachine<DailyLogFormValues>({
@@ -13,6 +16,8 @@ export function DailyLogForm({ trip, values, save, availableTags, mode }: DailyL
     validate: validate,
     submit: save,
   });
+  let [deleteDailyLog, isDeleting] = useDelete(values?.id, trip?.id);
+
   let dateOptions = trip
     ? getDaysInRange(trip.start, trip.end).map((d) => ({
         label: `Day ${dayjs(d).diff(dayjs(trip.start), "day") + 1}: ${dayjs(d).format(
@@ -49,6 +54,7 @@ export function DailyLogForm({ trip, values, save, availableTags, mode }: DailyL
         <label htmlFor="tags">
           Tags
           <TagPicker
+            key={availableTags.length}
             availableTags={availableTags}
             values={values.tags.map((t) => t.id)}
             onChange={(value) => form.actions.updateField({ field: "tags", value })}
@@ -61,6 +67,11 @@ export function DailyLogForm({ trip, values, save, availableTags, mode }: DailyL
         <MemoriesDisplay memories={form.values.memories} />
       </form>
       <Footer>
+        {mode === "edit" && (
+          <button className="scary" onClick={deleteDailyLog} disabled={isDeleting}>
+            <FaRegTrashAlt />
+          </button>
+        )}
         <button type="button" onClick={() => window.history.back()}>
           Cancel
         </button>
@@ -87,7 +98,7 @@ export interface DailyLogFormValues {
 export interface DailyLogFormProps {
   values: DailyLogFormValues;
   save: (value: DailyLogFormValues) => Promise<any>;
-  trip?: { start: string; end: string };
+  trip?: { start: string; end: string; id: number };
   availableTags: Tag[];
   mode?: "edit" | "new";
 }
@@ -99,3 +110,35 @@ export const validate = (values: DailyLogFormValues) => {
   }
   return errors;
 };
+
+function useDelete(id, tripId) {
+  let navigate = useNavigate();
+  let [deleteResult, deleteMutation] = useMutation(DELETE_MUTATION);
+
+  useEffect(() => {
+    if (deleteResult?.data?.delete_dailylogs) {
+      navigate("/trips/" + tripId);
+    }
+  }, [deleteResult.data, tripId]);
+
+  let deleteItem = () => {
+    if (window.confirm("Are you sure?!")) {
+      deleteMutation({ id }, {});
+    }
+  };
+  return [deleteItem, deleteResult.fetching] as [() => void, boolean];
+}
+
+const DELETE_MUTATION = `
+mutation DeleteDailyLog($id:Int!) {
+    delete_tag_dailylog(where: {dailylog_id: {_eq: $id }}) {
+      affected_rows
+    }
+    delete_dailylogs(where: {id: {_eq: $id }}) {
+      affected_rows
+      returning {
+        id
+      }
+    }
+  }
+`;

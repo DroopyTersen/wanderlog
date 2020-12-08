@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { PageTitle, Tag, TagPicker, TagsInput } from "core/components";
 import { useFormStateMachine } from "core/hooks/useForm";
 import { Footer } from "global/components";
 import { DatePicker } from "core/components/inputs/DatePicker";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "urql";
 
 export function TripForm({ values, save, availableTags }: TripFormProps) {
   let form = useFormStateMachine<TripFormValues>({
@@ -10,10 +13,11 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
     validate: validateTrip,
     submit: save,
   });
-
+  let mode = values.id ? "Edit" : "New";
+  let [deleteTrip, isDeleting] = useDelete(values.id);
   return (
     <>
-      <PageTitle>{values.id ? "Edit Trip" : "New Trip"}</PageTitle>
+      <PageTitle>{`${mode} Trip`}</PageTitle>
       <form onSubmit={form.onSubmit}>
         <label htmlFor="title">
           Trip Title
@@ -49,6 +53,11 @@ export function TripForm({ values, save, availableTags }: TripFormProps) {
         </label>
       </form>
       <Footer>
+        {mode === "Edit" && (
+          <button className="scary" onClick={deleteTrip} disabled={isDeleting}>
+            <FaRegTrashAlt />
+          </button>
+        )}
         <button type="button" onClick={() => window.history.back()}>
           Cancel
         </button>
@@ -79,6 +88,24 @@ interface TripFormProps {
   availableTags: Tag[];
 }
 
+function useDelete(id) {
+  let navigate = useNavigate();
+  let [deleteResult, deleteMutation] = useMutation(DELETE_MUTATION);
+  useEffect(() => {
+    if (deleteResult?.data?.delete_trips) {
+      navigate("/trips");
+    }
+  }, [deleteResult.data]);
+
+  let deleteItem = () => {
+    if (window.confirm("Are you sure?!")) {
+      deleteMutation({ id }, {});
+    }
+  };
+
+  return [deleteItem, deleteResult.fetching] as [() => void, boolean];
+}
+
 export const validateTrip = (values: TripFormValues) => {
   const errors = [];
   if (!values.title) {
@@ -92,3 +119,17 @@ export const validateTrip = (values: TripFormValues) => {
   }
   return errors;
 };
+
+export const DELETE_MUTATION = `
+mutation DeleteTrip($id:Int!) {
+  delete_tag_trip(where: {trip_id: {_eq: $id }}) {
+    affected_rows
+  }
+  delete_trips(where: {id: {_eq: $id }}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+`;

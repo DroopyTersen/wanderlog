@@ -12,11 +12,12 @@ export function PhotoGrid({ photos = [], date, onChange }) {
   const [{ fetching: isDeleting }, deleteMutation] = useMutation(DELETE_MUTATION);
 
   const deletePhoto = async () => {
-    let photo = photos[selectedPhoto];
-    if (photo) {
-      await Promise.all([await deletePhotoBlobs(photo), await deleteMutation({ id: photo.id })]);
-      setSelectedPhoto(null);
-      // onChange();
+    if (window.confirm("Are you sure!?!")) {
+      let photo = photos[selectedPhoto];
+      if (photo) {
+        await Promise.all([await deletePhotoBlobs(photo), await deleteMutation({ id: photo.id })]);
+        setSelectedPhoto(null);
+      }
     }
   };
   useDisableBodyScroll(selectedPhoto !== null);

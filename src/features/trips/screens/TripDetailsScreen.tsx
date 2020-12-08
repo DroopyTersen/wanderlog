@@ -8,22 +8,10 @@ import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
 import { motion, AnimatePresence } from "framer-motion";
-
-function useDelete(id) {
-  let navigate = useNavigate();
-  let [deleteResult, deleteMutation] = useMutation(DELETE_MUTATION);
-  useEffect(() => {
-    if (deleteResult?.data?.delete_trips) {
-      navigate("/trips");
-    }
-  }, [deleteResult.data]);
-
-  return [() => deleteMutation({ id }, {}), deleteResult.fetching] as [() => void, boolean];
-}
+import { FaRegTrashAlt } from "react-icons/fa";
 
 export const TripDetailsScreen = () => {
   let { tripId } = useParams();
-  let [deleteTrip, isDeleting] = useDelete(tripId);
 
   let [{ data, fetching, error }] = useQuery({
     query: QUERY,
@@ -65,14 +53,8 @@ export const TripDetailsScreen = () => {
       </section>
 
       <Footer>
-        <button className="scary" onClick={deleteTrip} disabled={isDeleting}>
-          Delete
-        </button>
-
         <Link to={`/trips/${trip.id}/edit`}>
-          <button disabled={isDeleting} className="gold">
-            Edit
-          </button>
+          <button className="gold">Edit</button>
         </Link>
         <AddButton>
           <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
@@ -122,17 +104,3 @@ query getTripById($id: Int!) {
   }
 }
   `;
-
-export const DELETE_MUTATION = `
-mutation DeleteTrip($id:Int!) {
-  delete_tag_trip(where: {trip_id: {_eq: $id }}) {
-    affected_rows
-  }
-  delete_trips(where: {id: {_eq: $id }}) {
-    affected_rows
-    returning {
-      id
-    }
-  }
-}
-`;

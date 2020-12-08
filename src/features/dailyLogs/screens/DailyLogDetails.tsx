@@ -8,22 +8,8 @@ import { MemoriesDisplay } from "../components/Memories";
 import { PhotoUploader } from "features/photos/PhotoUploader";
 import { PhotoGrid } from "features/photos/PhotoGrid";
 
-function useDelete(id, tripId) {
-  let navigate = useNavigate();
-  let [deleteResult, deleteMutation] = useMutation(DELETE_MUTATION);
-
-  useEffect(() => {
-    if (deleteResult?.data?.delete_dailylogs) {
-      navigate("/trips/" + tripId);
-    }
-  }, [deleteResult.data, tripId]);
-
-  return [() => deleteMutation({ id }, {}), deleteResult.fetching] as [() => void, boolean];
-}
-
 export default function DailyLogDetails() {
   let { tripId = 0, dailyLogId } = useParams();
-  let [deleteDailyLog, isDeleting] = useDelete(dailyLogId, tripId);
 
   let [{ data, fetching, error }, reexecuteQuery] = useQuery({
     query: QUERY,
@@ -66,14 +52,8 @@ export default function DailyLogDetails() {
       </div>
 
       <Footer>
-        <button className="scary" onClick={deleteDailyLog} disabled={isDeleting}>
-          Delete
-        </button>
-
         <Link to="edit">
-          <button disabled={isDeleting} className="gold">
-            Edit
-          </button>
+          <button className="gold">Edit</button>
         </Link>
         <AddButton>
           <p style={{ textAlign: "center", width: "100%" }}>
@@ -117,17 +97,3 @@ query GetDailyLog($id: Int!) {
   }
 }
   `;
-
-const DELETE_MUTATION = `
-mutation DeleteDailyLog($id:Int!) {
-    delete_tag_dailylog(where: {dailylog_id: {_eq: $id }}) {
-      affected_rows
-    }
-    delete_dailylogs(where: {id: {_eq: $id }}) {
-      affected_rows
-      returning {
-        id
-      }
-    }
-  }
-`;
