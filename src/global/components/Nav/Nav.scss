@@ -1,5 +1,6 @@
 nav.nav {
   padding: 10px 10px;
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);
   // background: linear-gradient(transparent, rgba(0, 0, 0, 0.1) 20%, rgba(0, 0, 0, 0.5));
   // color: white;
   display: flex;
