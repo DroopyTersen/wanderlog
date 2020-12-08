@@ -4,12 +4,10 @@ import dayjs from "dayjs";
 import { DailyLogCard } from "features/dailyLogs/components/DailyLogCard";
 import { AddButton, Footer } from "global/components";
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { PhotoGrid } from "features/photos/PhotoGrid";
 
 export const TripDetailsScreen = () => {
   let { tripId } = useParams();
@@ -76,6 +74,9 @@ query getTripById($id: Int!) {
   trip: trips_by_pk(id: $id) {
     id
     title
+    start
+    end
+    destination
 
     
     tags {
@@ -104,13 +105,6 @@ query getTripById($id: Int!) {
         url
         blurred
       }
-    }
-    photos(order_by: {date: asc, created_at: asc}) {
-      id
-      thumbnail
-      url
-      blurred
-      date
     }
   }
 }
