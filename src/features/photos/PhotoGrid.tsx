@@ -7,7 +7,7 @@ import { useMutation } from "urql";
 import { PhotoUploader } from "./PhotoUploader";
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
-export function PhotoGrid({ photos = [], date, onChange }) {
+export function PhotoGrid({ photos = [], date = null, onChange = undefined }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [{ fetching: isDeleting }, deleteMutation] = useMutation(DELETE_MUTATION);
 
@@ -25,7 +25,7 @@ export function PhotoGrid({ photos = [], date, onChange }) {
     <>
       <AnimateSharedLayout type="crossfade">
         <div className="photo-grid">
-          <PhotoUploader date={date} onSuccess={onChange} />
+          {date && <PhotoUploader date={date} onSuccess={onChange} />}
           {(photos || []).map((photo, index) => (
             <motion.div
               layoutId={`photo-${photo.id}`}

@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { PhotoGrid } from "features/photos/PhotoGrid";
 
 export const TripDetailsScreen = () => {
   let { tripId } = useParams();
@@ -52,6 +53,10 @@ export const TripDetailsScreen = () => {
         </Grid>
       </section>
 
+      {/* <section className="photos">
+        <PhotoGrid photos={trip?.photos} />
+      </section> */}
+
       <Footer>
         <Link to={`/trips/${trip.id}/edit`}>
           <button className="gold">Edit</button>
@@ -71,9 +76,8 @@ query getTripById($id: Int!) {
   trip: trips_by_pk(id: $id) {
     id
     title
-    start
-    end
-    destination
+
+    
     tags {
       tag_id
       trip_id
@@ -100,6 +104,13 @@ query getTripById($id: Int!) {
         url
         blurred
       }
+    }
+    photos(order_by: {date: asc, created_at: asc}) {
+      id
+      thumbnail
+      url
+      blurred
+      date
     }
   }
 }
