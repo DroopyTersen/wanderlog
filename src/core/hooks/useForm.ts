@@ -17,7 +17,6 @@ const updaters = {
         [field]: value,
       },
     };
-    console.log("🚀 |  { field, value }", { field, value }, newState);
     return newState;
   },
   updateValues: (state, { values }) => ({

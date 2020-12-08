@@ -34,6 +34,9 @@ const cache = cacheExchange({
       delete_photos_by_pk: (result, args, cache, info) => {
         cache.invalidate({ __typename: "photos", id: info.variables.id + "" });
       },
+      insert_tag_dailylog: (result, args, cache, info) => {
+        cache.invalidate("tags");
+      },
     },
   },
   optimistic: {
