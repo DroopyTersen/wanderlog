@@ -38,6 +38,7 @@ interface ScreenData {
     id: number;
     start: string;
     end: string;
+    dailyLogs: { date: string; id: number }[];
   };
   dailyLog?: {
     id: number;
@@ -49,7 +50,7 @@ interface ScreenData {
 }
 
 const EMPTY_DAILY_LOG = {
-  date: dayjs().format("YYYY-MM-DD"),
+  date: "",
   tags: [],
   memories: "",
 };
@@ -88,6 +89,10 @@ query HydrateDailyLogForm($id: Int!, $tripId: Int!) {
     title
     start
     end
+    dailyLogs {
+      id
+      date
+    }
   }
 }
 

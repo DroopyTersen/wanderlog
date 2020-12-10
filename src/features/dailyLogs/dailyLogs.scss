@@ -134,3 +134,19 @@ footer.dailyLog-details {
     padding: 10px;
   }
 }
+
+.calendar .calendar__day.existing-dailylog-date {
+  // background: var(--gold-400);
+  // border-radius: 50%;
+  // color: var(--gold-600);
+  // border-radius: 50%;
+}
+.calendar .calendar__day.trip-date {
+  background: var(--blue-400);
+  // border-radius: 50%;
+  border-radius: 0;
+  // &:first-child {
+  //   border-radius: 50% 0 0 50%;
+  // }
+
+}

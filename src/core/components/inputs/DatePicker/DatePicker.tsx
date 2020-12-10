@@ -13,11 +13,16 @@ import { formatValue } from "./datepicker.utils";
 
 interface DatePickerOptions {
   /** The dayjs format string */
-  dropdownMode: "alwaysOpen" | "closeOnSelect";
+  dropdownMode?: "alwaysOpen" | "closeOnSelect";
+  getDayClass?: (date: string) => string;
+  checkEnabled?: (date: string) => boolean;
 }
 const defaultOptions: DatePickerOptions = {
   dropdownMode: "closeOnSelect",
+  getDayClass: () => "",
+  checkEnabled: () => true,
 };
+
 interface Props {
   value: string;
   onChange: (string) => void;
@@ -48,7 +53,7 @@ let TODAY = formatValue(new Date());
 
 export function DatePicker({ value, onChange, options, ...props }: Props) {
   let opts = { ...defaultOptions, ...options };
-  let { activeDate, actions } = useCalendarNavigation(value || TODAY, onChange);
+  let { activeDate, actions } = useCalendarNavigation(value || TODAY, onChange, opts.checkEnabled);
 
   // TEXT INPUT
   let [inputValue, setInputValue] = useDatePickerInput(value, actions.setActiveDate);
@@ -97,7 +102,15 @@ export function DatePicker({ value, onChange, options, ...props }: Props) {
             <Calendar
               activeDate={activeDate}
               onSelect={actions.selectDate}
-              getDayClass={(day) => (day === value ? "calendar__day--selected" : "")}
+              getDayClass={(day) =>
+                [
+                  opts.getDayClass(day),
+                  day === value ? "calendar__day--selected" : "",
+                  opts.checkEnabled(day) ? "" : "calendar__day--disabled",
+                ]
+                  .filter(Boolean)
+                  .join(" ")
+              }
               prevMonth={actions.prevMonth}
               nextMonth={actions.nextMonth}
               options={{ displayActive: isKeyboarding }}

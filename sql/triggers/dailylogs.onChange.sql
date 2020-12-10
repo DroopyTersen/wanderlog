@@ -7,8 +7,11 @@ BEGIN
         FROM
             trips
         WHERE
-            trips.start <= NEW."date"
+            trips.author_id = NEW."author_id"
+            AND trips.start <= NEW."date"
             AND trips.end >= NEW."date"
+        LIMIT 1
+            
         );
     RETURN NEW;
 END;

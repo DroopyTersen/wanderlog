@@ -1,5 +1,5 @@
 .datepicker__theme {
-  --primary: var(--pink);
+  --primary: var(--gold-400);
   --background: var(--popupBackground);
   --neutralColor: #var(--neutral-700);
   --textColor: var(--white);
@@ -82,6 +82,7 @@
 .calendar__date-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
 }
 
 .calendar__days-header {
@@ -126,6 +127,13 @@
   background: var(--primary);
   border-color: var(--primary);
   color: white;
+}
+.calendar__day--disabled {
+  opacity: .5;
+  cursor: default;
+}
+.calendar__day--disabled:hover {
+  border-color: transparent;
 }
 
 .calendar__day::before,

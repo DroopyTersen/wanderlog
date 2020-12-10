@@ -4,7 +4,11 @@ import { formatValue, next, prev } from "./datepicker.utils";
 import { parseDate } from "chrono-node";
 import useOnClickOutside from "./useOnClickOutside";
 
-export const useCalendarNavigation = (activeDateProp, onSelect?: (date: string) => void) => {
+export const useCalendarNavigation = (
+  activeDateProp,
+  onSelect: (date: string) => void = () => {},
+  checkEnabled: (date) => boolean = () => true
+) => {
   let [activeDate, setActiveDate] = React.useState(formatValue(activeDateProp || new Date()));
   React.useEffect(() => {
     setActiveDate(activeDateProp);
@@ -13,9 +17,8 @@ export const useCalendarNavigation = (activeDateProp, onSelect?: (date: string) 
   const actions = React.useMemo(
     () => ({
       selectDate: (value) => {
-        setActiveDate(value);
-        if (onSelect) {
-          console.log("🚀 | value", value);
+        if (checkEnabled(value)) {
+          setActiveDate(value);
           onSelect(value);
         }
       },

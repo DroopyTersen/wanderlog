@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
-import { PageTitle, Tag, TagPicker, TagsInput } from "core/components";
+import { DatePicker, PageTitle, Tag, TagPicker, TagsInput } from "core/components";
 import { useFormStateMachine } from "core/hooks/useForm";
 import { getDaysInRange } from "core/utils";
 import { MemoriesDisplay } from "./Memories";
@@ -16,47 +16,41 @@ export function DailyLogForm({ trip, values, save, availableTags, mode }: DailyL
     validate: validate,
     submit: save,
   });
-  let [deleteDailyLog, isDeleting] = useDelete(values?.id, trip?.id);
+  let [deleteDailyLog, isDeleting] = useDelete(values?.id);
 
-  let dateOptions = trip
-    ? getDaysInRange(trip.start, trip.end).map((d) => ({
-        label: `Day ${dayjs(d).diff(dayjs(trip.start), "day") + 1}: ${dayjs(d).format(
-          "MM/DD/YYYY"
-        )}`,
-        value: dayjs(d).format("YYYY-MM-DD"),
-      }))
-    : [];
+  let tripDates =
+    getDaysInRange(trip?.start, trip?.end).map((d) => dayjs(d).format("YYYY-MM-DD")) || [];
+  let usedDates = trip?.dailyLogs?.map((dl) => dl.date) || [];
+  let availableDates = tripDates.filter((d) => !usedDates.includes(d));
+
   return (
     <>
-      <PageTitle>{values.id ? "Edit Daily Log" : "New Daily Log"}</PageTitle>
+      <PageTitle>
+        {values.id ? `Edit: ${dayjs(values.date).toDate().toLocaleDateString()}` : "New Daily Log"}
+      </PageTitle>
       <form onSubmit={form.onSubmit}>
-        <label htmlFor="date">
-          Date
-          {!!dateOptions.length ? (
-            <PickerSingle
-              value={values.date}
+        {!values.id && (
+          <label htmlFor="date">
+            Date
+            <DatePicker
+              value={form.values.date}
               onChange={(value) => form.actions.updateField({ field: "date", value })}
-              options={dateOptions}
-              isDisabled={mode === "edit"}
+              options={{
+                checkEnabled: (date) => availableDates.includes(date),
+                getDayClass: (date) =>
+                  `${usedDates.includes(date) ? "existing-dailylog-date" : ""} ${
+                    tripDates.includes(date) ? "trip-date" : ""
+                  }`,
+              }}
             />
-          ) : (
-            // <select {...form.getInputProps("date")}>
-            //   <option></option>
-            //   {dateOptions.map((dateOption) => (
-            //     <option key={dateOption.value} value={dateOption.value}>
-            //       {dateOption.text}
-            //     </option>
-            //   ))}
-            // </select>
-            <input type="date" {...form.getInputProps("date")} />
-          )}
-        </label>
+          </label>
+        )}
         <label htmlFor="tags">
           Tags
           <TagPicker
             key={availableTags.length}
             availableTags={availableTags}
-            values={values.tags.map((t) => t.id)}
+            values={form.values.tags.map((t) => t.id)}
             onChange={(value) => form.actions.updateField({ field: "tags", value })}
           />
         </label>
@@ -98,7 +92,7 @@ export interface DailyLogFormValues {
 export interface DailyLogFormProps {
   values: DailyLogFormValues;
   save: (value: DailyLogFormValues) => Promise<any>;
-  trip?: { start: string; end: string; id: number };
+  trip?: { start: string; end: string; id: number; dailyLogs: { date: string; id: number }[] };
   availableTags: Tag[];
   mode?: "edit" | "new";
 }
@@ -111,15 +105,17 @@ export const validate = (values: DailyLogFormValues) => {
   return errors;
 };
 
-function useDelete(id, tripId) {
+function useDelete(id) {
   let navigate = useNavigate();
   let [deleteResult, deleteMutation] = useMutation(DELETE_MUTATION);
 
   useEffect(() => {
     if (deleteResult?.data?.delete_dailylogs) {
-      navigate("/trips/" + tripId);
+      let tripId = deleteResult?.data?.delete_dailylogs?.returning?.[0]?.trip_id;
+      let path = tripId ? `/trips/${tripId}` : "/dailylogs";
+      navigate(path);
     }
-  }, [deleteResult.data, tripId]);
+  }, [deleteResult.data]);
 
   let deleteItem = () => {
     if (window.confirm("Are you sure?!")) {
@@ -131,14 +127,15 @@ function useDelete(id, tripId) {
 
 const DELETE_MUTATION = `
 mutation DeleteDailyLog($id:Int!) {
-    delete_tag_dailylog(where: {dailylog_id: {_eq: $id }}) {
-      affected_rows
-    }
-    delete_dailylogs(where: {id: {_eq: $id }}) {
-      affected_rows
-      returning {
-        id
-      }
+  delete_tag_dailylog(where: {dailylog_id: {_eq: $id }}) {
+    affected_rows
+  }
+  delete_dailylogs(where: {id: {_eq: $id }}) {
+    affected_rows
+    returning {
+      id
+      trip_id
     }
   }
+}
 `;
