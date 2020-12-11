@@ -16,7 +16,6 @@ export function DailyLogFormScreen() {
     successRedirect: (data) =>
       tripId ? `/trips/${tripId}/dailyLogs-${data.dailyLog.id}` : `/dailyLogs/${data.dailyLog.id}`,
   });
-  console.log("🚀 | DailyLogFormScreen | tripId", tripId, data, fetching);
 
   if (data?.tags) {
     return (

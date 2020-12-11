@@ -1,4 +1,4 @@
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const webpack = require("webpack");
 let config = require("./webpack.config");
 config.mode = "development";
@@ -10,15 +10,18 @@ config.devServer = {
 };
 config.module.rules[0].use = [
   {
-    loader: 'babel-loader',
-    options: { plugins: ['react-refresh/babel'] },
+    loader: "babel-loader",
+    options: { plugins: ["react-refresh/babel"] },
   },
-  "ts-loader"
-]
-// Remove bundle analyzer from DEV
-config.plugins = [
-  new ReactRefreshWebpackPlugin(),
+  "ts-loader",
 ];
+// Remove bundle analyzer from DEV
+config.plugins = [new ReactRefreshWebpackPlugin()];
+config.optimization = {
+  removeAvailableModules: false,
+  removeEmptyChunks: false,
+  splitChunks: false,
+};
 // console.log("WEBPACK!")
 // console.log(JSON.stringify(config, null, 2))
 module.exports = config;

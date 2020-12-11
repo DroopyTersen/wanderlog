@@ -23,6 +23,12 @@ export function DailyLogForm({ trip, values, save, availableTags, mode }: DailyL
   let usedDates = trip?.dailyLogs?.map((dl) => dl.date) || [];
   let availableDates = tripDates.filter((d) => !usedDates.includes(d));
 
+  useEffect(() => {
+    if (!form.values.date) {
+      form.actions.updateField({ field: "date", value: availableDates?.[0] });
+    }
+  }, [availableDates?.[0], form.values.date]);
+
   return (
     <>
       <PageTitle>
@@ -36,7 +42,8 @@ export function DailyLogForm({ trip, values, save, availableTags, mode }: DailyL
               value={form.values.date}
               onChange={(value) => form.actions.updateField({ field: "date", value })}
               options={{
-                checkEnabled: (date) => availableDates.includes(date),
+                checkEnabled: (date) =>
+                  tripDates.length > 0 ? availableDates.includes(date) : true,
                 getDayClass: (date) =>
                   `${usedDates.includes(date) ? "existing-dailylog-date" : ""} ${
                     tripDates.includes(date) ? "trip-date" : ""
