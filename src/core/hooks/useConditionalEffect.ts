@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 export function useConditionalEffect<T>(conditionalData: T, cb: (conditionalData: T) => void) {
   let cbRef = useRef(cb);

@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { TripForm, TripFormValues } from "../components/TripForm";
 import { pick } from "core/utils";
 import { useResourceWithTags } from "features/shared/mutationHelpers";
