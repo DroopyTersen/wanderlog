@@ -2,7 +2,8 @@ import { BigMonth, Img, TagsDisplay } from "core/components";
 import React from "react";
 import { Link } from "react-router-dom";
 import { BLURRED_PHOTOS } from "global/components/AppBackground/AppBackground";
-import { motion } from "framer-motion";
+import { BiBookHeart } from "react-icons/bi";
+import { IoMdImages } from "react-icons/io";
 
 export interface TripCardProps {
   id: number;
@@ -16,6 +17,8 @@ export interface TripCardProps {
     thumbnail: string;
     blurred: string;
   }[];
+  dailyLogCount: number;
+  photoCount: number;
 }
 
 const getRandomPhoto = (photos = []) => {
@@ -29,15 +32,30 @@ export const TripCard = (trip: TripCardProps) => {
   return (
     <Link to={"/trips/" + trip.id}>
       <div className="card trip-card trip">
-        <div>
+        <div className="left-column">
           <h2 className="trip-title">{trip.title}</h2>
-          <div className="destination">{trip.destination || "Destination Unknown"}</div>
+          <div className="row row2">
+            <span className="destination">{trip.destination || "Destination Unknown"}</span>
+            <div className="counts">
+              {trip.dailyLogCount && (
+                <span className="dailylog-count">
+                  <span className="number">{trip.dailyLogCount}</span> <BiBookHeart />
+                </span>
+              )}
+              {trip.photos.length > 0 && (
+                <span className="photo-count">
+                  <span className="number">{trip.photos.length}</span>
+                  <IoMdImages />
+                </span>
+              )}
+            </div>
+          </div>
         </div>
         <div className="overlay card-thumbnail">
           <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
           <BigMonth date={trip.start} className="text-shadowed" />
         </div>
-        {!!trip.tags.length && <TagsDisplay tags={trip.tags} />}
+        {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
       </div>
     </Link>
   );

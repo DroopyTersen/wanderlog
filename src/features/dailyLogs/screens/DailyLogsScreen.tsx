@@ -1,4 +1,5 @@
-import { Grid } from "core/components";
+import { Grid, Loader } from "core/components";
+import { useAuth } from "features/auth/auth.provider";
 import { AddButton, Footer } from "global/components";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -6,14 +7,23 @@ import { useQuery } from "urql";
 import { DailyLogCard } from "../components/DailyLogCard";
 
 export const DailyLogsScreen = () => {
-  let [{ data, fetching, error }] = useQuery<ScreenData>({ query: QUERY });
+  let { currentUser } = useAuth();
+  let [{ data, fetching, error }] = useQuery<ScreenData>({
+    query: QUERY,
+    variables: {
+      author: currentUser.username,
+    },
+  });
+  if (error) return <div className="error">{error}</div>;
+  if (!data?.dailyLogs) return <Loader />;
+
   return (
     <>
       {error && <div className="error">{error}</div>}
       {data?.dailyLogs && (
         <Grid width="500px">
           {data.dailyLogs.map((item) => (
-            <DailyLogCard key={item.id} dailyLog={item} trip={data?.trip} />
+            <DailyLogCard key={item.id} dailyLog={item} trip={item?.trip} />
           ))}
         </Grid>
       )}
@@ -35,30 +45,34 @@ interface ScreenData {
     title: string;
     start: string;
   };
+  photos: { blurred: string; thumbnail: string }[];
 }
 const QUERY = `
-query getDailyLogsByTrip($tripId:Int!) {
-    dailyLogs:dailylogs_by_trip(args: {trip_id: $tripId}) {
-      author {
-        username
-        imageUrl
+query GetMyDailyLogs($author: String!) {
+  dailyLogs: dailylogs(where: {author_id: {_eq: $author}} order_by: {date: desc}) {
+    id
+    date
+    tags {
+      tag_id
+      dailylog_id
+      tag {
         name
-      }
-      date
-      memories
-      tags {
-        tag_id
-        dailylog_id
-        tag {
-          name
-          id
-        }
+        id
       }
     }
-    trip: trips_by_pk(id: $tripId) {
+    photos(order_by: {date: desc, created_at: desc}) {
       id
-      title
-      start
+      thumbnail
+      url
+      blurred
     }
-  }    
+    trip {
+      id
+      start
+      end
+      title
+    }
+  }
+}
+   
 `;

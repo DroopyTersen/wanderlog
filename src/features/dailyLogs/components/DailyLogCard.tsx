@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { Img, TagsDisplay } from "core/components";
 import { MemoriesDisplay, MemoriesPreview } from "./Memories";
@@ -33,6 +33,7 @@ const getRandomPhoto = (photos = []) => {
   return photos[Math.floor(Math.random() * photos.length)];
 };
 export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs/${id}` }: Props) {
+  let { tripId: hasTripContext } = useParams();
   const randomPhoto = getRandomPhoto(dailyLog.photos);
   console.log("🚀 | DailyLogCard | randomPhoto", randomPhoto);
   return (
@@ -53,10 +54,20 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
             )}
           </div>
           <div className="column-two">
-            <div className="day-count">
-              Day {dayjs(dailyLog.date).diff(dayjs(trip?.start), "day") + 1}
-            </div>
-            <div className="places">Places will go here</div>
+            {trip && (
+              <div className="daily-log-trip">
+                <span className="day-count">
+                  Day {dayjs(dailyLog.date).diff(dayjs(trip?.start), "day") + 1}
+                </span>
+                {!hasTripContext && (
+                  <>
+                    <span>:</span>
+                    <Link to={"/trips/" + trip?.id}>{trip?.title}</Link>
+                  </>
+                )}
+              </div>
+            )}
+            {/* <div className="places">Places will go here</div> */}
             <TagsDisplay tags={dailyLog.tags} />
           </div>
         </div>

@@ -13,9 +13,9 @@ export default function Nav() {
   const links = (
     <>
       <Link to="/trips">Trips</Link>
-      {/* <Link to="/places">Places</Link>
-      <Link to="/Photos">Photos</Link>
-      <Link to="/dailylogs">Daily Logs</Link> */}
+      {/* <Link to="/places">Places</Link> */}
+      {/* <Link to="/Photos">Photos</Link> */}
+      <Link to="/dailylogs">Daily Logs</Link>
       <Link to="/profile">Profile</Link>
     </>
   );

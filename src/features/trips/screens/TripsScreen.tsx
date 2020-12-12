@@ -1,13 +1,13 @@
 import { Grid } from "core/components";
+import { useAuth } from "features/auth/auth.provider";
 import { AddButton, Footer } from "global/components";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "urql";
 import { TripCard } from "../components/TripCard";
-
 const QUERY = `
-query getTrips {
-  trips(order_by: {end: desc, title: asc}) {
+query getMyTrips($author: String!) {
+  trips(where: {author_id: {_eq: $author}} order_by:{ end:desc}) {
     id
     title
     destination
@@ -26,20 +26,34 @@ query getTrips {
       thumbnail
       blurred
     }
+    dailyLogs_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 }
- 
+
 `;
 
 export const TripsScreen = () => {
-  let [{ data, fetching, error }] = useQuery({ query: QUERY });
+  let { currentUser } = useAuth();
+  let [{ data, fetching, error }] = useQuery({
+    query: QUERY,
+    variables: { author: currentUser?.username },
+    pause: !currentUser?.username,
+  });
   return (
     <>
-      {error && <div className="error">{error}</div>}
+      {error && <div className="error">{JSON.stringify(error, null, 2)}</div>}
       {data?.trips && (
-        <Grid width="500px" gap="20px">
+        <Grid width="500px" gap="5px">
           {data.trips.map((trip) => (
-            <TripCard key={trip.id} {...trip} />
+            <TripCard
+              key={trip.id}
+              {...trip}
+              dailyLogCount={trip.dailyLogs_aggregate.aggregate.count}
+            />
           ))}
         </Grid>
       )}

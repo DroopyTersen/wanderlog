@@ -8,6 +8,7 @@ import { TripsScreen, TripDetailsScreen, TripFormScreen } from "features/trips/s
 import { DailyLogFormScreen } from "features/dailyLogs/screens/DailyLogFormScreen";
 import DailyLogDetails from "features/dailyLogs/screens/DailyLogDetails";
 import { AnimatePresence, motion, AnimateSharedLayout } from "framer-motion";
+import { DailyLogsScreen } from "features/dailyLogs/screens/DailyLogsScreen";
 
 export default function AuthenticatedRoutes() {
   return (
@@ -43,12 +44,8 @@ export default function AuthenticatedRoutes() {
             path="/dailylogs"
             element={<ContentLayout title="Daily Logs" />}
           >
-            <AnimatedRoute
-              key="new-dailylog"
-              path="new"
-              element={<DailyLogFormScreen />}
-              id="new-dailylog"
-            />
+            <AnimatedRoute key="dailylogs-list" path="/" element={<DailyLogsScreen />} />
+            <AnimatedRoute key="new-dailylog" path="new" element={<DailyLogFormScreen />} />
             <AnimatedRoute
               key="dailylog-details"
               path=":dailyLogId"
