@@ -1,7 +1,7 @@
 import React from "react";
 import { pick } from "core/utils";
 import { useResourceWithTags } from "features/shared/mutationHelpers";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { DailyLogForm, DailyLogFormValues } from "../components/DailyLogForm";
 import dayjs from "dayjs";
 

@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { DailyLogCard } from "features/dailyLogs/components/DailyLogCard";
 import { AddButton, Footer } from "global/components";
 import React, { useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
 import { motion, AnimatePresence } from "framer-motion";

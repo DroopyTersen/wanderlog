@@ -6,7 +6,7 @@ import { getDaysInRange } from "core/utils";
 import { MemoriesDisplay } from "./Memories";
 import { Footer } from "global/components";
 import { PickerSingle } from "core/components/inputs/Picker";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "urql";
 import { FaRegTrashAlt } from "react-icons/fa";
 
