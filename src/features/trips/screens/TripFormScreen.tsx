@@ -2,25 +2,38 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { TripForm, TripFormValues } from "../components/TripForm";
 import { pick } from "core/utils";
-import { useResourceWithTags } from "features/shared/mutationHelpers";
-import dayjs from "dayjs";
+import { useResourceWithTags } from "features/shared/useResource";
+import { Loader } from "core/components";
 
 export function TripFormScreen() {
   let { tripId = 0 } = useParams();
-  let { data, fetching, error, save } = useResourceWithTags<ScreenData>({
+  let { data, fetching, error, save, loading, deleteItem } = useResourceWithTags<ScreenData>({
     resourceId: tripId,
     query: { query: QUERY, variables: { id: tripId } },
     INSERT,
     UPDATE,
+    DELETE,
     tagKey: "trip_id",
     successRedirect: (data) => `/trips/${data.trip.id}`,
+    deleteRedirect: (data) => "/trips",
   });
 
-  if (!fetching && !error) {
-    return <TripForm values={toFormValues(data?.trip)} save={save} availableTags={data?.tags} />;
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+  if (loading) {
+    return <Loader />;
   }
 
-  return <div>Loading...</div>;
+  return (
+    <TripForm
+      fetching={fetching}
+      deleteItem={deleteItem}
+      values={toFormValues(data?.trip)}
+      save={save}
+      availableTags={data?.tags}
+    />
+  );
 }
 
 interface ScreenData {
@@ -107,6 +120,20 @@ mutation insertTrip($object: trips_insert_input!) {
         }
     }
 }`;
+
+export const DELETE = `
+mutation DeleteTrip($id:Int!) {
+  delete_tag_trip(where: {trip_id: {_eq: $id }}) {
+    affected_rows
+  }
+  delete_trips(where: {id: {_eq: $id }}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+`;
 
 export const EMPTY_TRIP: TripFormValues = {
   title: "",

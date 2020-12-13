@@ -5,7 +5,7 @@ export function MemoriesDisplay({ memories, className = "", ...rest }) {
   return (
     <div {...rest} className={"memories stack " + className}>
       {items?.map((item) => (
-        <div key={item} className="card">
+        <div key={item} className="card memory">
           {item}
         </div>
       ))}

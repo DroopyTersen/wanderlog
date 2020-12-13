@@ -13,7 +13,9 @@ button {
   align-self: initial !important;
   font-family: var(--textFont);
 }
-
+fieldset {
+  border: none;
+}
 input,
 textarea {
   background-color: rgba(0, 0, 0, 0.15);

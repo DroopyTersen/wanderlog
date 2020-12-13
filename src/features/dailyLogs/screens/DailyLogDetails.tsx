@@ -5,8 +5,8 @@ import { AddButton, AppBackground, Footer } from "global/components";
 import { Grid, TagsDisplay } from "core/components";
 import { useMutation, useQuery } from "urql";
 import { MemoriesDisplay } from "../components/Memories";
-import { PhotoUploader } from "features/photos/PhotoUploader";
-import { PhotoGrid } from "features/photos/PhotoGrid";
+import { PhotoUploader } from "features/photos/components/PhotoUploader";
+import { PhotoGrid } from "features/photos/components/PhotoGrid";
 
 export default function DailyLogDetails() {
   let { tripId = 0, dailyLogId } = useParams();

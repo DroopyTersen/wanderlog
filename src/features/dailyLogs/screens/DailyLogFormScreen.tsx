@@ -1,18 +1,23 @@
 import React from "react";
 import { pick } from "core/utils";
-import { useResourceWithTags } from "features/shared/mutationHelpers";
+import { useResourceWithTags } from "features/shared/useResource";
 import { useParams } from "react-router-dom";
 import { DailyLogForm, DailyLogFormValues } from "../components/DailyLogForm";
 import dayjs from "dayjs";
 
 export function DailyLogFormScreen() {
   let { tripId = 0, dailyLogId = 0 } = useParams();
-  let { data, fetching, save } = useResourceWithTags<ScreenData>({
+  let { data, fetching, save, loading, deleteItem } = useResourceWithTags<ScreenData>({
     resourceId: dailyLogId,
     query: { query: QUERY, variables: { id: dailyLogId, tripId } },
     INSERT,
     UPDATE,
+    DELETE,
     tagKey: "dailylog_id",
+    deleteRedirect: (data) => {
+      let tripId = data?.delete_dailylogs?.returning?.[0]?.trip_id;
+      return tripId ? `/trips/${tripId}` : "/dailylogs";
+    },
     successRedirect: (data) =>
       tripId ? `/trips/${tripId}/dailyLogs-${data.dailyLog.id}` : `/dailyLogs/${data.dailyLog.id}`,
   });
@@ -23,6 +28,8 @@ export function DailyLogFormScreen() {
         key={tripId}
         values={toFormValues(data?.dailyLog)}
         save={save}
+        deleteItem={deleteItem}
+        fetching={fetching}
         trip={data?.trip}
         availableTags={data?.tags}
         mode={dailyLogId ? "edit" : "new"}
@@ -137,6 +144,20 @@ mutation insertDailyLog($object: dailylogs_insert_input!) {
         name
         id
       }
+    }
+  }
+}
+`;
+const DELETE = `
+mutation DeleteDailyLog($id:Int!) {
+  delete_tag_dailylog(where: {dailylog_id: {_eq: $id }}) {
+    affected_rows
+  }
+  delete_dailylogs(where: {id: {_eq: $id }}) {
+    affected_rows
+    returning {
+      id
+      trip_id
     }
   }
 }
