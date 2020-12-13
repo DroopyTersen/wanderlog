@@ -6,6 +6,7 @@ import { getDaysInRange } from "core/utils";
 import { MemoriesDisplay } from "./Memories";
 import { Footer } from "global/components";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { formatValue } from "core/components/inputs/DatePicker/datepicker.utils";
 
 export function DailyLogForm({
   trip,
@@ -21,6 +22,7 @@ export function DailyLogForm({
     validate: validate,
     submit: save,
   });
+  console.log(form.status, form.validationErrors, form.values);
 
   let tripDates =
     getDaysInRange(trip?.start, trip?.end).map((d) => dayjs(d).format("YYYY-MM-DD")) || [];
@@ -28,10 +30,13 @@ export function DailyLogForm({
   let availableDates = tripDates.filter((d) => !usedDates.includes(d));
 
   useEffect(() => {
-    if (!form.values.date) {
-      form.actions.updateField({ field: "date", value: availableDates?.[0] });
+    if (!values.date) {
+      form.actions.updateField({
+        field: "date",
+        value: availableDates?.[0] ?? formatValue(new Date()),
+      });
     }
-  }, [availableDates?.[0], form.values.date]);
+  }, [availableDates?.[0], values.date]);
 
   return (
     <>
