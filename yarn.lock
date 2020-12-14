@@ -2024,15 +2024,7 @@
   resolved "https://registry.yarnpkg.com/@ungap/from-entries/-/from-entries-0.2.1.tgz#7e86196b8b2e99d73106a8f25c2a068326346354"
   integrity sha512-CAqefTFAfnUPwYqsWHXpOxHaq1Zo5UQ3m9Zm2p09LggGe57rqHoBn3c++xcoomzXKynAUuiBMDUCQvKMnXjUpA==
 
-"@urql/core@>=1.15.0":
-  version "1.15.1"
-  resolved "https://registry.yarnpkg.com/@urql/core/-/core-1.15.1.tgz#fa49909f2841d092796dd540cef6e9df89222560"
-  integrity sha512-a05ablx/aKNCUc9dEbx0GvE28UC0sJ1FmfsSfmJNqecYlYeb4XvSQW4FLVy0e/MjQeB9op/weiVIEw+za2ssGw==
-  dependencies:
-    "@graphql-typed-document-node/core" "^3.1.0"
-    wonka "^4.0.14"
-
-"@urql/core@^1.16.0":
+"@urql/core@>=1.15.0", "@urql/core@>=1.16.1", "@urql/core@^1.16.0":
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/@urql/core/-/core-1.16.1.tgz#a41487dd4436cbdc92fce714c6c1fc04315761d3"
   integrity sha512-lcEMCS/rB+ug7jKSRDVZIsqNhZxRooTNa1kHfvSjJT2k4SXDyPmjNSfXBUJF2pDJmvv9EIKl9Tk0AF1CvG3Q/g==
@@ -2048,11 +2040,11 @@
     wonka ">= 4.0.9"
 
 "@urql/exchange-graphcache@^3.1.11":
-  version "3.1.11"
-  resolved "https://registry.yarnpkg.com/@urql/exchange-graphcache/-/exchange-graphcache-3.1.11.tgz#4182e1b532f689b3523a94c18e2028f8974feb3f"
-  integrity sha512-p0Pd1MLMnY9y7K4DQOvP4rnTVcA82/KWS82WtGcmFBtpbmMqv3gx/uPeZcvnoERGV2/Lf1U8JhoNQA6zi1o/+w==
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@urql/exchange-graphcache/-/exchange-graphcache-3.3.3.tgz#bfd94899f52c8046d1b2e52caf4a3ccee623bb87"
+  integrity sha512-xkKvSN18bLsl6ldf64A7r2ibdoUwBlNJxog3cCyffktAgG3E1yuKbKs/qZELPsIQIEFPvTpC/gqCpBbJ7+0YRA==
   dependencies:
-    "@urql/core" ">=1.15.0"
+    "@urql/core" ">=1.16.1"
     wonka "^4.0.14"
 
 "@urql/exchange-retry@^0.2.0":
@@ -2064,9 +2056,9 @@
     wonka "^4.0.14"
 
 "@urql/introspection@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@urql/introspection/-/introspection-0.1.1.tgz#a5f57d029952f262e151bc52de910cc281821a33"
-  integrity sha512-FqHKhIVCp36Avz5KOli7Be8VJN4QtY8LppbhghPCHHxVDj60nhSdxHpbZl91zvgmQPn/Z+U37yiwsr33yq4bkw==
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@urql/introspection/-/introspection-0.1.2.tgz#3d6fd5a79f9df6e379aaf2922fb753cc06f228fc"
+  integrity sha512-neUWngizFD2ajCrHJLT/KmkhB6dcJTvMn7cE3c2KB2Hk0y+bSXK/1KBQffaekAacHUwxgoLvYEL9Z68HkCuFvQ==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
