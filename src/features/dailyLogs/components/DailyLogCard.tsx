@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { Img, TagsDisplay } from "core/components";
+import { BigDate, Img, TagsDisplay } from "core/components";
 import { MemoriesDisplay, MemoriesPreview } from "./Memories";
 import { BLURRED_PHOTOS } from "global/components";
 import { IoMdImages } from "react-icons/io";
@@ -33,48 +33,38 @@ const getRandomPhoto = (photos = []) => {
   return photos[Math.floor(Math.random() * photos.length)];
 };
 export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs/${id}` }: Props) {
+  let [randomPhoto, setRandomPhoto] = useState(() => getRandomPhoto(dailyLog.photos));
+  useEffect(() => {
+    setRandomPhoto(getRandomPhoto(dailyLog.photos));
+  }, [dailyLog.photos]);
+
   let { tripId: hasTripContext } = useParams();
-  const randomPhoto = getRandomPhoto(dailyLog.photos);
 
   return (
     <Link to={getLink(dailyLog)}>
-      <div className="card daily-log-card">
-        <h2 className="dailyLog-title">
-          <span className="day">{dayjs(dailyLog.date).format("ddd")}</span>
-          <span className="date">{dayjs(dailyLog.date).format("M/DD/YYYY")}</span>
-        </h2>
-        <div className="row-two">
-          <div className="photo">
-            <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
-            {dailyLog.photos.length > 0 && (
-              <div className="photo-count">
-                <span className="photo-count-number">{dailyLog.photos.length}</span>
-                <IoMdImages />
-              </div>
-            )}
-          </div>
-          <div className="column-two">
-            {trip && (
-              <div className="daily-log-trip">
-                <span className="day-count">
-                  Day {dayjs(dailyLog.date).diff(dayjs(trip?.start), "day") + 1}
-                </span>
-                {!hasTripContext && (
-                  <>
-                    <span>:</span>
-                    <Link to={"/trips/" + trip?.id}>{trip?.title}</Link>
-                  </>
-                )}
-              </div>
-            )}
-            {/* <div className="places">Places will go here</div> */}
-            <TagsDisplay tags={dailyLog.tags} />
-          </div>
+      <div className="card dailylog-card">
+        <div className="img overlay">
+          <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
         </div>
-        {/* <MemoriesPreview
-          memories={dailyLog.memories.slice(0)}
-          className="preview"
-        ></MemoriesPreview> */}
+        <div className="overlay"></div>
+        {dailyLog.photos.length > 0 && (
+          <div className="photo-count">
+            <span className="photo-count-number">{dailyLog.photos.length}</span>
+            <IoMdImages />
+          </div>
+        )}
+        <div>
+          <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />
+          {trip?.title && (
+            <div className="daily-log-trip text-shadowed">
+              <span className="day-count">
+                Day {dayjs(dailyLog.date).diff(dayjs(trip.start), "day") + 1}:
+              </span>
+              <Link to={"/trips/" + trip?.id}>{trip.title}</Link>
+            </div>
+          )}
+        </div>
+        <TagsDisplay tags={dailyLog.tags} />
       </div>
     </Link>
   );

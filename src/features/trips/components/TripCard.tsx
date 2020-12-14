@@ -1,4 +1,4 @@
-import { BigMonth, Img, TagsDisplay } from "core/components";
+import { BigDate, Img, TagsDisplay } from "core/components";
 import React from "react";
 import { Link } from "react-router-dom";
 import { BLURRED_PHOTOS } from "global/components/AppBackground/AppBackground";
@@ -53,7 +53,7 @@ export const TripCard = (trip: TripCardProps) => {
         </div>
         <div className="overlay card-thumbnail">
           <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
-          <BigMonth date={trip.start} className="text-shadowed" />
+          <BigDate variant={"month"} date={trip.start} className="text-shadowed" />
         </div>
         {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
       </div>

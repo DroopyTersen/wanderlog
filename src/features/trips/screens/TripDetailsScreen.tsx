@@ -1,4 +1,4 @@
-import { BigMonth, Grid, Loader, PageTitle, TagsDisplay } from "core/components";
+import { BigDate, Grid, Loader, PageTitle, TagsDisplay } from "core/components";
 import { calcNumDays, displayDate, displayDateRange } from "core/utils";
 import dayjs from "dayjs";
 import { DailyLogCard } from "features/dailyLogs/components/DailyLogCard";
@@ -33,7 +33,7 @@ export const TripDetailsScreen = () => {
           </div>
           <div className="date">{displayDateRange(trip.start, trip.end)}</div>
         </div>
-        <BigMonth date={trip.start} />
+        <BigDate variant="month" date={trip.start} />
       </div>
       {/* <div className="destination">{trip.destination || "Destination Unknown"}</div> */}
       {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
