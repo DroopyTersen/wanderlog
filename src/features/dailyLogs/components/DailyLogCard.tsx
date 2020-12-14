@@ -35,7 +35,7 @@ const getRandomPhoto = (photos = []) => {
 export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs/${id}` }: Props) {
   let { tripId: hasTripContext } = useParams();
   const randomPhoto = getRandomPhoto(dailyLog.photos);
-  console.log("🚀 | DailyLogCard | randomPhoto", randomPhoto);
+
   return (
     <Link to={getLink(dailyLog)}>
       <div className="card daily-log-card">

@@ -19,6 +19,8 @@ const cache = cacheExchange({
   keys: {
     tag_trip: (data) => `${data.tag_id}_${data.trip_id}`,
     tag_dailylog: (data) => `${data.tag_id}_${data.dailylog_id}`,
+    dailylogs_aggregate: () => null,
+    dailylogs_aggregate_fields: () => null,
   },
   updates: {
     Mutation: {

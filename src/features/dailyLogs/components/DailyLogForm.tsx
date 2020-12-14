@@ -22,7 +22,6 @@ export function DailyLogForm({
     validate: validate,
     submit: save,
   });
-  console.log(form.status, form.validationErrors, form.values);
 
   let tripDates =
     getDaysInRange(trip?.start, trip?.end).map((d) => dayjs(d).format("YYYY-MM-DD")) || [];
