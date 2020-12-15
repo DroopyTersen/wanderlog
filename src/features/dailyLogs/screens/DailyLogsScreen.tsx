@@ -21,11 +21,11 @@ export const DailyLogsScreen = () => {
     <>
       {error && <div className="error">{error}</div>}
       {data?.dailyLogs && (
-        <MotionGrid width="400px" gap="15px">
+        <Grid width="400px" gap="15px">
           {data.dailyLogs.map((item) => (
             <DailyLogCard key={item.id} dailyLog={item} trip={item?.trip} />
           ))}
-        </MotionGrid>
+        </Grid>
       )}
       <Footer>
         <AddButton>

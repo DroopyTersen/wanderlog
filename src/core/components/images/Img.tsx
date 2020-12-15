@@ -37,7 +37,7 @@ export function Img({ initial = "", src = DEFAULT, fallback = DEFAULT, opacity =
       {imgSrc && (
         <motion.img
           className="animated"
-          style={{ position: "absolute", top: 0 } as any}
+          style={{ position: "absolute" } as any}
           key={imgSrc}
           src={imgSrc}
           initial={{ opacity: 0 }}
