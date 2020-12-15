@@ -33,9 +33,9 @@
     object-position: bottom;
   }
   img.blurred {
-    filter: blur(15px);
+    filter: blur(13px);
     &.placeholder {
-      filter: blur(25px);
+      filter: blur(18px);
     }
   }
   &.loading {

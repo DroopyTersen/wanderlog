@@ -1,4 +1,4 @@
-import { BigDate, Grid, Loader, PageTitle, TagsDisplay } from "core/components";
+import { BigDate, Grid, Loader, MotionGrid, PageTitle, TagsDisplay } from "core/components";
 import { calcNumDays, displayDate, displayDateRange } from "core/utils";
 import dayjs from "dayjs";
 import { DailyLogCard } from "features/dailyLogs/components/DailyLogCard";
@@ -39,7 +39,7 @@ export const TripDetailsScreen = () => {
       {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
 
       <section className="daily-logs">
-        <Grid width="400px" className="daily-logs-grid" gap="20px">
+        <MotionGrid width="400px" className="daily-logs-grid" gap="15px">
           {trip.dailyLogs.map((dailyLog) => (
             <DailyLogCard
               key={dailyLog.id}
@@ -48,7 +48,7 @@ export const TripDetailsScreen = () => {
               getLink={({ id }) => `dailylogs-${id}`}
             />
           ))}
-        </Grid>
+        </MotionGrid>
       </section>
 
       {/* <section className="photos">

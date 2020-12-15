@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { BigDate, Img, TagsDisplay } from "core/components";
+import { BigDate, Img, MotionGrid, TagsDisplay } from "core/components";
 import { MemoriesDisplay, MemoriesPreview } from "./Memories";
 import { BLURRED_PHOTOS } from "global/components";
 import { IoMdImages } from "react-icons/io";
@@ -42,7 +42,7 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
 
   return (
     <Link to={getLink(dailyLog)}>
-      <div className="card dailylog-card">
+      <MotionGrid.Item className="card dailylog-card">
         <div className="img overlay">
           <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
         </div>
@@ -65,7 +65,7 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
           )}
         </div>
         <TagsDisplay tags={dailyLog.tags} />
-      </div>
+      </MotionGrid.Item>
     </Link>
   );
 }

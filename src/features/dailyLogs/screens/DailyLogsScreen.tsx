@@ -1,4 +1,4 @@
-import { Grid, Loader } from "core/components";
+import { Grid, Loader, MotionGrid } from "core/components";
 import { useAuth } from "features/auth/auth.provider";
 import { AddButton, Footer } from "global/components";
 import React from "react";
@@ -21,11 +21,11 @@ export const DailyLogsScreen = () => {
     <>
       {error && <div className="error">{error}</div>}
       {data?.dailyLogs && (
-        <Grid width="500px">
+        <MotionGrid width="400px" gap="15px">
           {data.dailyLogs.map((item) => (
             <DailyLogCard key={item.id} dailyLog={item} trip={item?.trip} />
           ))}
-        </Grid>
+        </MotionGrid>
       )}
       <Footer>
         <AddButton>

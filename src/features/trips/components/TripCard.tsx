@@ -1,4 +1,4 @@
-import { BigDate, Img, TagsDisplay } from "core/components";
+import { BigDate, Img, MotionGrid, TagsDisplay } from "core/components";
 import React from "react";
 import { Link } from "react-router-dom";
 import { BLURRED_PHOTOS } from "global/components/AppBackground/AppBackground";
@@ -31,7 +31,7 @@ export const TripCard = (trip: TripCardProps) => {
   const randomPhoto = getRandomPhoto(trip.photos);
   return (
     <Link to={"/trips/" + trip.id}>
-      <div className="card trip-card trip">
+      <MotionGrid.Item className="card trip-card trip">
         <div className="left-column">
           <h2 className="trip-title">{trip.title}</h2>
           <div className="row row2">
@@ -56,7 +56,7 @@ export const TripCard = (trip: TripCardProps) => {
           <BigDate variant={"month"} date={trip.start} className="text-shadowed" />
         </div>
         {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
-      </div>
+      </MotionGrid.Item>
     </Link>
   );
 };

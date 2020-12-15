@@ -1,4 +1,4 @@
-import { Grid } from "core/components";
+import { MotionGrid } from "core/components";
 import { useAuth } from "features/auth/auth.provider";
 import { AddButton, Footer } from "global/components";
 import React from "react";
@@ -47,7 +47,7 @@ export const TripsScreen = () => {
     <>
       {error && <div className="error">{JSON.stringify(error, null, 2)}</div>}
       {data?.trips && (
-        <Grid width="500px" gap="5px">
+        <MotionGrid width="500px" gap="5px">
           {data.trips.map((trip) => (
             <TripCard
               key={trip.id}
@@ -55,7 +55,7 @@ export const TripsScreen = () => {
               dailyLogCount={trip.dailyLogs_aggregate.aggregate.count}
             />
           ))}
-        </Grid>
+        </MotionGrid>
       )}
       <Footer>
         <AddButton>
