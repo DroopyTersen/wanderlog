@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { AddButton, AppBackground, Footer } from "global/components";
-import { Grid, TagsDisplay } from "core/components";
+import { BigDate, Grid, TagsDisplay } from "core/components";
 import { useMutation, useQuery } from "urql";
 import { MemoriesDisplay } from "../components/Memories";
 import { PhotoUploader } from "features/photos/components/PhotoUploader";
@@ -26,8 +26,10 @@ export default function DailyLogDetails() {
     <>
       <div className="dailyLog-details">
         <h2 className="dailyLog-title">
-          <span className="day">{dayjs(dailyLog.date).format("ddd")}</span>
-          <span className="date">{dayjs(dailyLog.date).format("M/DD/YYYY")}</span>
+          <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />
+
+          {/* <span className="day">{dayjs(dailyLog.date).format("ddd")}</span>
+          <span className="date">{dayjs(dailyLog.date).format("M/DD/YYYY")}</span> */}
         </h2>
         {trip?.title && (
           <div className="daily-log-trip">

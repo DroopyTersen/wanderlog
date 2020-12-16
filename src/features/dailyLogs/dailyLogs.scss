@@ -38,65 +38,6 @@
     }
   }
 }
-.daily-log-card {
-  .subtitle {
-    font-style: italic;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  .row-two {
-    display: grid;
-    grid-template-columns: 90px 1fr;
-    gap: 20px;
-    .photo {
-      height: 90px;
-      position: relative;
-      img {
-        object-fit: cover;
-        height: 100%;
-        width: 100%;
-        border-radius: 4px;
-      }
-    }
-    .day-count {
-      font-weight: 600;
-    }
-    .tags .tag {
-      font-size: 12px;
-      line-height: 8px;
-    }
-    .column-two {
-      display: grid;
-      grid-template-rows: auto auto auto;
-      gap: 5px;
-      align-items: center;
-    }
-    .photo-count {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      font-size: 0.7rem;
-      display: flex;
-      align-items: center;
-      opacity: 0.85;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
-      background: transparent;
-      padding: 3px 5px;
-      border-radius: 11px;
-      .photo-count-number {
-        margin-right: 2px;
-      }
-    }
-  }
-  .dailyLog-title {
-    margin-bottom: 15px;
-    font-size: 1.8rem;
-  }
-  .places {
-    font-size: 0.85rem;
-    font-style: italic;
-  }
-}
 
 .dailyLog-title {
   font-family: var(--textFont);
@@ -133,7 +74,8 @@
 
 .dailyLog-details {
   .dailyLog-title {
-    margin: 30px 0;
+    margin-bottom: 30px;
+    color: var(--gold-800);
   }
   .daily-log-trip {
     margin: 10px 2px;
