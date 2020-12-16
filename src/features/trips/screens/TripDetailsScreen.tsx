@@ -9,6 +9,18 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
 import { motion, AnimatePresence } from "framer-motion";
 
+const animationVariants = {
+  visible: {
+    // scale: 1,
+    opacity: 1,
+    y: 20,
+  },
+  hidden: {
+    // scale: 0.9,
+    opacity: 0,
+    y: 0,
+  },
+};
 export const TripDetailsScreen = () => {
   let { tripId } = useParams();
 
@@ -23,18 +35,20 @@ export const TripDetailsScreen = () => {
 
   return (
     <motion.div className="trip trip-details">
-      <motion.div layoutId={`trip-title-${trip.id}`}>
-        <PageTitle className="trip-title greedy">{trip.title}</PageTitle>
-      </motion.div>
-      <div className="row space-between date-row">
-        <div className="trip-dates">
-          <div className="num-days">
-            <span>{calcNumDays(trip.start, trip.end)}</span> days
-          </div>
-          <div className="date">{displayDateRange(trip.start, trip.end)}</div>
+      <motion.div variants={animationVariants} initial="hidden" animate="visible">
+        <div>
+          <PageTitle className="trip-title greedy">{trip.title}</PageTitle>
         </div>
-        <BigDate variant="month" date={trip.start} />
-      </div>
+        <div className="row space-between date-row">
+          <div className="trip-dates">
+            <div className="num-days">
+              <span>{calcNumDays(trip.start, trip.end)}</span> days
+            </div>
+            <div className="date">{displayDateRange(trip.start, trip.end)}</div>
+          </div>
+          <BigDate variant="month" date={trip.start} />
+        </div>
+      </motion.div>
       {/* <div className="destination">{trip.destination || "Destination Unknown"}</div> */}
       {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
 
