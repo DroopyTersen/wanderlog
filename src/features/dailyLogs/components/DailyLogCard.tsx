@@ -46,9 +46,9 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
     <Link to={getLink(dailyLog)}>
       <MotionGrid.Item className="card dailylog-card">
         <div className="img overlay">
-          <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
+          <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.9} />
         </div>
-        <div className="overlay"></div>
+        <div className="overlay overlay-dark"></div>
 
         <div>
           <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />

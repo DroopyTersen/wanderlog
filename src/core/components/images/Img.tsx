@@ -41,8 +41,8 @@ export function Img({ initial = "", src = DEFAULT, fallback = DEFAULT, opacity =
           key={imgSrc}
           src={imgSrc}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          // exit={{ opacity: 1 }}
+          animate={{ opacity }}
+          exit={{ opacity }}
           transition={{ duration: imgSrc === src ? 0.5 : 0.15 }}
           loading="lazy"
         />

@@ -16,8 +16,10 @@
     left: 0;
     z-index: 0;
     border-radius: 3px;
-    opacity: 0.7;
-    background: radial-gradient(ellipse, rgba(20, 36, 47, 0.25), rgba(12, 25, 34, 0.6) 65%);
+    opacity: 1;
+  }
+  .overlay-dark {
+    background: radial-gradient(ellipse, rgba(20, 36, 47, 0.2), rgba(12, 25, 34, 0.4) 65%);
   }
   .tags .tag {
     background: rgba(255, 255, 255, 0.25);
