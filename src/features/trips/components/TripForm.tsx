@@ -49,7 +49,7 @@ export function TripForm({ values, save, availableTags, deleteItem, fetching }: 
           <textarea rows={3} {...form.getInputProps("destination")} />
         </label>
       </form>
-      <Footer>
+      <Footer className="solid">
         {deleteItem && (
           <button className="scary" onClick={deleteItem} disabled={fetching}>
             <FaRegTrashAlt />

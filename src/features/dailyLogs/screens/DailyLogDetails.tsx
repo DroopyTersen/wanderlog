@@ -8,6 +8,7 @@ import { MemoriesDisplay } from "../components/Memories";
 import { PhotoUploader } from "features/photos/components/PhotoUploader";
 import { PhotoGrid } from "features/photos/components/PhotoGrid";
 import { motion } from "framer-motion";
+import { BiEditAlt as EditIcon } from "react-icons/bi";
 
 export default function DailyLogDetails() {
   let { tripId = 0, dailyLogId } = useParams();
@@ -27,12 +28,16 @@ export default function DailyLogDetails() {
     <>
       <div className="dailyLog-details">
         <motion.div variants={animationVariants} initial="fromTop" animate="visible">
-          <h2 className="dailyLog-title">
-            <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />
-
-            {/* <span className="day">{dayjs(dailyLog.date).format("ddd")}</span>
-            <span className="date">{dayjs(dailyLog.date).format("M/DD/YYYY")}</span> */}
-          </h2>
+          <div className="row">
+            <h2 className="greedy dailyLog-title">
+              <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />
+            </h2>
+            <Link to="edit">
+              <button className="icon-button">
+                <EditIcon />
+              </button>
+            </Link>
+          </div>
           {trip?.title && (
             <div className="daily-log-trip">
               <span className="day-count">
@@ -63,9 +68,6 @@ export default function DailyLogDetails() {
       </div>
 
       <Footer>
-        <Link to="edit">
-          <button className="gold">Edit</button>
-        </Link>
         <AddButton>
           <p style={{ textAlign: "center", width: "100%" }}>
             Add a Place or a Photo to {dayjs(dailyLog.date).format("M/DD/YYYY")}

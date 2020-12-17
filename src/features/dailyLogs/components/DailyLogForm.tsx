@@ -77,7 +77,7 @@ export function DailyLogForm({
           <MemoriesDisplay memories={form.values.memories} />
         </fieldset>
       </form>
-      <Footer>
+      <Footer className="solid">
         {mode === "edit" && (
           <button className="scary" onClick={deleteItem} disabled={fetching}>
             <FaRegTrashAlt />

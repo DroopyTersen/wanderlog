@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { BiEditAlt as EditIcon } from "react-icons/bi";
 const animationVariants = {
   visible: {
     opacity: 1,
@@ -34,8 +34,13 @@ export const TripDetailsScreen = () => {
   return (
     <motion.div className="trip trip-details">
       <motion.div variants={animationVariants} initial="fromTop" animate="visible">
-        <div>
+        <div className="row align-top" style={{ marginBottom: "40px" }}>
           <PageTitle className="trip-title greedy">{trip.title}</PageTitle>
+          <Link to={`/trips/${trip.id}/edit`}>
+            <button title="Edit" className="icon-button">
+              <EditIcon />
+            </button>
+          </Link>
         </div>
         <div className="row space-between date-row">
           <div className="trip-dates">
@@ -68,9 +73,6 @@ export const TripDetailsScreen = () => {
       </section> */}
 
       <Footer>
-        <Link to={`/trips/${trip.id}/edit`}>
-          <button className="gold">Edit</button>
-        </Link>
         <AddButton>
           <Link to={"/places/new?tripId=" + trip.id}>Place</Link>
           <Link to={"/photos/new?tripId=" + trip.id}>Photo</Link>

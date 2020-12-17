@@ -95,4 +95,11 @@ html body a[role="button"] {
       }
     }
   }
+  &.borderless {
+    border: none;
+  }
+  &.icon-button {
+    border: none;
+    font-size: 1.35rem;
+  }
 }
