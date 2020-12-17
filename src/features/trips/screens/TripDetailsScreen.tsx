@@ -11,14 +11,12 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const animationVariants = {
   visible: {
-    // scale: 1,
     opacity: 1,
-    y: 20,
-  },
-  hidden: {
-    // scale: 0.9,
-    opacity: 0,
     y: 0,
+  },
+  fromTop: {
+    opacity: 0,
+    y: -20,
   },
 };
 export const TripDetailsScreen = () => {
@@ -35,7 +33,7 @@ export const TripDetailsScreen = () => {
 
   return (
     <motion.div className="trip trip-details">
-      <motion.div variants={animationVariants} initial="hidden" animate="visible">
+      <motion.div variants={animationVariants} initial="fromTop" animate="visible">
         <div>
           <PageTitle className="trip-title greedy">{trip.title}</PageTitle>
         </div>

@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "urql";
 import { MemoriesDisplay } from "../components/Memories";
 import { PhotoUploader } from "features/photos/components/PhotoUploader";
 import { PhotoGrid } from "features/photos/components/PhotoGrid";
+import { motion } from "framer-motion";
 
 export default function DailyLogDetails() {
   let { tripId = 0, dailyLogId } = useParams();
@@ -25,32 +26,40 @@ export default function DailyLogDetails() {
   return (
     <>
       <div className="dailyLog-details">
-        <h2 className="dailyLog-title">
-          <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />
+        <motion.div variants={animationVariants} initial="fromTop" animate="visible">
+          <h2 className="dailyLog-title">
+            <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />
 
-          {/* <span className="day">{dayjs(dailyLog.date).format("ddd")}</span>
-          <span className="date">{dayjs(dailyLog.date).format("M/DD/YYYY")}</span> */}
-        </h2>
-        {trip?.title && (
-          <div className="daily-log-trip">
-            <span className="day-count">
-              Day {dayjs(dailyLog.date).diff(dayjs(trip.start), "day") + 1}:
-            </span>
-            <Link to={"/trips/" + trip?.id}>{trip.title}</Link>
-          </div>
-        )}
-        <TagsDisplay tags={dailyLog.tags} />
+            {/* <span className="day">{dayjs(dailyLog.date).format("ddd")}</span>
+            <span className="date">{dayjs(dailyLog.date).format("M/DD/YYYY")}</span> */}
+          </h2>
+          {trip?.title && (
+            <div className="daily-log-trip">
+              <span className="day-count">
+                Day {dayjs(dailyLog.date).diff(dayjs(trip.start), "day") + 1}:
+              </span>
+              <Link to={"/trips/" + trip?.id}>{trip.title}</Link>
+            </div>
+          )}
+          <TagsDisplay tags={dailyLog.tags} />
+        </motion.div>
         <div className="memories">
           <MemoriesDisplay memories={dailyLog.memories} />
         </div>
 
-        <section className="photos">
+        <motion.section
+          className="photos"
+          variants={animationVariants}
+          initial="fromBottom"
+          animate="visible"
+          transition={{ delay: 0.15 }}
+        >
           <PhotoGrid
             photos={dailyLog?.photos}
             date={dailyLog?.date}
             onChange={() => reexecuteQuery()}
           />
-        </section>
+        </motion.section>
       </div>
 
       <Footer>
@@ -68,7 +77,20 @@ export default function DailyLogDetails() {
     </>
   );
 }
-
+const animationVariants = {
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+  fromTop: {
+    opacity: 0,
+    y: -20,
+  },
+  fromBottom: {
+    opacity: 0,
+    y: 30,
+  },
+};
 const QUERY = `
 query GetDailyLog($id: Int!) {
   dailyLog: dailylogs_by_pk(id: $id) {

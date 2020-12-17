@@ -1,15 +1,16 @@
+import { MotionGrid } from "core/components";
 import React from "react";
 
 export function MemoriesDisplay({ memories, className = "", ...rest }) {
   let items = typeof memories === "string" ? memories.trim().split("\n").filter(Boolean) : memories;
   return (
-    <div {...rest} className={"memories stack " + className}>
+    <MotionGrid width="600px" {...rest} className={"memories " + className}>
       {items?.map((item) => (
-        <div key={item} className="card memory">
+        <MotionGrid.Item key={item} className="card memory">
           {item}
-        </div>
+        </MotionGrid.Item>
       ))}
-    </div>
+    </MotionGrid>
   );
 }
 
