@@ -105,6 +105,7 @@ query getTripById($id: Int!) {
       id
       date
       memories
+      location
       tags {
         tag_id
         dailylog_id

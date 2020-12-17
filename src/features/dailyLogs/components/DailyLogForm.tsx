@@ -61,6 +61,10 @@ export function DailyLogForm({
               />
             </label>
           )}
+          <label htmlFor="location">
+            Where were you?
+            <textarea rows={2} {...form.getInputProps("location")} />
+          </label>
           <label htmlFor="tags">
             Tags
             <TagPicker
@@ -103,6 +107,7 @@ export interface DailyLogFormValues {
   id?: Number;
   date: string;
   tags: Tag[];
+  location: string;
   memories: string;
 }
 

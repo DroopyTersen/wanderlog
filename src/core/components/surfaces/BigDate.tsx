@@ -18,16 +18,16 @@ export function BigDate({ date, className = "", variant = "date-month" }: BigDat
           {dayjs(date)
             .format("MMM")
             .split("")
-            .map((c) => (
-              <span>{c}</span>
+            .map((c, i) => (
+              <span key={i}>{c}</span>
             ))}
         </div>
         <div className="year">
           {dayjs(date)
             .format("YYYY")
             .split("")
-            .map((c) => (
-              <span>{c}</span>
+            .map((c, i) => (
+              <span key={i}>{c}</span>
             ))}
         </div>
       </div>

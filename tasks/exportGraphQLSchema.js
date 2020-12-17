@@ -20,4 +20,8 @@ fetch("https://hasura.wanderlog.app/v1/graphql", {
   .then(({ data }) => {
     const minified = minifyIntrospectionQuery(getIntrospectedSchema(data));
     fs.writeFileSync("src/global/gql.schema.json", JSON.stringify(minified));
+  })
+  .catch((err) => {
+    console.log("ERROR");
+    console.log(err);
   });

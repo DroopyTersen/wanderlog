@@ -9,6 +9,7 @@ import { PhotoUploader } from "features/photos/components/PhotoUploader";
 import { PhotoGrid } from "features/photos/components/PhotoGrid";
 import { motion } from "framer-motion";
 import { BiEditAlt as EditIcon } from "react-icons/bi";
+import LocationIcon from "core/components/images/LocationIcon";
 
 export default function DailyLogDetails() {
   let { tripId = 0, dailyLogId } = useParams();
@@ -30,7 +31,7 @@ export default function DailyLogDetails() {
         <motion.div variants={animationVariants} initial="fromTop" animate="visible">
           <div className="row">
             <h2 className="greedy dailyLog-title">
-              <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />
+              <BigDate date={dailyLog.date} variant="day-date-month" />
             </h2>
             <Link to="edit">
               <button className="icon-button">
@@ -44,6 +45,11 @@ export default function DailyLogDetails() {
                 Day {dayjs(dailyLog.date).diff(dayjs(trip.start), "day") + 1}:
               </span>
               <Link to={"/trips/" + trip?.id}>{trip.title}</Link>
+            </div>
+          )}
+          {dailyLog.location && (
+            <div className="location">
+              <LocationIcon /> {dailyLog.location}
             </div>
           )}
           <TagsDisplay tags={dailyLog.tags} />
@@ -99,6 +105,7 @@ query GetDailyLog($id: Int!) {
     id
     date
     memories
+    location
     tags {
       tag_id
       dailylog_id

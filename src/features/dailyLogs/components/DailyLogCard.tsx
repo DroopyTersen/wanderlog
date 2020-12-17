@@ -5,12 +5,14 @@ import { BigDate, Img, MotionGrid, TagsDisplay } from "core/components";
 import { MemoriesDisplay, MemoriesPreview } from "./Memories";
 import { BLURRED_PHOTOS } from "global/components";
 import { IoMdImages } from "react-icons/io";
+import LocationIcon from "core/components/images/LocationIcon";
 
 interface Props {
   dailyLog: {
     id: number;
     date: string;
     tags: { tag: { name: string; id: number } }[];
+    location?: string;
     memories: string;
     photos?: {
       id: number;
@@ -64,7 +66,14 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
             </div>
           )}
         </div>
-        <TagsDisplay tags={dailyLog.tags} />
+        <div>
+          <TagsDisplay tags={dailyLog.tags} />
+          {dailyLog.location && (
+            <div className="location">
+              <LocationIcon /> {dailyLog.location}
+            </div>
+          )}
+        </div>
       </MotionGrid.Item>
     </Link>
   );

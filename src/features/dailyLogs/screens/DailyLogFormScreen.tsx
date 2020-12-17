@@ -59,6 +59,7 @@ const EMPTY_DAILY_LOG = {
   date: "",
   tags: [],
   memories: "",
+  location: "",
 };
 
 const toFormValues = (item: any): DailyLogFormValues => {
@@ -66,7 +67,7 @@ const toFormValues = (item: any): DailyLogFormValues => {
     return EMPTY_DAILY_LOG;
   }
   return {
-    ...pick(item, ["id", "date", "memories"]),
+    ...pick(item, ["id", "date", "memories", "location"]),
     tags: item?.tags?.map(({ tag }) => tag),
   };
 };
@@ -77,6 +78,7 @@ query HydrateDailyLogForm($id: Int!, $tripId: Int!) {
     id
     date
     memories
+    location
     tags {
       tag_id
       dailylog_id
@@ -123,6 +125,7 @@ mutation updateDailyLog($id: Int!, $updates: dailylogs_set_input! $tagsInput: [t
     id
     memories
     date
+    location
     tags {
       tag {
         name
@@ -139,6 +142,7 @@ mutation insertDailyLog($object: dailylogs_insert_input!) {
     id
     memories
     date
+    location
     tags {
       tag {
         name
