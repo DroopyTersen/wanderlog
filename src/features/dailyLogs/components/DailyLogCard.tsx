@@ -5,7 +5,7 @@ import { BigDate, Img, MotionGrid, TagsDisplay } from "core/components";
 import { MemoriesDisplay, MemoriesPreview } from "./Memories";
 import { BLURRED_PHOTOS } from "global/components";
 import { IoMdImages } from "react-icons/io";
-import LocationIcon from "core/components/images/LocationIcon";
+import { LocationIcon } from "core/components/images/icons";
 
 interface Props {
   dailyLog: {
@@ -49,12 +49,7 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
           <Img src={randomPhoto.thumbnail} initial={randomPhoto.blurred} opacity={0.8} />
         </div>
         <div className="overlay"></div>
-        {dailyLog.photos.length > 0 && (
-          <div className="photo-count">
-            <span className="photo-count-number">{dailyLog.photos.length}</span>
-            <IoMdImages />
-          </div>
-        )}
+
         <div>
           <BigDate date={dailyLog.date} variant="day-date-month" className="text-shadowed" />
           {trip?.title && (
@@ -66,11 +61,17 @@ export function DailyLogCard({ dailyLog, trip, getLink = ({ id }) => `/dailylogs
             </div>
           )}
         </div>
-        <div>
-          <TagsDisplay tags={dailyLog.tags} />
+        <div className="dailylog-card-bottom">
+          {/* <TagsDisplay tags={dailyLog.tags} /> */}
           {dailyLog.location && (
             <div className="location">
               <LocationIcon /> {dailyLog.location}
+            </div>
+          )}
+          {dailyLog.photos.length > 0 && (
+            <div className="photo-count">
+              <span className="photo-count-number">{dailyLog.photos.length}</span>
+              <IoMdImages />
             </div>
           )}
         </div>

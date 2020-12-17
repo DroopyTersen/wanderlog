@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "urql";
 import { motion, AnimatePresence } from "framer-motion";
 import { BiEditAlt as EditIcon } from "react-icons/bi";
+import { LocationIcon } from "core/components/images/icons";
 const animationVariants = {
   visible: {
     opacity: 1,
@@ -51,9 +52,8 @@ export const TripDetailsScreen = () => {
           </div>
           <BigDate variant="month" date={trip.start} />
         </div>
+        {!!trip.tags.length && <TagsDisplay tags={trip.tags} />}
       </motion.div>
-      {/* <div className="destination">{trip.destination || "Destination Unknown"}</div> */}
-      {/* {!!trip.tags.length && <TagsDisplay tags={trip.tags} />} */}
 
       <section className="daily-logs">
         <MotionGrid width="400px" className="daily-logs-grid" gap="15px">

@@ -9,7 +9,7 @@ import { PhotoUploader } from "features/photos/components/PhotoUploader";
 import { PhotoGrid } from "features/photos/components/PhotoGrid";
 import { motion } from "framer-motion";
 import { BiEditAlt as EditIcon } from "react-icons/bi";
-import LocationIcon from "core/components/images/LocationIcon";
+import { LocationIcon } from "core/components/images/icons";
 
 export default function DailyLogDetails() {
   let { tripId = 0, dailyLogId } = useParams();
