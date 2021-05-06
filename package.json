@@ -22,7 +22,7 @@
     "@urql/exchange-graphcache": "^3.1.11",
     "@urql/exchange-retry": "^0.2.0",
     "@urql/introspection": "^0.1.1",
-    "chrono-node": "^2.1.10",
+    "chrono-node": "^2.2.4",
     "dayjs": "^1.8.26",
     "framer-motion": "^2.9.5",
     "graphql": "^15.4.0",
