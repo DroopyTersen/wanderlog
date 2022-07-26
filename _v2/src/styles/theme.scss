@@ -1,0 +1,43 @@
+@import "./fontFaces.scss";
+
+:root {
+  --titleFont: Monoton;
+  --textFont: "Open Sans";
+  --darkBlue: #324d60;
+  --blue: #497799;
+  --gold: #ffc87d;
+  --pink: #deb9bf;
+  --popupBackground: rgba(38, 61, 74, 0.97);
+
+  --white-100: #fbfbfa;
+  --white: #f1f1ee;
+
+  --neutral-200: #e6e4e0;
+  --neutral-300: #e3e1dc;
+  --neutral-400: #e0ded8;
+  --neutral: #dddbd5;
+  --neutral-600: #c9c8c2;
+  --neutral-700: #b5b4af;
+
+  //   --gold-400: #e2b87f;
+  --gold-200: #b97c27;
+  --gold-300: #c98c38;
+  --gold-400: #e0a554;
+  --gold-500: #ffc87d;
+  --gold-600: #fcd8a7;
+  --gold-700: #fce5c6;
+  --gold-800: #fff4e4;
+  --blue-400: #3c6a8d;
+  --blue-500: #497799;
+  --blue-600: #7595b4;
+  --blue-700: #a6b6cb;
+  --blue-900: #e2ebf7;
+  --pink-500: #deb9bf;
+  --error: #ff90a2;
+  --gradientBackground: linear-gradient(
+    4deg,
+    var(--pink),
+    var(--blue-600) 60%,
+    var(--blue-400) 85%
+  );
+}

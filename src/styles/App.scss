@@ -1,6 +1,4 @@
 @import "./theme.scss";
-@import "./resets.scss";
-@import "./infinite.scss";
 html {
   background: var(--gradientBackground);
 }
@@ -12,21 +10,8 @@ body.noscroll {
 .content {
   padding: calc(env(safe-area-inset-top, 0px) + 50px) 15px 120px;
 }
-.shadowed {
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
-}
-.text-shadowed {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
 body * {
   position: relative;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
-@import "../core/components/typography/typography.scss";
-@import "../core/components/inputs/inputs.scss";
-@import "../core/components/layout/layout.scss";
-@import "../core/components/surfaces/surfaces.scss";
-@import "../features/trips/trips.scss";
-@import "../features/dailyLogs/dailyLogs.scss";
-@import "../features/photos/photos.scss";
