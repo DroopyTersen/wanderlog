@@ -1,12 +1,7 @@
 [build]
   command = "npm run build"
-  functions = "functions"  
+  functions = "/src/functions"  
   publish = "dist"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
 
 [[redirects]]
   from = '/api/*'
@@ -26,7 +21,14 @@
     immutable
     '''
 
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
-[[edge_functions]]
-function = "login"
-path = "/login"
+[dev]
+  command = "yarn run-dev"
+  targetPort = 5173
+  publish = "dist"
+  autoLaunch = true
+  framework = "#custom"

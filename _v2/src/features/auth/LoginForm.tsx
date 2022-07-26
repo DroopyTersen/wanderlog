@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { AppBackground, Footer } from "global/components";
 import "./auth.scss";
 import { useAuth } from "./auth.provider";
@@ -8,6 +8,9 @@ export function LoginForm() {
   let [password, setPassword] = useState("");
 
   let { login, status, error } = useAuth();
+  let inputCallbackRef = useCallback((ref) => {
+    console.log("Callback", ref.current);
+  }, []);
   const onSubmit = (e) => {
     e.preventDefault();
     if (username && password) {
@@ -18,6 +21,7 @@ export function LoginForm() {
     <>
       <div className="login-form">
         <form
+          ref={inputCallbackRef}
           className="login-form"
           autoComplete="new-password"
           aria-autocomplete="none"

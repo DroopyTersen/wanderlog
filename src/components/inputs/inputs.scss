@@ -1,0 +1,114 @@
+html a,
+html a:visited {
+  color: var(--white);
+  transition: color 0.2s ease-out;
+  text-decoration: none;
+}
+html a:hover {
+  color: var(--gold-700);
+}
+
+button {
+  margin: 0;
+  align-self: initial !important;
+  font-family: var(--textFont);
+}
+fieldset {
+  border: none;
+  padding: 0;
+}
+input,
+// textarea {
+//   background-color: rgba(0, 0, 0, 0.15);
+//   color: var(--white);
+//   padding: 10px;
+//   border: none;
+//   outline: none;
+//   border-radius: 5px;
+//   width: 100%;
+//   margin: 0.5rem 0 2rem;
+//   font-size: 1rem;
+// }
+input:focus,
+input:active,
+select:focus,
+select:active,
+textarea:focus,
+textarea:active {
+  box-shadow: 0 0 0 1pt var(--pink-500);
+}
+textarea {
+  resize: none;
+}
+textarea.resizable {
+  resize: vertical;
+}
+
+form {
+  width: 600px;
+  max-width: 100%;
+  label {
+    font-weight: 500;
+  }
+
+  .error {
+    padding: 1rem 0;
+  }
+}
+.form-actions {
+  display: flex;
+  // justify-content: flex-end;
+  text-align: center;
+  > * {
+    margin-left: 5px;
+  }
+  button {
+    min-width: 100px;
+    // margin: 10px;
+  }
+}
+
+a.button {
+  border: 1px solid var(--white);
+  padding: 5px 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  letter-spacing: 2px;
+}
+select {
+  // appearance: none;
+  background: #2e4658;
+}
+
+html .react-select__control {
+  margin: 0.5rem 0 2rem;
+  border-color: transparent;
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 5px 2px;
+  &:hover,
+  &.react-select__control--is-focused {
+    border-color: var(--pink-500);
+  }
+  .react-select__multi-value {
+    border: 1px solid var(--white);
+    border-radius: 15px;
+    padding: 1px 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  input {
+    margin: 0;
+    box-shadow: none !important;
+  }
+  &.react-select__control--is-disabled {
+    background-color: rgba(0, 0, 0, 0.08);
+    .react-select__indicators {
+      opacity: 0.3;
+    }
+  }
+}
+html .react-select__menu {
+  z-index: 2;
+  font-size: 0.88rem;
+}

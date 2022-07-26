@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Graphik", "sans-serif"],
+        sans: ["var(--textFont)", "sans-serif"],
         serif: ["Merriweather", "serif"],
       },
       colors: {
