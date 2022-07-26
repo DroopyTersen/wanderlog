@@ -5,6 +5,7 @@ ENV HASURA_GRAPHQL_ENABLE_CONSOLE=true
 # Enable debugging mode. It should be disabled in production.
 ENV HASURA_GRAPHQL_DEV_MODE=true
 ENV HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
+ENV HASURA_GRAPHQL_EXPERIMENTAL_FEATURES=naming_convention
 
 # Change $DATABASE_URL to your heroku postgres URL if you're not using
 # the primary postgres instance in your app
