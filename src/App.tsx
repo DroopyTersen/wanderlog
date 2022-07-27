@@ -1,34 +1,57 @@
-import { Suspense } from "react";
-import { AppBackground } from "./features/global/AppBackground/AppBackground";
-import { ScreenModeProvider } from "./features/global/ScreenModeProvider";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 import {
   DataBrowserRouter,
+  Link,
   Outlet,
-  PathRouteProps,
   Route,
-  Routes,
   ScrollRestoration,
+  useNavigate,
 } from "react-router-dom";
-import "./styles/tailwind.css";
-import "./styles/App.scss";
+import { auth } from "./features/auth/auth.client";
+import { LoginLayout } from "./features/auth/LoginLayout";
 import { LoginRoute } from "./features/auth/LoginRoute";
-import { HomeRoute } from "./features/home/HomeRoute";
 import { SignupRoute } from "./features/auth/SignupRoute";
+import { AppBackground } from "./features/global/AppBackground/AppBackground";
+import {
+  ScreenModeProvider,
+  useScreenMode,
+} from "./features/global/ScreenModeProvider";
+import "./styles/App.scss";
+import "./styles/tailwind.css";
+
+let isLoggedIn = auth.checkIsLoggedIn();
 function App({}) {
   return (
     <div className="app w-full h-full overflow-hidden">
       <ScreenModeProvider>
         <DataBrowserRouter>
-          <Route element={<Layout />}>
-            <Route element={<HomeRoute />} path="/" />
-            <Route element={<LoginRoute />} path="/login" />
-            <Route element={<SignupRoute />} path="/signup" />
-          </Route>
+          {!isLoggedIn && (
+            <Route element={<Layout />}>
+              <Route element={<LoginLayout />}>
+                <Route index element={<AnonymousHomeRoute />}></Route>
+                <Route element={<LoginRoute />} path="/login" />
+                <Route element={<SignupRoute />} path="/signup" />
+              </Route>
+            </Route>
+          )}
         </DataBrowserRouter>
       </ScreenModeProvider>
     </div>
   );
 }
+
+const AnonymousHomeRoute = () => {
+  console.log("HERE I AM");
+  let screenMode = useScreenMode();
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (screenMode.size === "large") {
+      navigate("/login");
+    }
+  }, [screenMode]);
+  return null;
+};
 
 const Layout = () => {
   return (

@@ -61,8 +61,8 @@ export const Modal = ({
         <Dialog.Portal>
           <Dialog.Overlay asChild={true}>
             <motion.div
-              className="fixed inset-0 z-50 grid modal-overlay bg-black/50 place-items-center"
-              transition={{ duration: 0.07 }}
+              className="fixed inset-0 z-50 grid modal-overlay bg-white/20  justify-center items-start"
+              transition={{ duration: 0.1 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
@@ -73,16 +73,16 @@ export const Modal = ({
                 }}
               >
                 <motion.div
-                  transition={{ duration: 0.05 }}
-                  initial={{ scale: 0.9, y: -30, opacity: 0 }}
+                  transition={{ duration: 0.1 }}
+                  initial={{ scale: 0.9, y: 30, opacity: 0 }}
                   animate={{ scale: 1, y: 0, opacity: 1 }}
-                  className="text-left whitespace-normal modal-box"
+                  className="text-left whitespace-normal p-8 bg-primary-700/70 backdrop-blur-md shadow rounded-xl w-[500px] max-w-[94vw]  mt-[min(20vw,20vh)]"
                 >
-                  <div className="flex justify-between modal-header ">
+                  <div className="flex justify-between modal-header items-center">
                     {title ? (
-                      <Dialog.Title className="modal-title" asChild>
+                      <Dialog.Title className="modal-title title-text" asChild>
                         {typeof title === "string" ? (
-                          <h2 className="flex items-center mb-8 text-xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                          <h2 className="flex items-center mb-8 text-3xl font-bold leading-7 text-gray-900 sm:text-4xl sm:truncate my-0">
                             {title}
                           </h2>
                         ) : (

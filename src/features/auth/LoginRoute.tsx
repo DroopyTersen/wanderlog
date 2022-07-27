@@ -1,14 +1,12 @@
-import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "~/components";
 import { InputField } from "~/components/inputs/InputField";
-import { LoginFormWrapper } from "./LoginFormWrapper";
 
 export const LoginRoute = () => {
   let [searchParams] = useSearchParams();
 
   return (
-    <LoginFormWrapper title="Login">
+    <>
       <input type="hidden" name="mode" value="login" />
       <InputField
         label="Username"
@@ -28,6 +26,6 @@ export const LoginRoute = () => {
           </Link>
         </div>
       </div>
-    </LoginFormWrapper>
+    </>
   );
 };

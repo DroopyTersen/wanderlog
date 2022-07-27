@@ -18,7 +18,7 @@ export const getInputClasses = (className) =>
     "rounded-lg shadow-sm",
     "px-3 py-2",
     "disabled:cursor-not-allowed disabled:bg-gray-100",
-    "bg-primary-700/80",
+    "bg-black/20",
     // "invalid:ring-1 invalid:ring-red-500 invalid:border-red-500",
     "focus:outline-none border-2 border-transparent focus:border-pink",
     className,
