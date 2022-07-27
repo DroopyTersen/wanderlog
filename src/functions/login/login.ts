@@ -3,7 +3,7 @@ import cookie from "cookie";
 import { url } from "inspector";
 import { ZodError } from "zod";
 import { parseFormValues } from "~/common/response.utils";
-import { User } from "~/common/types";
+import { User } from "~/features/users/user.types";
 import { AUTH_COOKIE, LoginSchema } from "~/features/auth/auth.types";
 import { createJWT } from "~/features/auth/hasuraAuth.server";
 

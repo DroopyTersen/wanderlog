@@ -1,4 +1,4 @@
-import { User } from "~/common/types";
+import { User } from "~/features/users/user.types";
 import jwt from "jsonwebtoken";
 const ROLE = "user";
 
@@ -7,7 +7,7 @@ export const createJWT = (user: User) => {
     "https://hasura.io/jwt/claims": {
       "x-hasura-allowed-roles": [ROLE],
       "x-hasura-default-role": ROLE,
-      "x-hasura-user-id": user.id,
+      "x-hasura-user-id": user.id + "",
     },
     user,
   };

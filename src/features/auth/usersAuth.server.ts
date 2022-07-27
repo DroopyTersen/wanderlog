@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import "isomorphic-fetch";
 
 import { hasuraAdminRequest } from "~/common/hasura.server";
-import { User } from "~/common/types";
+import { User } from "~/features/users/user.types";
 
 export const verifyCredentials = async (
   username: string,

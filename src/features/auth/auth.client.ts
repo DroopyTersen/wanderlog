@@ -1,5 +1,5 @@
 import decode from "jwt-decode";
-import { User } from "~/common/types";
+import { User } from "~/features/users/user.types";
 import { AUTH_COOKIE } from "./auth.types";
 
 const readCookie = (fullCookieString: string, key: string): string => {
@@ -41,3 +41,4 @@ export const auth = {
     window.location.href = "/";
   },
 };
+(window as any).__auth = auth;

@@ -1,13 +1,18 @@
 import { motion } from "framer-motion";
 import { IoMdClose } from "react-icons/io";
 import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom";
-import { Footer } from "../global/Footer/Footer";
+import { useIsOnline } from "~/common/isOnline";
+import { Footer } from "../layout/Footer/Footer";
 import "../home/home.scss";
 export function LoginLayout() {
   let [searchParams] = useSearchParams();
   let error = searchParams?.get("error");
   let { pathname } = useLocation();
+  let isOnline = useIsOnline();
   let title = pathname === "/login" ? "Log in" : "Sign up";
+  if (!isOnline) {
+    error = `You are offline. Please connect to the internet to ${title.toLowerCase()}.`;
+  }
   return (
     <>
       <motion.div

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { auth } from "../auth/auth.client";
-import { Footer } from "../global/Footer/Footer";
+import { Footer } from "../layout/Footer/Footer";
 import "./home.scss";
 
 let currentUser = auth.getCurrentUser();
@@ -23,12 +23,15 @@ export function HomeRoute() {
         {currentUser ? (
           <div>
             <div>Hello, {currentUser.username}</div>
-            <button className="gold" onClick={() => auth.logout()}>
+            <button
+              className="btn btn-primary btn-sm btn-outline"
+              onClick={() => auth.logout()}
+            >
               Logout
             </button>
           </div>
         ) : (
-          <Link role="button" to="/login" className="gold">
+          <Link to="/login" className="btn btn-secondary btn-outline">
             Login
           </Link>
         )}

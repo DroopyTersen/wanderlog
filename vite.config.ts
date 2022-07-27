@@ -9,6 +9,9 @@ export default defineConfig({
       "~": "/src",
     },
   },
+  define: {
+    global: "window",
+  },
   plugins: [
     react(),
     VitePWA({

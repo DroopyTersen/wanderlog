@@ -24,11 +24,13 @@
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
+    "pouchdb-adapter-idb": "^7.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.4.0-pre.10",
     "react-select": "^5.4.0",
+    "rxdb": "^12.7.16",
     "slugify": "^1.6.5",
     "tailwind-merge": "^1.5.1",
     "zod": "^3.17.10"

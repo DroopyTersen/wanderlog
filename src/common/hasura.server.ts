@@ -15,10 +15,5 @@ export const getHasuraAdminClient = (): GqlClient => {
   });
 };
 
-export const getHasuraUserClient = (token: string) => {
-  return createGraphQLClient(ENDPOINT, {
-    ensureToken: () => Promise.resolve(token),
-  });
-};
 export const hasuraAdminRequest: GqlRequest = (...args) =>
   getHasuraAdminClient().request(...args);

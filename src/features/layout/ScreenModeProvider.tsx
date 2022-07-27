@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo, useContext } from "react";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useWindowSize from "~/hooks/useWindowSize";
 
 const calcScreenMode = (width?: number, height?: number): ScreenMode => {

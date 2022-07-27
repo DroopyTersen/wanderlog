@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./AppBackground.scss";
+import { useState } from "react";
 import { useScreenMode } from "../ScreenModeProvider";
+import "./AppBackground.scss";
 
 export function AppBackground({ variant = "blurred" }) {
   let [status, setStatus] = useState("loading");
