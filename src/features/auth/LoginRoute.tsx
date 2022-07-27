@@ -13,11 +13,10 @@ export const LoginRoute = () => {
         name="username"
         required
         autoFocus
-        className="mb-4"
         defaultValue={searchParams.get("username") || ""}
       />
       <InputField label="Password" name="password" type="password" required />
-      <div className="mt-8">
+      <div className="mt-4">
         <Button className="gold w-full">Login</Button>
         <div className="flex justify-center gap-1 mt-6 items-center">
           <span className="mr-2 text-gray-300">New user?</span>

@@ -20,7 +20,7 @@ export const SignupRoute = () => {
         name="name"
         defaultValue={searchParams.get("name") || ""}
       />
-      <div className="mt-8">
+      <div className="mt-4">
         <Button className="gold w-full">Sign up</Button>
         <div className="flex justify-center gap-1 mt-6 items-center">
           <span className="mr-2 text-gray-300">Already a user?</span>

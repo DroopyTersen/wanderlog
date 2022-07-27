@@ -16,8 +16,16 @@ export function LoginLayout() {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <h1 className="app-title">Wanderlog</h1>
-        <h3 className="tagline text-neutral-200 font-medium">
+        <h1
+          className={`app-title ${pathname !== "/" ? "hidden sm:block" : ""}`}
+        >
+          Wanderlog
+        </h1>
+        <h3
+          className={`tagline text-neutral-200 font-medium ${
+            pathname !== "/" ? "hidden sm:block" : ""
+          }`}
+        >
           Lust less. Remember more.
         </h3>
         {pathname !== "/" ? (
@@ -26,7 +34,7 @@ export function LoginLayout() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.2 }}
             className={
-              "fixed inset-0 sm:relative grid top-0 mt-8 w-full h-full sm:place-items-center center "
+              "fixed inset-0 sm:relative grid top-0 mt-8 sm:mt-20 w-full h-full sm:place-items-center center "
             }
           >
             <div className="p-8 relative bg-primary-700/70 backdrop-blur-md sm:backdrop-blur-sm shadow rounded-xl w-[100vw] sm:w-[400px] max-w-full">

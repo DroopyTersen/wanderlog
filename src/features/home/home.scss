@@ -1,6 +1,6 @@
 .home {
   .app-title {
-    margin-top: 12vh;
+    margin-top: 7vh;
     font-family: var(--titleFont);
     color: var(--gold);
     text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
@@ -9,7 +9,7 @@
   }
   @media (min-width: 600px) {
     .app-title {
-      margin-top: 10vh;
+      margin-top: 6vh;
       font-size: 70px;
     }
   }
