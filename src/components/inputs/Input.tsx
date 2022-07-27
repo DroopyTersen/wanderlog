@@ -13,7 +13,7 @@ export type InputProps = React.HTMLProps<HTMLInputElement> & {
 
 export const getInputClasses = (className) =>
   [
-    "block w-full mt-1 px-4",
+    "block w-full mt-1 px-4 input text-white font-medium",
     "text-base",
     "rounded-lg shadow-sm",
     "px-3 py-2",

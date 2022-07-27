@@ -5,7 +5,7 @@ html a:visited {
   text-decoration: none;
 }
 html a:hover {
-  color: var(--gold-700);
+  color: var(--gold-400);
 }
 
 button {
@@ -18,24 +18,25 @@ fieldset {
   padding: 0;
 }
 input,
-// textarea {
-//   background-color: rgba(0, 0, 0, 0.15);
-//   color: var(--white);
-//   padding: 10px;
-//   border: none;
-//   outline: none;
-//   border-radius: 5px;
-//   width: 100%;
-//   margin: 0.5rem 0 2rem;
-//   font-size: 1rem;
-// }
+textarea {
+  background-color: rgba(0, 0, 0, 0.15);
+  color: var(--white);
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  width: 100%;
+  margin: 0.5rem 0 2rem;
+  font-size: 1rem;
+}
+
 input:focus,
 input:active,
 select:focus,
 select:active,
 textarea:focus,
 textarea:active {
-  box-shadow: 0 0 0 1pt var(--pink-500);
+  box-shadow: 0 0 0 2pt var(--pink-500);
 }
 textarea {
   resize: none;

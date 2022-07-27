@@ -37,7 +37,7 @@ export function LoginLayout() {
               "fixed inset-0 sm:relative grid top-0 mt-8 sm:mt-20 w-full h-full sm:place-items-center center "
             }
           >
-            <div className="p-8 relative bg-primary-700/70 backdrop-blur-md sm:backdrop-blur-sm shadow rounded-xl w-[100vw] sm:w-[400px] max-w-full">
+            <div className="p-8 relative bg-primary-700/70 backdrop-blur-md sm:backdrop-blur-sm shadow-lg rounded-xl w-[100vw] sm:w-[400px] max-w-full">
               <Link
                 to="/"
                 role="button"
@@ -73,7 +73,7 @@ export function LoginLayout() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Link role="button" to="/login" className="gold">
+            <Link to="/login" className="btn btn-sm btn-primary btn-outline">
               Login
             </Link>
           </motion.div>

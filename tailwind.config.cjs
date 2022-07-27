@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
@@ -30,5 +31,23 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: [
+      {
+        wanderlog: {
+          primary: "#ffc87d",
+          secondary: "#deb9bf",
+          accent: "#d1d5db",
+          neutral: "#497799",
+          "base-100": "#324E61",
+          info: "#bae6fd",
+          success: "#99f6e4",
+          warning: "#fef08a",
+          error: "#f87171",
+          "--rounded-btn": "25px",
+        },
+      },
+    ],
+  },
 };

@@ -1,5 +1,4 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { Button } from "~/components";
 import { InputField } from "~/components/inputs/InputField";
 
 export const SignupRoute = () => {
@@ -21,10 +20,10 @@ export const SignupRoute = () => {
         defaultValue={searchParams.get("name") || ""}
       />
       <div className="mt-4">
-        <Button className="gold w-full">Sign up</Button>
+        <button className="btn btn-primary w-full">Sign up</button>
         <div className="flex justify-center gap-1 mt-6 items-center">
           <span className="mr-2 text-gray-300">Already a user?</span>
-          <Link to="/login" className=" font-bold">
+          <Link to="/login" className="font-bold">
             Log in
           </Link>
         </div>
