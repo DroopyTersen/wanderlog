@@ -18,10 +18,10 @@ import {
 } from "~/features/layout/ScreenModeProvider";
 
 import { HomeRoute } from "~/features/home/HomeRoute";
-import UsersRoute, * as UsersStuff from "~/features/users/UsersRoute";
+import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
+import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
 import "./styles/App.scss";
 import "./styles/tailwind.css";
-import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
 
 let isLoggedIn = auth.checkIsLoggedIn();
 function App({}) {
@@ -55,7 +55,7 @@ const AuthenticatedApp = () => {
       <Route element={<Layout />}>
         <Route element={<HomeRoute />} index />
         <Route element={<HomeRoute />} path="*" />
-        <Route element={<UsersRoute />} path="/users" {...UsersStuff} />
+        <Route element={<UsersRoute />} path="/users" {...UsersRouteModule} />
       </Route>
     </DataBrowserRouter>
   );

@@ -1,13 +1,14 @@
-import { useLoaderData } from "react-router-dom";
+import { queryEntity, useEntity } from "~/database/data.helpers";
 import { db } from "~/database/database";
-import { User, UserSchema } from "~/features/users/user.types";
+import { UserSchema } from "~/features/users/user.types";
+
 export default function UsersRoute() {
-  let data = (useLoaderData() as { users: User[] }) || { users: [] };
+  let users = useUsers();
   return (
     <div>
       <h1>UsersRoute</h1>
       <ul>
-        {data?.users?.map((user) => (
+        {users?.map((user) => (
           <li key={user?.id}>
             {user.username} - {user.name}
           </li>
@@ -17,11 +18,11 @@ export default function UsersRoute() {
   );
 }
 
+const getAllUsersQuery = () => db.users.find();
+const useUsers = () => useEntity(getAllUsersQuery(), "users", UserSchema);
+
 export const loader = async () => {
-  let docs: any[] = await db?.users.find().exec();
-  let users: User[] = docs.map((doc) => {
-    return UserSchema.parse(doc);
-  });
+  let users = await queryEntity(getAllUsersQuery(), UserSchema);
   return {
     users,
   };

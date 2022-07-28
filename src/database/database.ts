@@ -64,6 +64,7 @@ export const initDB = async () => {
     if (db) {
       console.log("🚀 | db already exists");
     } else {
+      console.log("Initializing DB");
       dbPromise = createDb();
       db = await dbPromise;
     }
