@@ -1,12 +1,16 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom";
 import { useIsOnline } from "~/common/isOnline";
-import { Footer } from "../layout/Footer/Footer";
+import { LoadingSpinner } from "~/components/loaders/LoadingSpinner";
+import { Overlay } from "~/components/surfaces/Overlay";
 import "../home/home.scss";
+import { Footer } from "../layout/Footer/Footer";
 export function LoginLayout() {
   let [searchParams] = useSearchParams();
   let error = searchParams?.get("error");
+  let [isSubmitting, setIsSubmitting] = useState(false);
   let { pathname } = useLocation();
   let isOnline = useIsOnline();
   let title = pathname === "/login" ? "Log in" : "Sign up";
@@ -61,8 +65,17 @@ export function LoginLayout() {
                 method="post"
                 action="/api/login"
                 className="flex flex-col gap-6"
+                onSubmit={(e) => setIsSubmitting(true)}
               >
                 <Outlet />
+                {isSubmitting && (
+                  <Overlay
+                    className="bg-primary-700 rounded-md -m-4"
+                    opacity={0.6}
+                  >
+                    <LoadingSpinner />
+                  </Overlay>
+                )}
               </form>
             </div>
           </motion.div>
