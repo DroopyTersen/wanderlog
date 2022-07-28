@@ -1,10 +1,9 @@
-import { createRxDatabase, addRxPlugin, RxCollection } from "rxdb";
+import { addRxPlugin, createRxDatabase, RxCollection } from "rxdb";
 import { getRxStorageDexie } from "rxdb/plugins/dexie";
+import { RxDBReplicationGraphQLPlugin } from "rxdb/plugins/replication-graphql";
 import { auth } from "~/features/auth/auth.client";
 import { usersCollection } from "~/features/users/users.rxdb";
-import { RxDBReplicationGraphQLPlugin } from "rxdb/plugins/replication-graphql";
 import { RxCollectionDefinition } from "./database.types";
-import { getHasuraUserClient } from "~/common/hasura.client";
 
 addRxPlugin(RxDBReplicationGraphQLPlugin);
 const GRAPHQL_ENDPOINT = import.meta.env.VITE_HASURA_ENDPOINT;
@@ -29,6 +28,7 @@ const syncCollection = async (
       batchSize: 5,
     },
     deletedFlag: "deleted",
+    liveInterval: collectionDefinition?.liveInterval || 10 * 1000,
     live: true,
     autoStart: true,
   });

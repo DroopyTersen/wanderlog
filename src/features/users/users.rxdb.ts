@@ -65,8 +65,9 @@ const buildPushQuery = (items) => {
   };
 };
 export const usersCollection: RxCollectionDefinition = {
+  name: "users",
+  liveInterval: 60 * 1000,
   schema,
   buildPullQuery,
   buildPushQuery,
-  name: "users",
 };
