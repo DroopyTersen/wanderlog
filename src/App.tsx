@@ -21,11 +21,13 @@ import { HomeRoute } from "~/features/home/HomeRoute";
 import UsersRoute, * as UsersStuff from "~/features/users/UsersRoute";
 import "./styles/App.scss";
 import "./styles/tailwind.css";
+import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
 
 let isLoggedIn = auth.checkIsLoggedIn();
 function App({}) {
   return (
     <div className="app w-full h-full overflow-hidden">
+      <ReloadPrompt />
       <ScreenModeProvider>
         {isLoggedIn ? <AuthenticatedApp /> : <AnonymousApp />}
       </ScreenModeProvider>

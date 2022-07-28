@@ -1,3 +1,4 @@
+import { registerSW } from "virtual:pwa-register";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -14,3 +15,14 @@ initPromise.then(() => {
     </React.StrictMode>
   );
 });
+
+// const intervalMS = 60 * 60 * 1000;
+
+// const updateSW = registerSW({
+//   onRegistered(r) {
+//     r &&
+//       setInterval(() => {
+//         r.update();
+//       }, intervalMS);
+//   },
+// });

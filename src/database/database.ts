@@ -60,12 +60,12 @@ export let dbPromise: ReturnType<typeof createDb> = null;
 export let db: Awaited<typeof dbPromise> = null;
 
 export const initDB = async () => {
-  // if (auth.checkIsLoggedIn()) {
-  //   if (db) {
-  //     console.log("🚀 | db already exists");
-  //   } else {
-  //     dbPromise = createDb();
-  //     db = await dbPromise;
-  //   }
-  // }
+  if (auth.checkIsLoggedIn()) {
+    if (db) {
+      console.log("🚀 | db already exists");
+    } else {
+      dbPromise = createDb();
+      db = await dbPromise;
+    }
+  }
 };
