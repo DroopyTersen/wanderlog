@@ -2596,6 +2596,14 @@ body[dir="rtl"] .checkbox:checked,
   margin-left: 0.75rem;
 }
 
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
 .block {
   display: block;
 }
@@ -2893,6 +2901,14 @@ body[dir="rtl"] .checkbox:checked,
 
 .pt-\[env\(safe-area-inset-top\2c _0px\)\] {
   padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pt-\[calc\(var\(--safeTop\)\+8px\)\] {
+  padding-top: calc(var(--safeTop) + 8px);
+}
+
+.pt-\[calc\(var\(--safeTop\)\+16px\)\] {
+  padding-top: calc(var(--safeTop) + 16px);
 }
 
 .text-left {

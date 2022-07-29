@@ -24,7 +24,7 @@ export const GlobalNav = ({ children }) => {
         onChange={(e) => setIsOpen(e.target.checked)}
       />
       <div className="drawer-content flex flex-col h-screen">
-        <div className="w-full navbar bg-base-300/0 justify-end fixed top-[var(--safeTop)] z-10">
+        <div className="w-full navbar bg-base-300/0 justify-end fixed pt-[calc(var(--safeTop)+8px)] z-10">
           <div className="flex-none lg:hidden">
             <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
               <svg
@@ -72,7 +72,7 @@ export const GlobalNav = ({ children }) => {
           htmlFor="my-drawer-3"
           className="drawer-overlay"
         ></label>
-        <div className="menu p-4 overflow-y-auto w-80 bg-base-100 rounded-l-lg shadow-lg pt-[env(safe-area-inset-top,_0px)]">
+        <div className="menu p-4 overflow-y-auto w-80 bg-base-100 rounded-l-lg shadow-lg pt-[calc(var(--safeTop)+16px)]">
           <div className="flex justify-between items-center">
             <div className="title-text text-4xl ml-3">Menu</div>
             <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
