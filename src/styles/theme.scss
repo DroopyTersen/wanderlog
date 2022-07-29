@@ -1,6 +1,7 @@
 @import "./fontFaces.scss";
 
 :root {
+  --safeTop: env(safe-area-inset-top, 4px);
   --titleFont: Monoton;
   --textFont: "Open Sans";
   --darkBlue: #324d60;

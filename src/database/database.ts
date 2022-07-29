@@ -1,14 +1,20 @@
 import { addRxPlugin, createRxDatabase, RxCollection } from "rxdb";
 import { getRxStorageDexie } from "rxdb/plugins/dexie";
-import { RxDBReplicationGraphQLPlugin } from "rxdb/plugins/replication-graphql";
+import { RxDBMigrationPlugin } from "rxdb/plugins/migration";
+import {
+  RxDBReplicationGraphQLPlugin,
+  RxGraphQLReplicationState,
+} from "rxdb/plugins/replication-graphql";
+import { isOnlineStore } from "~/common/isOnline";
 import { auth } from "~/features/auth/auth.client";
 import { usersCollection } from "~/features/users/users.rxdb";
 import { RxCollectionDefinition } from "./database.types";
-
+addRxPlugin(RxDBMigrationPlugin);
 addRxPlugin(RxDBReplicationGraphQLPlugin);
 const GRAPHQL_ENDPOINT = import.meta.env.VITE_HASURA_ENDPOINT;
 console.log("🚀 | GRAPHQL_ENDPOINT", GRAPHQL_ENDPOINT);
 
+let replicationStates: RxGraphQLReplicationState<any>[] = [];
 const syncCollection = async (
   collection: RxCollection,
   collectionDefinition: RxCollectionDefinition
@@ -36,7 +42,7 @@ const syncCollection = async (
     console.error("replication error:" + collectionDefinition.name);
     console.dir(err);
   });
-  console.log("REP STATE IS STOPPED", replicationState.isStopped());
+  replicationStates.push(replicationState);
   // return await replicationState.awaitInitialReplication();
 };
 
@@ -48,7 +54,12 @@ export const createDb = async () => {
   });
   for (const collection of collections) {
     await db.addCollections({
-      [collection.name]: { schema: collection.schema },
+      [collection.name]: {
+        schema: collection.schema,
+        migrationStrategies: {
+          1: (old) => old,
+        },
+      },
     });
     await syncCollection(db[collection.name], collection);
   }
@@ -67,6 +78,20 @@ export const initDB = async () => {
       console.log("Initializing DB");
       dbPromise = createDb();
       db = await dbPromise;
+      isOnlineStore.subscribe(async () => {
+        let isOnline = isOnlineStore.getState();
+        if (!isOnline) {
+          replicationStates.forEach((replicationState) => {
+            replicationState.cancel();
+          });
+          replicationStates = [];
+        } else {
+          replicationStates = [];
+          for (const collection of collections) {
+            await syncCollection(db[collection.name], collection);
+          }
+        }
+      });
     }
   }
 };

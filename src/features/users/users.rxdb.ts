@@ -1,24 +1,18 @@
 import type { RxJsonSchema } from "rxdb";
+import zodToJsonSchema from "zod-to-json-schema";
+import { parseRxDocs } from "~/database/data.helpers";
 import { RxCollectionDefinition } from "~/database/database.types";
+import { userSchema } from "./user.types";
+
+export const userJsonSchema: any = zodToJsonSchema(userSchema, "user")
+  .definitions.user;
 
 const schema: RxJsonSchema<any> = {
   title: "User Schema",
   description: "User schema",
-  version: 0,
+  version: 1,
   primaryKey: "id",
-  type: "object",
-  properties: {
-    id: {
-      type: "string",
-    },
-    username: {
-      type: "string",
-    },
-    name: {
-      type: "string",
-    },
-  },
-  required: ["id", "username"],
+  ...userJsonSchema,
   indexes: ["id", "username"],
 };
 
@@ -60,13 +54,13 @@ const buildPushQuery = (items) => {
   return {
     query,
     variables: {
-      users: items,
+      users: parseRxDocs(items, userSchema),
     },
   };
 };
 export const usersCollection: RxCollectionDefinition = {
   name: "users",
-  liveInterval: 60 * 1000,
+  liveInterval: 6 * 1000,
   schema,
   buildPullQuery,
   buildPushQuery,

@@ -21,7 +21,7 @@ export function ReloadPrompt() {
   };
   if (!offlineReady && !needRefresh) return null;
   return (
-    <div className="alert alert-info bg-pink/90 z-20 text-primary-700 shadow-lg flex justify-between items-center fixed w-[98vw] left-[1vw] right-[1vw] top-1">
+    <div className="alert alert-info bg-pink/90 z-20 text-primary-700 shadow-lg flex justify-between items-center fixed w-[98vw] left-[1vw] right-[1vw] top-[env(safe-area-inset-top,_4px)]">
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -37,9 +37,11 @@ export function ReloadPrompt() {
           ></path>
         </svg>
         {offlineReady ? (
-          <span>App ready to work offline</span>
+          <span>
+            Offline mode is ready. You can now use Wanderlog without internet.
+          </span>
         ) : (
-          <span>New content available, click on reload button to update.</span>
+          <span>A newer better version of the app is available.</span>
         )}
       </div>
       <div>
@@ -48,15 +50,17 @@ export function ReloadPrompt() {
             className="btn btn-sm text-white"
             onClick={() => updateServiceWorker(true)}
           >
-            Reload
+            Upgrade!
           </button>
         )}
-        <button
-          className="btn btn-ghost btn-primary btn-sm"
-          onClick={() => close()}
-        >
-          Close
-        </button>
+        {offlineReady && (
+          <button
+            className="btn btn-ghost btn-primary btn-sm"
+            onClick={() => close()}
+          >
+            Got it!
+          </button>
+        )}
       </div>
     </div>
   );

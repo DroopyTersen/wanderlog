@@ -34,7 +34,7 @@ export function useEntity<Schema extends ZodObject<T>, T extends ZodRawShape>(
   return items;
 }
 
-const parseRxDocs = <Schema extends ZodObject<T>, T extends ZodRawShape>(
+export const parseRxDocs = <Schema extends ZodObject<T>, T extends ZodRawShape>(
   docs: any[],
   schema: Schema
 ): z.TypeOf<Schema>[] => {

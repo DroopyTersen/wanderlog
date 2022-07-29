@@ -19,6 +19,7 @@ import {
 
 import { HomeRoute } from "~/features/home/HomeRoute";
 import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
+import { GlobalNav } from "./features/layout/GlobalNav/GlobalNav";
 import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
 import "./styles/App.scss";
 import "./styles/tailwind.css";
@@ -52,7 +53,7 @@ const AnonymousApp = () => {
 const AuthenticatedApp = () => {
   return (
     <DataBrowserRouter>
-      <Route element={<Layout />}>
+      <Route element={<Layout isLoggedIn={true} />}>
         <Route element={<HomeRoute />} index />
         <Route element={<HomeRoute />} path="*" />
         <Route element={<UsersRoute />} path="/users" {...UsersRouteModule} />
@@ -72,11 +73,13 @@ const AnonymousHomeRoute = () => {
   return null;
 };
 
-const Layout = () => {
+const Layout = ({ isLoggedIn = false }) => {
   return (
     <>
       <AppBackground variant="sharp" />
-      <Outlet />
+      <GlobalNav>
+        <Outlet />
+      </GlobalNav>
       <ScrollRestoration />
     </>
   );

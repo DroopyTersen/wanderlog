@@ -1,5 +1,5 @@
 import { createStore, useStore } from "./globalStore";
-let isOnlineStore = createStore<boolean>(window?.navigator?.onLine);
+export const isOnlineStore = createStore<boolean>(window?.navigator?.onLine);
 
 export const useIsOnline = () => {
   let [isOnline, setIsOnline] = useStore(isOnlineStore);
