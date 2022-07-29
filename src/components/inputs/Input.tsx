@@ -20,7 +20,7 @@ export const getInputClasses = (className) =>
     "disabled:cursor-not-allowed disabled:bg-gray-100",
     "bg-black/20",
     // "invalid:ring-1 invalid:ring-red-500 invalid:border-red-500",
-    "focus:outline-none border-2 border-transparent focus:border-pink",
+    "focus:outline-none border-2 border-transparent focus:ring-2 focus:ring-pink focus:border-pink",
     className,
   ]
     .filter(Boolean)

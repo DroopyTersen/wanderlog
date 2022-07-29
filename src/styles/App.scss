@@ -4,12 +4,15 @@
 html {
   background: var(--gradientBackground);
 }
+body {
+  padding-top: env(safe-area-inset-top, 0px);
+}
 body.noscroll {
   overflow: hidden;
 }
 
 .content {
-  padding: calc(env(safe-area-inset-top, 0px) + 50px) 15px 120px;
+  padding: 50px 15px 30px;
 }
 body * {
   position: relative;

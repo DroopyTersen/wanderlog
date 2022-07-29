@@ -29,6 +29,9 @@ module.exports = {
           800: "#b97c27",
         },
       },
+      screens: {
+        standalone: { raw: "(display-mode:standalone)" },
+      },
     },
   },
   plugins: [require("daisyui")],

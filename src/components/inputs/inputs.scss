@@ -1,18 +1,13 @@
-html a,
-html a:visited {
+html a:not(.btn),
+html a:not(.btn):visited {
   color: var(--white);
   transition: color 0.2s ease-out;
   text-decoration: none;
 }
-html a:hover {
+html a:not(.btn):hover {
   color: var(--gold-400);
 }
 
-button {
-  margin: 0;
-  align-self: initial !important;
-  font-family: var(--textFont);
-}
 fieldset {
   border: none;
   padding: 0;

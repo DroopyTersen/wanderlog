@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { IoMdClose } from "react-icons/io";
+import { MdOutlineClose } from "react-icons/md";
 import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom";
 import { useIsOnline } from "~/common/isOnline";
 import { LoadingSpinner } from "~/components/loaders/LoadingSpinner";
@@ -43,17 +43,15 @@ export function LoginLayout() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.2 }}
             className={
-              "fixed inset-0 sm:relative grid top-0 mt-8 sm:mt-20 w-full h-full sm:place-items-center center "
+              "fixed inset-0 sm:relative grid top-0 pt-[calc(var(--safeTop)_+_8px)] sm:mt-20 w-full h-full sm:place-items-center center "
             }
           >
             <div className="p-8 relative bg-primary-700/70 backdrop-blur-md sm:backdrop-blur-sm shadow-lg rounded-xl w-[100vw] sm:w-[400px] max-w-full">
               <Link
                 to="/"
-                role="button"
-                className="absolute block top-0 right-8 sm:top-4 sm:right-4 z-10 lg:hidden"
-                style={{ position: "absolute" }}
+                className="absolute top-0 right-2 sm:top-4 sm:right-4 z-10 lg:hidden btn btn-square btn-ghost"
               >
-                <IoMdClose />
+                <MdOutlineClose size={24} />
               </Link>
               <h1 className="text-5xl sm:text-4xl text-center mb-8">{title}</h1>
               {error && (
