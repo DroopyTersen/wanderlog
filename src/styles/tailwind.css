@@ -2891,6 +2891,10 @@ body[dir="rtl"] .checkbox:checked,
   padding-top: 2rem;
 }
 
+.pt-\[env\(safe-area-inset-top\2c _0px\)\] {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
 .text-left {
   text-align: left;
 }
