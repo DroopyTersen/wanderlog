@@ -43,7 +43,7 @@ export function LoginLayout() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.2 }}
             className={
-              "fixed inset-0 sm:relative grid top-0 pt-[calc(var(--safeTop)_+_8px)] sm:mt-20 w-full h-full sm:place-items-center center "
+              "fixed z-20 inset-0 sm:relative grid top-0 pt-[calc(var(--safeTop)_+_8px)] sm:mt-20 w-full h-full sm:place-items-center center "
             }
           >
             <div className="p-8 relative bg-primary-700/70 backdrop-blur-md sm:backdrop-blur-sm shadow-lg rounded-xl w-[100vw] sm:w-[400px] max-w-full">

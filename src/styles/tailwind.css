@@ -2510,6 +2510,10 @@ body[dir="rtl"] .checkbox:checked,
   right: 0.5rem;
 }
 
+.top-\[var\(--safeTop\)\] {
+  top: var(--safeTop);
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -2881,6 +2885,10 @@ body[dir="rtl"] .checkbox:checked,
 
 .pt-\[calc\(var\(--safeTop\)_\+_8px\)\] {
   padding-top: calc(var(--safeTop) + 8px);
+}
+
+.pt-8 {
+  padding-top: 2rem;
 }
 
 .text-left {

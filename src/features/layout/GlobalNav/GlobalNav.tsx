@@ -24,7 +24,7 @@ export const GlobalNav = ({ children }) => {
         onChange={(e) => setIsOpen(e.target.checked)}
       />
       <div className="drawer-content flex flex-col h-screen">
-        <div className="w-full navbar bg-base-300/0 justify-end">
+        <div className="w-full navbar bg-base-300/0 justify-end fixed top-[var(--safeTop)] z-10">
           <div className="flex-none lg:hidden">
             <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
               <svg
@@ -79,9 +79,11 @@ export const GlobalNav = ({ children }) => {
               <MdOutlineClose size={24} />
             </label>
           </div>
-          <Link role="button" className="btn btn-primary" to="/login">
-            Log in
-          </Link>
+          <div className="pt-8">
+            <Link role="button" className="btn btn-primary w-full" to="/login">
+              Log in
+            </Link>
+          </div>
           <ul>
             {isLoggedIn ? (
               <>
