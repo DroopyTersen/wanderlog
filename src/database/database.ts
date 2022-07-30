@@ -68,8 +68,8 @@ export const createDb = async () => {
   return db;
 };
 
-export let dbPromise: ReturnType<typeof createDb> = null;
-export let db: Awaited<typeof dbPromise> = null;
+export let dbPromise: ReturnType<typeof createDb>;
+export let db: Awaited<typeof dbPromise>;
 
 export const initDB = async () => {
   if (auth.checkIsLoggedIn()) {
