@@ -81,11 +81,17 @@ export const GlobalNav = ({ children }) => {
               <MdOutlineClose size={24} />
             </label>
           </div>
-          <div className="pt-8">
-            <Link role="button" className="btn btn-primary w-full" to="/login">
-              Log in
-            </Link>
-          </div>
+          {!isLoggedIn && (
+            <div className="pt-8">
+              <Link
+                role="button"
+                className="btn btn-primary w-full"
+                to="/login"
+              >
+                Log in
+              </Link>
+            </div>
+          )}
           <ul>
             {isLoggedIn ? (
               <>
