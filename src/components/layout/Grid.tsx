@@ -1,5 +1,4 @@
-import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 export function Grid({ width = "250px", gap = "10px", children, ...rest }) {
   return (
@@ -30,7 +29,12 @@ const itemVarients = {
   hidden: { opacity: 0, y: -25 },
 };
 
-export function MotionGrid({ width = "250px", gap = "10px", children, ...rest }) {
+export function MotionGrid({
+  width = "250px",
+  gap = "10px",
+  children,
+  ...rest
+}) {
   return (
     // <AnimatePresence>
     <motion.div

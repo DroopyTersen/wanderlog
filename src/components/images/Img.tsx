@@ -35,7 +35,6 @@ export function Img({
       isUnmounted = true;
     };
   }, [src]);
-
   return (
     <AnimatePresence>
       {imgSrc && (

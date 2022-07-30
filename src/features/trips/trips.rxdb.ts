@@ -72,10 +72,7 @@ const buildPushQuery = (items) => {
       start: item.start,
       end: item.end,
       companions: {
-        data:
-          item?.companions?.map((companion) => ({
-            userId: parseInt(companion.userId),
-          })) || [],
+        data: item?.companions || [],
       },
     };
     if (item?.id) {

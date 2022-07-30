@@ -7,6 +7,7 @@ import {
 } from "rxdb/plugins/replication-graphql";
 import { isOnlineStore } from "~/common/isOnline";
 import { auth } from "~/features/auth/auth.client";
+import { tripsCollection } from "~/features/trips/trips.rxdb";
 import { usersCollection } from "~/features/users/users.rxdb";
 import { RxCollectionDefinition } from "./database.types";
 addRxPlugin(RxDBMigrationPlugin);
@@ -46,7 +47,7 @@ const syncCollection = async (
   // return await replicationState.awaitInitialReplication();
 };
 
-let collections: RxCollectionDefinition[] = [usersCollection];
+let collections: RxCollectionDefinition[] = [usersCollection, tripsCollection];
 export const createDb = async () => {
   const db = await createRxDatabase({
     name: "wanderlog-db",

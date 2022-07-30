@@ -18,6 +18,7 @@ import {
 } from "~/features/layout/ScreenModeProvider";
 
 import { HomeRoute } from "~/features/home/HomeRoute";
+import TripsRoute, * as TripsRouteModule from "~/features/trips/trips.route";
 import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
 import { GlobalNav } from "./features/layout/GlobalNav/GlobalNav";
 import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
@@ -56,6 +57,7 @@ const AuthenticatedApp = () => {
       <Route element={<Layout isLoggedIn={true} />}>
         <Route element={<HomeRoute />} index />
         <Route element={<HomeRoute />} path="*" />
+        <Route element={<TripsRoute />} path="/trips" {...TripsRouteModule} />
         <Route element={<UsersRoute />} path="/users" {...UsersRouteModule} />
       </Route>
     </DataBrowserRouter>

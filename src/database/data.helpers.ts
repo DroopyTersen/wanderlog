@@ -7,8 +7,17 @@ export async function queryEntity<
   Schema extends ZodObject<T>,
   T extends ZodRawShape
 >(query: RxQuery, schema: Schema) {
-  let docs: any[] = await query.exec();
+  let docs: any = await query.exec();
   return parseRxDocs(docs, schema);
+}
+
+export async function findOneEntity<
+  Schema extends ZodObject<T>,
+  T extends ZodRawShape
+>(query: RxQuery, schema: Schema) {
+  let doc: any = await query.exec();
+  let [result] = parseRxDocs([doc], schema);
+  return result;
 }
 
 export function useEntity<Schema extends ZodObject<T>, T extends ZodRawShape>(

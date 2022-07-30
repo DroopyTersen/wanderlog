@@ -4,14 +4,16 @@ import { Link, useLocation } from "react-router-dom";
 import { auth } from "~/features/auth/auth.client";
 import "./GlobalNav.scss";
 let isLoggedIn = auth.checkIsLoggedIn();
-console.log("🚀 | isLoggedIn", isLoggedIn);
+
 export const GlobalNav = ({ children }) => {
   let [isOpen, setIsOpen] = useState(false);
   let overlayRef = useRef<HTMLLabelElement>(null);
   let location = useLocation();
   useEffect(() => {
     if (isOpen) {
-      overlayRef.current.click();
+      if (overlayRef.current) {
+        overlayRef.current.click();
+      }
     }
   }, [location.pathname]);
 
@@ -34,9 +36,9 @@ export const GlobalNav = ({ children }) => {
                 className="inline-block w-6 h-6 stroke-current"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M4 6h16M4 12h16M4 18h16"
                 ></path>
               </svg>
@@ -47,7 +49,7 @@ export const GlobalNav = ({ children }) => {
               {isLoggedIn ? (
                 <>
                   <li>
-                    <a>Trips</a>
+                    <Link to="/trips">Trips</Link>
                   </li>
                   <li>
                     <a>Photos</a>
@@ -88,7 +90,9 @@ export const GlobalNav = ({ children }) => {
             {isLoggedIn ? (
               <>
                 <li>
-                  <a>Trips</a>
+                  <Link className="rounded" to="/trips">
+                    Trips
+                  </Link>
                 </li>
                 <li>
                   <a>Photos</a>
