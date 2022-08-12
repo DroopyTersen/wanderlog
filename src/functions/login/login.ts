@@ -1,19 +1,19 @@
-import { Handler } from "@netlify/functions";
 import cookie from "cookie";
-import { url } from "inspector";
-import { ZodError } from "zod";
 import { parseFormValues } from "~/common/response.utils";
-import { User } from "~/features/users/user.types";
 import { AUTH_COOKIE, LoginSchema } from "~/features/auth/auth.types";
 import { createJWT } from "~/features/auth/hasuraAuth.server";
+import { User } from "~/features/users/user.types";
 
+import { Event } from "@netlify/functions/dist/function/event";
+import dayjs from "dayjs";
 import {
   createUser,
   verifyCredentials,
 } from "~/features/auth/usersAuth.server";
 
-export const handler: Handler = async (event, context) => {
+export const handler = async (event: Event) => {
   let requestUrl = new URL(event.rawUrl);
+
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -21,10 +21,8 @@ export const handler: Handler = async (event, context) => {
     };
   }
   try {
-    console.log("LOGIN EVENT", event.body);
-    let formValues = parseFormValues(event.body, LoginSchema);
-    console.log("🚀 | formValues", formValues);
-    let user: User;
+    let formValues = parseFormValues(event?.body || "", LoginSchema);
+    let user: User | null;
     if (formValues.mode === "signup") {
       user = await createUser(
         formValues.username.toLowerCase(),
@@ -54,6 +52,7 @@ export const handler: Handler = async (event, context) => {
         "Set-Cookie": cookie.serialize(AUTH_COOKIE, jwt, {
           secure: process.env.NODE_ENV === "production",
           httpOnly: false,
+          expires: dayjs().add(1, "year").toDate(),
           path: "/",
         }),
       },

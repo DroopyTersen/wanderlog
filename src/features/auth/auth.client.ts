@@ -10,7 +10,7 @@ const readCookie = (fullCookieString: string, key: string): string => {
   return cookieValue || "";
 };
 
-const tryParseAuthCookie = (): { accessToken: string; user: User } => {
+const tryParseAuthCookie = (): { accessToken: string; user: User } | null => {
   let accessToken = readCookie(document.cookie, AUTH_COOKIE);
   if (!accessToken) return null;
   let payload = decode<any>(accessToken);

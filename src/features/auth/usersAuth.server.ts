@@ -7,7 +7,7 @@ import { User } from "~/features/users/user.types";
 export const verifyCredentials = async (
   username: string,
   password: string
-): Promise<User> => {
+): Promise<User | null> => {
   let data = await hasuraAdminRequest<{ users: any[] }>(
     QUERY_USER_BY_USERNAME,
     { username }
@@ -19,7 +19,6 @@ export const verifyCredentials = async (
     throw new Error("Multiple users with the same username");
   }
   let user = data.users[0];
-  console.log("🚀 | user", user);
   let isValid = await bcrypt.compare(password, user.password);
   return isValid
     ? {

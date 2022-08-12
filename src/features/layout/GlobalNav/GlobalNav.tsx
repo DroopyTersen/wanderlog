@@ -18,7 +18,7 @@ export const GlobalNav = ({ children }) => {
   }, [location.pathname]);
 
   return (
-    <div className="drawer drawer-end">
+    <div className="drawer">
       <input
         id="my-drawer-3"
         type="checkbox"
