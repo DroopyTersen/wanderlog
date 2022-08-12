@@ -20,15 +20,18 @@ export const GlobalNav = ({ children }) => {
   return (
     <div className="drawer">
       <input
-        id="my-drawer-3"
+        id="global-nav-drawer"
         type="checkbox"
         className="drawer-toggle"
         onChange={(e) => setIsOpen(e.target.checked)}
       />
       <div className="drawer-content flex flex-col h-screen">
         <div className="w-full navbar bg-base-300/0 justify-end fixed pt-[calc(var(--safeTop)+8px)] z-10">
-          <div className="flex-none lg:hidden">
-            <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
+          <div className="flex-none  h-11 w-11 fixed bottom-[max(env(safe-area-inset-bottom,_0px),_4px)] left-1 lg:hidden">
+            <label
+              htmlFor="global-nav-drawer"
+              className="btn btn-square btn-ghost  h-11 w-11"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -39,7 +42,7 @@ export const GlobalNav = ({ children }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
+                  d="M5 6h15M5 12h16M5 18h13"
                 ></path>
               </svg>
             </label>
@@ -71,13 +74,16 @@ export const GlobalNav = ({ children }) => {
       <div className={`drawer-side ${!isOpen ? "pointer-events-none" : ""}`}>
         <label
           ref={overlayRef}
-          htmlFor="my-drawer-3"
+          htmlFor="global-nav-drawer"
           className="drawer-overlay"
         ></label>
         <div className="menu p-4 overflow-y-auto w-80 bg-base-100 rounded-l-lg shadow-lg pt-[calc(var(--safeTop)+16px)]">
           <div className="flex justify-between items-center">
             <div className="title-text text-4xl ml-3">Menu</div>
-            <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
+            <label
+              htmlFor="global-nav-drawer"
+              className="btn btn-square btn-ghost"
+            >
               <MdOutlineClose size={24} />
             </label>
           </div>

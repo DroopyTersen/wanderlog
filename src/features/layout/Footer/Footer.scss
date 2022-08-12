@@ -5,6 +5,8 @@ html footer {
   right: 0;
   z-index: 2;
   padding: 10px 10px max(env(safe-area-inset-bottom, 0px), 10px) 10px;
+  height: 44px;
+  box-sizing: content-box;
   > * {
     position: relative;
     margin-left: 10px;
