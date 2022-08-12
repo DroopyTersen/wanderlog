@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { HiOutlineFingerPrint, HiPlus } from "react-icons/hi";
+import { Button, LinkButton } from "~/components/inputs/buttons";
+import { DropdownMenu } from "../../components/surfaces/DropdownMenu";
 import { auth } from "../auth/auth.client";
-import { Footer } from "../layout/Footer/Footer";
 import "./home.scss";
-
 let currentUser = auth.getCurrentUser();
 export function HomeRoute() {
   return (
@@ -19,23 +19,27 @@ export function HomeRoute() {
           Lust less. Remember more.
         </h3>
       </motion.div>
-      <Footer>
+      <div className="fab-container">
         {currentUser ? (
-          <div>
-            <div>Hello, {currentUser.username}</div>
-            <button
-              className="btn btn-primary btn-sm btn-outline"
-              onClick={() => auth.logout()}
-            >
-              Logout
-            </button>
-          </div>
+          <DropdownMenu
+            label={
+              <Button title="Team actions menu" variants={["primary"]}>
+                <HiPlus size={18} />
+                <span>New</span>
+              </Button>
+            }
+          >
+            <DropdownMenu.Item className="min-w-[200px]" to="/trips/new">
+              New Trip
+            </DropdownMenu.Item>
+          </DropdownMenu>
         ) : (
-          <Link to="/login" className="btn btn-secondary btn-outline">
-            Login
-          </Link>
+          <LinkButton to="/login" variants={["primary"]}>
+            <HiOutlineFingerPrint size={17}></HiOutlineFingerPrint>
+            Sign In
+          </LinkButton>
         )}
-      </Footer>
+      </div>
     </>
   );
 }

@@ -3,7 +3,7 @@ body,
 #root,
 .app {
   min-height: 100vh;
-  min-height: calc(100dvh + env(safe-area-inset-top, 0px));
+  // min-height: calc(100dvh + env(safe-area-inset-top, 0px));
   width: 100%;
   box-sizing: border-box;
   overflow-y: hidden;

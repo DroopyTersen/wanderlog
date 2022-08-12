@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { HiOutlineFingerPrint } from "react-icons/hi";
 import { MdOutlineClose } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
+import { Button, LinkButton } from "~/components/inputs/buttons";
 import { auth } from "~/features/auth/auth.client";
 import "./GlobalNav.scss";
 let isLoggedIn = auth.checkIsLoggedIn();
@@ -27,10 +29,12 @@ export const GlobalNav = ({ children }) => {
       />
       <div className="drawer-content flex flex-col h-screen">
         <div className="w-full navbar bg-base-300/0 justify-end fixed pt-[calc(var(--safeTop)+8px)] z-10">
-          <div className="flex-none  h-11 w-11 fixed bottom-[max(env(safe-area-inset-bottom,_0px),_4px)] left-1 lg:hidden">
-            <label
+          <div className="flex-none fab-container left lg:hidden">
+            <Button
+              as="label"
+              variants={["blue", "circle"]}
               htmlFor="global-nav-drawer"
-              className="btn btn-square btn-ghost  h-11 w-11"
+              className="lg:hidden"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +49,7 @@ export const GlobalNav = ({ children }) => {
                   d="M5 6h15M5 12h16M5 18h13"
                 ></path>
               </svg>
-            </label>
+            </Button>
           </div>
           <div className="flex-none hidden lg:block">
             <ul className="menu menu-horizontal">
@@ -60,10 +64,20 @@ export const GlobalNav = ({ children }) => {
                   <li>
                     <a>Locations</a>
                   </li>
+                  <li>
+                    <button
+                      className="btn btn-ghost"
+                      onClick={() => auth.logout()}
+                    >
+                      Logout
+                    </button>
+                  </li>
                 </>
               ) : (
                 <li>
-                  <Link to="/login">Log in</Link>
+                  <Link to="/login" className="font-bold rounded-lg">
+                    Sign In
+                  </Link>
                 </li>
               )}
             </ul>
@@ -89,16 +103,13 @@ export const GlobalNav = ({ children }) => {
           </div>
           {!isLoggedIn && (
             <div className="pt-8">
-              <Link
-                role="button"
-                className="btn btn-primary w-full"
-                to="/login"
-              >
-                Log in
-              </Link>
+              <LinkButton to="/login" variants={["primary"]}>
+                <HiOutlineFingerPrint size={17}></HiOutlineFingerPrint>
+                Sign In
+              </LinkButton>
             </div>
           )}
-          <ul>
+          <ul className=" mt-4 tracking-wider">
             {isLoggedIn ? (
               <>
                 <li>
@@ -111,6 +122,14 @@ export const GlobalNav = ({ children }) => {
                 </li>
                 <li>
                   <a>Locations</a>
+                </li>
+                <li className="mt-12">
+                  <button
+                    className="btn btn-primary btn-ghost rounded-full text-gold-400"
+                    onClick={() => auth.logout()}
+                  >
+                    Logout
+                  </button>
                 </li>
               </>
             ) : (

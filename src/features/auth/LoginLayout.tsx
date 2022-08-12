@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { HiOutlineFingerPrint } from "react-icons/hi";
 import { MdOutlineClose } from "react-icons/md";
 import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom";
 import { useIsOnline } from "~/common/isOnline";
+import { LinkButton } from "~/components/inputs/buttons";
 import { LoadingSpinner } from "~/components/loaders/LoadingSpinner";
 import { Overlay } from "~/components/surfaces/Overlay";
 import "../home/home.scss";
-import { Footer } from "../layout/Footer/Footer";
 export function LoginLayout() {
   let [searchParams] = useSearchParams();
   let error = searchParams?.get("error");
@@ -81,7 +82,7 @@ export function LoginLayout() {
           <Outlet />
         )}
       </motion.div>
-      <Footer>
+      <div className="fab-container">
         {pathname === "/" && (
           <motion.div
             className=""
@@ -89,12 +90,13 @@ export function LoginLayout() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Link to="/login" className="btn btn-sm btn-primary btn-outline">
-              Login
-            </Link>
+            <LinkButton to="/login" variants={["primary"]}>
+              <HiOutlineFingerPrint size={17}></HiOutlineFingerPrint>
+              Sign In
+            </LinkButton>
           </motion.div>
         )}
-      </Footer>
+      </div>
     </>
   );
 }

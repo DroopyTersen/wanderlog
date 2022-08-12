@@ -4,7 +4,7 @@
   right: 0;
   top: 0;
   height: 100vh;
-  height: calc(100dvh + env(safe-area-inset-top, 0px));
+  // height: calc(100vh + env(safe-area-inset-top, 0px));
   z-index: -1;
   background: var(--blue);
 
