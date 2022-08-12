@@ -1,9 +1,13 @@
 import dayjs, { Dayjs } from "dayjs";
 
-export const getClassName = (classNames: string[]) => classNames.filter(Boolean).join(" ");
+export const getClassName = (classNames: string[]) =>
+  classNames.filter(Boolean).join(" ");
 
 export const getDateMidpoint = (
-  { start, end }: { start: Dayjs; end: Dayjs } = { start: null, end: null }
+  { start, end }: { start: Dayjs | null; end: Dayjs | null } = {
+    start: null,
+    end: null,
+  }
 ) => {
   if (!start || !end) return null;
   return start.add(end.diff(start) / 2);
@@ -11,7 +15,10 @@ export const getDateMidpoint = (
 
 export const isBetween = (date, start, end) => {
   let day = dayjs(date);
-  return (day.isSame(start) || day.isAfter(start)) && (day.isSame(end) || day.isBefore(end));
+  return (
+    (day.isSame(start) || day.isAfter(start)) &&
+    (day.isSame(end) || day.isBefore(end))
+  );
 };
 
 export const formatTimestampDisplay = (date) => {
@@ -25,4 +32,11 @@ export const wait = (milliseconds: number) => {
       resolve(true);
     }, milliseconds);
   });
+};
+
+export const generateId = () => {
+  return (
+    Math.random().toString(36).substring(2, 6) +
+    Math.random().toString(36).substring(2, 6)
+  ).toUpperCase();
 };

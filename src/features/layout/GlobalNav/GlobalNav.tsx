@@ -93,7 +93,11 @@ export const GlobalNav = ({ children }) => {
         ></label>
         <div className="menu p-4 overflow-y-auto w-80 bg-base-100 rounded-l-lg shadow-lg pt-[calc(var(--safeTop)+16px)]">
           <div className="flex justify-between items-center">
-            <div className="title-text text-4xl ml-3">Menu</div>
+            <Link to="/">
+              <div className="title-text text-3xl ml-1">
+                {location.pathname === "/" ? "Menu" : "Wanderlog"}
+              </div>
+            </Link>
             <label
               htmlFor="global-nav-drawer"
               className="btn btn-square btn-ghost"

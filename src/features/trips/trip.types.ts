@@ -11,9 +11,9 @@ export const tripSchema = baseTripSchema.extend({
   id: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  createdById: z.number(),
-  updatedById: z.number(),
-  companions: z.array(z.object({ userId: z.number() })),
+  createdById: z.string(),
+  updatedById: z.string(),
+  companions: z.array(z.object({ userId: z.string() })),
 });
 
 export type TripItem = z.infer<typeof tripSchema>;

@@ -1,4 +1,5 @@
 import decode from "jwt-decode";
+import { wipeDatabase } from "~/database/database";
 import { User } from "~/features/users/user.types";
 import { AUTH_COOKIE } from "./auth.types";
 
@@ -36,8 +37,9 @@ export const auth = {
     let payload = tryParseAuthCookie();
     return payload?.user;
   },
-  logout: () => {
+  logout: async () => {
     deleteAuthCookie();
+    wipeDatabase();
     window.location.href = "/";
   },
 };

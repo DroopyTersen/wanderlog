@@ -26,12 +26,11 @@ const syncCollection = async (
       Authorization: `Bearer ${auth.getAccessToken()}`,
     },
     pull: {
-      modifier: (doc) => {
-        console.log("🚀 | doc", doc);
-        doc.id = doc.id + "";
-        return doc;
-      },
       queryBuilder: collectionDefinition.buildPullQuery,
+      batchSize: 5,
+    },
+    push: {
+      queryBuilder: collectionDefinition.buildPushQuery,
       batchSize: 5,
     },
     deletedFlag: "deleted",
@@ -43,12 +42,14 @@ const syncCollection = async (
     console.error("replication error:" + collectionDefinition.name);
     console.dir(err);
   });
+  replicationState.run();
   replicationStates.push(replicationState);
-  // return await replicationState.awaitInitialReplication();
+  return;
 };
 
 let collections: RxCollectionDefinition[] = [usersCollection, tripsCollection];
 export const createDb = async () => {
+  console.log("CREATING DB");
   const db = await createRxDatabase({
     name: "wanderlog-db",
     storage: getRxStorageDexie(),
@@ -79,20 +80,49 @@ export const initDB = async () => {
       console.log("Initializing DB");
       dbPromise = createDb();
       db = await dbPromise;
+
       isOnlineStore.subscribe(async () => {
         let isOnline = isOnlineStore.getState();
+        console.log("🚀 | isOnlineStore.subscribe | isOnline", isOnline);
         if (!isOnline) {
           replicationStates.forEach((replicationState) => {
             replicationState.cancel();
           });
           replicationStates = [];
         } else {
+          console.log("syncing");
+          replicationStates.forEach((replicationState) => {
+            replicationState.cancel();
+          });
           replicationStates = [];
           for (const collection of collections) {
             await syncCollection(db[collection.name], collection);
           }
         }
       });
+
+      let isOnline = isOnlineStore.getState();
+      if (isOnline) {
+        console.log("syncing2");
+        replicationStates.filter(Boolean).forEach((replicationState) => {
+          replicationState.cancel();
+        });
+        replicationStates = [];
+        for (const collection of collections) {
+          console.log("🚀 | initDB | collection", collection);
+          await syncCollection(db[collection.name], collection);
+        }
+      }
+    }
+  }
+};
+
+// Delete all indexedDB databases
+export const wipeDatabase = async () => {
+  const databases = await indexedDB.databases();
+  for (const database of databases) {
+    if (database?.name) {
+      await indexedDB.deleteDatabase(database?.name);
     }
   }
 };

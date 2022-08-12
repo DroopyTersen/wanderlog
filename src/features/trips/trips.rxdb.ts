@@ -6,7 +6,7 @@ import { baseTripSchema, TripItem, tripSchema } from "./trip.types";
 
 const schema: RxJsonSchema<any> = {
   title: "Trips",
-  version: 0,
+  version: 2,
   primaryKey: "id",
   ...(zodToJsonSchema(tripSchema, "Trip").definitions.Trip as any),
   additionalProperties: false,
@@ -43,8 +43,8 @@ const PULL_QUERY = `query GetLatestTrips($lastSync:timestamptz!) {
 // }
 
 // Delete the companions then re-insert them
-const PUSH_QUERY = `mutation UpsertTrips($objects:[TripsInsertInput!]!) {
-  deleteTripCompanions(where:{tripId:{_eq:1}}) {
+const PUSH_QUERY = `mutation UpsertTrips($objects:[TripsInsertInput!]!, $tripIds: [String!]) {
+  deleteTripCompanions(where:{tripId:{ _in: $tripIds  }}) {
   	affected_rows
   }
   insertTrips(objects: $objects, onConflict: { constraint: trips_pkey, update_columns: [title, destination,start,end] }) {
@@ -78,11 +78,11 @@ const PUSH_QUERY = `mutation UpsertTrips($objects:[TripsInsertInput!]!) {
 //   ]
 // }
 const tripHasuraInsertSchema = baseTripSchema.extend({
-  id: z.number().or(z.undefined()),
+  id: z.string(),
   companions: z.object({
     data: z.array(
       z.object({
-        userId: z.number(),
+        userId: z.string(),
       })
     ),
   }),
@@ -93,6 +93,7 @@ type TripHasuraInsertInput = z.infer<typeof tripHasuraInsertSchema>;
 const buildPushQuery = (items) => {
   let objects: TripHasuraInsertInput[] = items.map((item: TripItem) => {
     let object: TripHasuraInsertInput = {
+      id: item?.id,
       title: item.title,
       destination: item.destination,
       start: item.start,
@@ -101,18 +102,14 @@ const buildPushQuery = (items) => {
         data: item?.companions || [],
       },
     };
-    if (item?.id) {
-      object.id = parseInt(item.id);
-    }
-    return {
-      id: item?.id ? parseInt(item.id) : undefined,
-    };
+    return object;
   });
 
   return {
     query: PUSH_QUERY,
     variables: {
       objects,
+      tripIds: items.map((item) => item.id),
     },
   };
 };

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { HiOutlineFingerPrint, HiPlus } from "react-icons/hi";
-import { Button, LinkButton } from "~/components/inputs/buttons";
-import { DropdownMenu } from "../../components/surfaces/DropdownMenu";
+import { HiOutlineFingerPrint } from "react-icons/hi";
+import { LinkButton } from "~/components/inputs/buttons";
 import { auth } from "../auth/auth.client";
+import { NewMenu } from "../layout/NewMenu/NewMenu";
 import "./home.scss";
 let currentUser = auth.getCurrentUser();
 export function HomeRoute() {
@@ -19,27 +19,16 @@ export function HomeRoute() {
           Lust less. Remember more.
         </h3>
       </motion.div>
-      <div className="fab-container">
-        {currentUser ? (
-          <DropdownMenu
-            label={
-              <Button title="Team actions menu" variants={["primary"]}>
-                <HiPlus size={18} />
-                <span>New</span>
-              </Button>
-            }
-          >
-            <DropdownMenu.Item className="min-w-[200px]" to="/trips/new">
-              New Trip
-            </DropdownMenu.Item>
-          </DropdownMenu>
-        ) : (
+      {currentUser ? (
+        <NewMenu />
+      ) : (
+        <div className="fab-container">
           <LinkButton to="/login" variants={["primary"]}>
             <HiOutlineFingerPrint size={17}></HiOutlineFingerPrint>
             Sign In
           </LinkButton>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 }

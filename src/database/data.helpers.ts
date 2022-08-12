@@ -25,14 +25,13 @@ export function useEntity<Schema extends ZodObject<T>, T extends ZodRawShape>(
   loaderDataProperty: string,
   schema: Schema
 ) {
-  let loaderData = useLoaderData();
+  let loaderData = useLoaderData() as any;
   let [items, setItems] = useState<z.TypeOf<Schema>[]>(() => {
     return loaderData?.[loaderDataProperty] || [];
   });
 
   useEffect(() => {
     query.$.subscribe((docs) => {
-      console.log("docs", docs);
       setItems(parseRxDocs(docs, schema));
     });
     () => {
@@ -57,4 +56,5 @@ export const parseRxDocs = <Schema extends ZodObject<T>, T extends ZodRawShape>(
       return [];
     }
   }
+  return [];
 };

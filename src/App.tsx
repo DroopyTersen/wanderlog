@@ -18,6 +18,7 @@ import {
 } from "~/features/layout/ScreenModeProvider";
 
 import { HomeRoute } from "~/features/home/HomeRoute";
+import NewTripRoute, * as NewTripRouteModule from "~/features/trips/trips.new.route";
 import TripsRoute, * as TripsRouteModule from "~/features/trips/trips.route";
 import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
 import { GlobalNav } from "./features/layout/GlobalNav/GlobalNav";
@@ -54,10 +55,29 @@ const AnonymousApp = () => {
 const AuthenticatedApp = () => {
   return (
     <DataBrowserRouter>
-      <Route element={<Layout isLoggedIn={true} />}>
+      <Route
+        element={<Layout isLoggedIn={true} />}
+        errorElement={
+          <div>
+            <button
+              onClick={async () => {
+                auth.logout();
+                window.location.href = "/";
+              }}
+            >
+              Retry
+            </button>
+          </div>
+        }
+      >
         <Route element={<HomeRoute />} index />
         <Route element={<HomeRoute />} path="*" />
         <Route element={<TripsRoute />} path="/trips" {...TripsRouteModule} />
+        <Route
+          element={<NewTripRoute />}
+          path="/trips/new"
+          {...NewTripRouteModule}
+        />
         <Route element={<UsersRoute />} path="/users" {...UsersRouteModule} />
       </Route>
     </DataBrowserRouter>

@@ -19,7 +19,8 @@ export default function UsersRoute() {
 }
 
 const getAllUsersQuery = () => db.users.find();
-const useUsers = () => useEntity(getAllUsersQuery(), "users", userSchema);
+export const useUsers = () =>
+  useEntity(getAllUsersQuery(), "users", userSchema);
 
 export const loader = async () => {
   let users = await queryEntity(getAllUsersQuery(), userSchema);

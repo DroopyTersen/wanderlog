@@ -1,7 +1,7 @@
 import { ComponentProps, forwardRef } from "react";
 import { Link } from "react-router-dom";
 
-const BASE_STYLES = `flex items-center gap-1 rounded-full btn h-11 min-h-0`;
+const BASE_STYLES = `flex items-center gap-1 btn h-11 min-h-0`;
 
 const VARIANTS = {
   primary: `btn-primary hover:bg-gold-400 hover:border-gold-400`,

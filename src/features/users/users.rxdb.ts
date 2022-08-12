@@ -26,12 +26,7 @@ const buildPullQuery = async (doc) => {
     updatedAt
   }
 }`;
-  console.log({
-    query,
-    variables: {
-      lastSync,
-    },
-  });
+
   return {
     query,
     variables: {

@@ -14,7 +14,7 @@ export function AppBackgroundLayout({
   return (
     <>
       <AppBackground variant={variant} />
-      <div className="pt-[var(--safeContentTop)] px-2 sm:px-4">
+      <div className="pt-[var(--safeContentTop)] px-3 sm:px-4">
         {title && <h1 className="app-title text-5xl my-4">{title}</h1>}
 
         {children}

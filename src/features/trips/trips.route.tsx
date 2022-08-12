@@ -1,6 +1,7 @@
 import { queryEntity, useEntity } from "~/database/data.helpers";
 import { db } from "~/database/database";
 import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
+import { NewMenu } from "../layout/NewMenu/NewMenu";
 import { TripCard } from "./components/TripCard";
 import { TripItem, tripSchema } from "./trip.types";
 
@@ -14,6 +15,7 @@ export default function TripsRoute() {
           <TripCard key={trip.id} {...trip} dailyLogCount={0} />
         ))}
       </div>
+      <NewMenu />
     </AppBackgroundLayout>
   );
 }
