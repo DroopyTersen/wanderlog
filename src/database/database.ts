@@ -60,6 +60,12 @@ export const createDb = async () => {
         schema: collection.schema,
         migrationStrategies: {
           1: (old) => old,
+          2: (old) => old,
+          3: (old) => old,
+          4: (old) => old,
+          5: (old) => old,
+          6: (old) => old,
+          7: (old) => old,
         },
       },
     });

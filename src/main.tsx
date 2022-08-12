@@ -5,7 +5,11 @@ import { initDB } from "./database/database";
 import { auth } from "./features/auth/auth.client";
 import "./index.css";
 
-let initPromise = auth.checkIsLoggedIn() ? initDB() : Promise.resolve(null);
+let initPromise = auth.checkIsLoggedIn()
+  ? initDB().catch((err) => {
+      auth.logout();
+    })
+  : Promise.resolve(null);
 
 initPromise.then(() => {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -26,7 +30,7 @@ window.onerror = () => {
 //   onRegistered(r) {
 //     r &&
 //       setInterval(() => {
-//         r.update();
+//         r.update();p
 //       }, intervalMS);
 //   },
 // });
