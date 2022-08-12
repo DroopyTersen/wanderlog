@@ -1,7 +1,8 @@
 import type { RxJsonSchema } from "rxdb";
+import { z } from "zod";
 import zodToJsonSchema from "zod-to-json-schema";
 import { RxCollectionDefinition } from "~/database/database.types";
-import { TripHasuraInsertInput, TripItem, tripSchema } from "./trip.types";
+import { baseTripSchema, TripItem, tripSchema } from "./trip.types";
 
 const schema: RxJsonSchema<any> = {
   title: "Trips",
@@ -63,6 +64,31 @@ const PUSH_QUERY = `mutation UpsertTrips($objects:[TripsInsertInput!]!) {
     }
   }
 }`;
+
+// {
+//   "objects": [
+//     {
+//       "id": 1,
+//       "title": "updated title",
+//       "destination": "CO",
+//       "start": "2022-06-16",
+//       "end": "2022-06-21",
+//       "companions": { "data": [{ "userId": 4 }] }
+//     }
+//   ]
+// }
+const tripHasuraInsertSchema = baseTripSchema.extend({
+  id: z.number().or(z.undefined()),
+  companions: z.object({
+    data: z.array(
+      z.object({
+        userId: z.number(),
+      })
+    ),
+  }),
+});
+
+type TripHasuraInsertInput = z.infer<typeof tripHasuraInsertSchema>;
 
 const buildPushQuery = (items) => {
   let objects: TripHasuraInsertInput[] = items.map((item: TripItem) => {
