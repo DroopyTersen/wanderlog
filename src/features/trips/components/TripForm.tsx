@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
 import { Button } from "~/components/inputs/buttons";
 import { FormField } from "~/components/inputs/FormField";
@@ -15,6 +15,9 @@ interface TripFormProps {
 }
 
 export function TripForm({ initial, users }: TripFormProps) {
+  let startRef = useRef<HTMLInputElement>(null);
+  let endRef = useRef<HTMLInputElement>(null);
+
   let [companions, setCompanions] = useState<{ userId: string | number }[]>(
     initial?.companions || [
       {
@@ -53,21 +56,37 @@ export function TripForm({ initial, users }: TripFormProps) {
           required
           defaultValue={initial?.destination}
         />
-        <InputField
-          label="Start date"
-          name="start"
-          type="date"
-          required
-          defaultValue={initial?.start}
-        />
 
-        <InputField
-          label="End date"
-          name="end"
-          required
-          type="date"
-          defaultValue={initial?.end}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <InputField
+            ref={startRef}
+            label="Start date"
+            name="start"
+            type="date"
+            required
+            onInput={(e) => {
+              console.log(e.currentTarget.value);
+            }}
+            onBlur={(e) => {
+              let startInput = e.currentTarget;
+              let endInput = e.currentTarget
+                .closest(".form-field")
+                ?.nextElementSibling?.querySelector(
+                  "input"
+                ) as HTMLInputElement;
+              handleStartBlur(startInput, endInput);
+            }}
+            defaultValue={initial?.start}
+          />
+          <InputField
+            ref={endRef}
+            label="End date"
+            name="end"
+            required
+            type="date"
+            defaultValue={initial?.end}
+          />
+        </div>
         <FormField label="Companions" name="companions">
           <PickerMulti
             onChange={(options = []) => {
@@ -99,3 +118,13 @@ export function TripForm({ initial, users }: TripFormProps) {
     </Form>
   );
 }
+
+const handleStartBlur = (start: HTMLInputElement, end: HTMLInputElement) => {
+  // if no end date OR start is greater than end
+  // set end to start and focus end
+  if (!end.value || start.value > end.value) {
+    end.value = start.value;
+    end.focus();
+    (end as any)?.showPicker();
+  }
+};

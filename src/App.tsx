@@ -53,6 +53,7 @@ const AnonymousApp = () => {
 };
 
 const AuthenticatedApp = () => {
+  console.log("HERE I AM2");
   return (
     <DataBrowserRouter>
       <Route

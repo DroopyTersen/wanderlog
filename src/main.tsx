@@ -7,6 +7,7 @@ import "./index.css";
 
 let initPromise = auth.checkIsLoggedIn()
   ? initDB().catch((err) => {
+      console.error(err);
       auth.logout();
     })
   : Promise.resolve(null);
@@ -18,19 +19,3 @@ initPromise.then(() => {
     </React.StrictMode>
   );
 });
-window.onerror = () => {
-  if (window.confirm("logout and start over?")) {
-    auth.logout();
-    window.location.href = "/";
-  }
-};
-// const intervalMS = 60 * 60 * 1000;
-
-// const updateSW = registerSW({
-//   onRegistered(r) {
-//     r &&
-//       setInterval(() => {
-//         r.update();p
-//       }, intervalMS);
-//   },
-// });

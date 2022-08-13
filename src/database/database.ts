@@ -61,11 +61,6 @@ export const createDb = async () => {
         migrationStrategies: {
           1: (old) => old,
           2: (old) => old,
-          3: (old) => old,
-          4: (old) => old,
-          5: (old) => old,
-          6: (old) => old,
-          7: (old) => old,
         },
       },
     });
@@ -85,6 +80,7 @@ export const initDB = async () => {
     } else {
       console.log("Initializing DB");
       dbPromise = createDb();
+      dbPromise.catch((err) => console.error(err));
       db = await dbPromise;
 
       isOnlineStore.subscribe(async () => {

@@ -66,3 +66,6 @@ html .menu[class^="p-"] li > * {
 a {
   font-weight: 500;
 }
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
