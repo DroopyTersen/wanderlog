@@ -48,7 +48,7 @@ const PUSH_QUERY = `mutation UpsertTrips($objects:[TripsInsertInput!]!, $tripIds
   deleteTripCompanions(where:{tripId:{ _in: $tripIds  }}) {
   	affected_rows
   }
-  insertTrips(objects: $objects, onConflict: { constraint: trips_pkey, update_columns: [title, destination,start,end] }) {
+  insertTrips(objects: $objects, onConflict: { constraint: trips_pkey, update_columns: [title, destination,start,end,deleted] }) {
     returning {
       id
       title
@@ -81,6 +81,7 @@ const PUSH_QUERY = `mutation UpsertTrips($objects:[TripsInsertInput!]!, $tripIds
 // }
 const tripHasuraInsertSchema = baseTripSchema.extend({
   id: z.string(),
+  deleted: z.boolean().optional().default(false),
   companions: z.object({
     data: z.array(
       z.object({
@@ -93,19 +94,23 @@ const tripHasuraInsertSchema = baseTripSchema.extend({
 type TripHasuraInsertInput = z.infer<typeof tripHasuraInsertSchema>;
 
 const buildPushQuery = (items) => {
-  let objects: TripHasuraInsertInput[] = items.map((item: TripItem) => {
-    let object: TripHasuraInsertInput = {
-      id: item?.id,
-      title: item.title,
-      destination: item.destination,
-      start: item.start,
-      end: item.end,
-      companions: {
-        data: item?.companions || [],
-      },
-    };
-    return object;
-  });
+  console.log("🚀 | buildPushQuery | items", items);
+  let objects: TripHasuraInsertInput[] = items.map(
+    (item: TripItem & { deleted: boolean }) => {
+      let object: TripHasuraInsertInput = {
+        id: item?.id,
+        title: item.title,
+        destination: item.destination,
+        start: item.start,
+        end: item.end,
+        deleted: item?.deleted,
+        companions: {
+          data: item?.companions || [],
+        },
+      };
+      return object;
+    }
+  );
 
   return {
     query: PUSH_QUERY,

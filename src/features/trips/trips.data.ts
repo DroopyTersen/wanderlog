@@ -54,14 +54,14 @@ export const tripMutations = {
     await db.trips.upsert(fullInput);
   },
   remove: async (id: string) => {
-    let existing = await findOneEntity(tripQueries.getById(id), tripSchema);
-
-    let fullInput = {
-      ...existing,
-      _deleted: true,
-      updatedAt: new Date().toISOString(),
-      updatedById: currentUserId,
-    };
-    await db.trips.upsert(fullInput);
+    await tripQueries.getById(id).remove();
+    // let existing = await findOneEntity(tripQueries.getById(id), tripSchema);
+    // let fullInput = {
+    //   ...existing,
+    //   _deleted: true,
+    //   updatedAt: new Date().toISOString(),
+    //   updatedById: currentUserId,
+    // };
+    // await db.trips.upsert(fullInput);
   },
 };

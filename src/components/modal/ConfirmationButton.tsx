@@ -51,7 +51,6 @@ export function ConfirmationModal({
   isOpen,
   setIsOpen,
 }: ConfirmationModalProps) {
-  console.log("🚀 | method", method);
   let fetcher = useFetcher();
   let errors = fetcher?.data?.errors;
   let status = errors ? "error" : fetcher?.state;

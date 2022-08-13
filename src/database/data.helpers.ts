@@ -70,9 +70,16 @@ export const parseRxDocs = <Schema extends ZodObject<T>, T extends ZodRawShape>(
 ): z.TypeOf<Schema>[] => {
   if (docs) {
     try {
-      return docs.map((doc) => {
-        return schema.parse(doc);
-      });
+      return docs
+        .map((doc) => {
+          try {
+            return schema.parse(doc);
+          } catch (err) {
+            console.error(err, doc);
+            return null as any;
+          }
+        })
+        .filter(Boolean);
     } catch (err) {
       console.error("Unable to parse RX docs to Zod object", err, docs);
       return [];
