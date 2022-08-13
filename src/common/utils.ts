@@ -39,12 +39,12 @@ function dec2hex(dec) {
 }
 
 // generateId :: Integer -> String
-export function generateId(len = 6) {
-  var arr = new Uint8Array((len || 40) / 2);
-  window.crypto.getRandomValues(arr);
-  return Array.from(arr, dec2hex).join("");
-}
-
+export const generateId = () => {
+  return (
+    Math.random().toString(36).substring(2, 6) +
+    Math.random().toString(36).substring(2, 6)
+  ).toUpperCase();
+};
 export function displayDate(date: string | Date, format = "M/DD/YYYY") {
   return dayjs(date).format(format);
 }

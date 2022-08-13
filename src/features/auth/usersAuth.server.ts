@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import "isomorphic-fetch";
 
 import { hasuraAdminRequest } from "~/common/hasura.server";
+import { generateId } from "~/common/utils";
 import { User } from "~/features/users/user.types";
 
 export const verifyCredentials = async (
@@ -48,6 +49,7 @@ export const createUser = async (
     MUTATION_INSERT_USER,
     {
       username,
+      id: generateId(),
       password: hashedPassword,
       name: name || username,
     }
@@ -55,11 +57,12 @@ export const createUser = async (
   return result?.user;
 };
 
-const MUTATION_INSERT_USER = `mutation InsertUser($username:String!, $password:String!, $name:String!) {
+const MUTATION_INSERT_USER = `mutation InsertUser($username:String!, $password:String!, $name:String!, $id:String!) {
   user: insertUsersOne(object: {
     username:$username,
     password:$password,
     name: $name,
+    id: $id
   }) {
     id
     username
