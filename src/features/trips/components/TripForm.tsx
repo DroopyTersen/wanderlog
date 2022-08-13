@@ -14,28 +14,29 @@ interface TripFormProps {
   users: User[];
 }
 
+let currentUserId = auth.getCurrentUser()?.id;
+
 export function TripForm({ initial, users }: TripFormProps) {
   let startRef = useRef<HTMLInputElement>(null);
   let endRef = useRef<HTMLInputElement>(null);
 
   let [companions, setCompanions] = useState<{ userId: string | number }[]>(
-    initial?.companions || [
-      {
-        userId: (auth?.getCurrentUser() as User).id,
-      },
-    ]
+    initial?.companions || []
   );
 
-  const companionOptions: PickerOption[] = users.map((u) => ({
-    label: `${u.name} | (${u.username})`,
-    value: u.id + "",
-  }));
+  const companionOptions: PickerOption[] = users
+    .filter((u) => u.id !== currentUserId)
+    .map((u) => ({
+      label: `${u.name} | (${u.username})`,
+      value: u.id + "",
+    }));
 
   let navigate = useNavigate();
   return (
     <Form method="post">
       <fieldset className="flex flex-col gap-4">
         <input type="hidden" name="id" value={initial?.id} />
+        <input type="hidden" name="companions" value={currentUserId} />
         {companions.map((c) => (
           <input
             key={c.userId}
@@ -105,7 +106,7 @@ export function TripForm({ initial, users }: TripFormProps) {
         <div className="flex items-center justify-end gap-2">
           <Button
             type="button"
-            className="btn-ghost"
+            className="btn-ghost rounded-lg"
             onClick={() => navigate(-1)}
           >
             Cancel

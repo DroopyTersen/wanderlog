@@ -20,7 +20,7 @@ export const FormField = ({
   return (
     <div className={cssClass}>
       {label && (
-        <label className="block mb-1 text-gray-300" htmlFor={name}>
+        <label className="mb-1 text-gray-300" htmlFor={name}>
           {label}
           {required && <span className="ml-[2px] text-red-400">*</span>}
         </label>

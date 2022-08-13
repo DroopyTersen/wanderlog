@@ -113,9 +113,9 @@ export const GlobalNav = ({ children }) => {
               </LinkButton>
             </div>
           )}
-          <ul className=" mt-4 tracking-wider">
-            {isLoggedIn ? (
-              <>
+          {isLoggedIn ? (
+            <>
+              <ul className=" mt-4 tracking-wider">
                 <li>
                   <Link className="rounded" to="/trips">
                     Trips
@@ -127,19 +127,22 @@ export const GlobalNav = ({ children }) => {
                 <li>
                   <a>Locations</a>
                 </li>
-                <li className="mt-12">
-                  <button
-                    className="btn btn-primary btn-ghost rounded-full text-gold-400"
-                    onClick={() => auth.logout()}
-                  >
-                    Logout
-                  </button>
-                </li>
-              </>
-            ) : (
-              <div></div>
-            )}
-          </ul>
+              </ul>
+              <div className="mt-12">
+                <div className="font-medium text-center w-full">
+                  {auth.getCurrentUser()?.name}
+                </div>
+                <button
+                  className="btn w-full btn-primary btn-ghost rounded-full text-gold-400"
+                  onClick={() => auth.logout()}
+                >
+                  Logout
+                </button>
+              </div>
+            </>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ export const pickerStyles: StylesConfig = {
     ...base,
     // paddingLeft: "8px",
     // paddingRight: "8px",
+    minHeight: "48px",
     borderRadius: "8px",
     "&:hover": {
       borderColor: "var(--pink-500)",

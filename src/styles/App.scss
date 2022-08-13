@@ -69,3 +69,10 @@ a {
 ::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
+
+html input[type="date"] {
+  display: block;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  // min-height: 1.2em;
+}
