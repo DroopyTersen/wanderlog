@@ -1,31 +1,38 @@
 import { motion } from "framer-motion";
+import { HiOutlinePencil } from "react-icons/hi";
 import { LoaderFunction, useParams } from "react-router-dom";
 import { calcNumDays, displayDateRange } from "~/common/utils";
 import { BigDate } from "~/components";
+import { LinkButton } from "~/components/inputs/buttons";
 import { findOneEntity, useEntity } from "~/database/data.helpers";
-import { db } from "~/database/database";
 import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
-import { Header } from "../layout/Header/Header";
+import { AppErrorBoundary } from "../layout/AppErrorBoundary/AppErrorBoundary";
 import { useUsers } from "../users/UsersRoute";
 import { tripSchema } from "./trip.types";
+import { tripQueries } from "./trips.data";
 export default function TripDetailsRoute() {
   let trip = useTrip();
+
   let allUsers = useUsers() || [];
-  let companions = trip.companions?.map((c) =>
-    allUsers.find((u) => u.id === c.userId)
-  );
+  let companions =
+    trip?.companions?.map((c) => allUsers.find((u) => u.id === c.userId)) || [];
+  if (!trip) return null;
   return (
-    <AppBackgroundLayout>
-      <Header back="/trips">Trips</Header>
-      <div className="trip trip-details pt-11">
+    <AppBackgroundLayout back="/trips" title="Trips">
+      <div className="trip trip-details">
         <motion.div
           variants={animationVariants}
           initial="fromTop"
           animate="visible"
         >
-          <h1 className="page-title trip-title mt-4 mb-4 font-normal">
-            {trip.title}
-          </h1>
+          <div className="flex justify-between items-center">
+            <h1 className="page-title trip-title mt-4 mb-4 font-normal">
+              {trip.title}
+            </h1>
+            <LinkButton to="edit" className="btn-ghost" variants={["circle"]}>
+              <HiOutlinePencil />
+            </LinkButton>
+          </div>
           <div className="row space-between date-row">
             <div className="trip-dates">
               <div className="num-days">
@@ -39,7 +46,10 @@ export default function TripDetailsRoute() {
           </div>
           <div className="grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] mt-4 gap-2">
             {companions?.map((c) => (
-              <div className="avatar placeholder pr-2 items-center gap-2 bg-pink/80 text-primary-700 rounded-full text-sm font-medium">
+              <div
+                key={c?.id || c?.username}
+                className="avatar placeholder pr-2 items-center gap-2 bg-pink/80 text-primary-700 rounded-full text-sm font-medium"
+              >
                 <div className="shadow-xl rounded-full w-8">
                   <svg
                     className="h-full w-full bg-pink"
@@ -73,22 +83,19 @@ const animationVariants = {
   },
 };
 
-const getTripQuery = (tripId: string) => {
-  return db.trips.findOne({
-    selector: {
-      id: tripId,
-    },
-  });
-};
-
 let useTrip = () => {
   let { tripId } = useParams();
-  return useEntity(getTripQuery(tripId + ""), "trip", tripSchema);
+  return useEntity(tripQueries.getById(tripId + ""), "trip", tripSchema);
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  let trip = await findOneEntity(getTripQuery(params.tripId + ""), tripSchema);
+  let trip = await findOneEntity(
+    tripQueries.getById(params.tripId + ""),
+    tripSchema
+  );
   return {
     trip,
   };
 };
+
+export const errorElement = <AppErrorBoundary />;

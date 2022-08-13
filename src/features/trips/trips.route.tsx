@@ -1,42 +1,30 @@
-import { queryEntity, useCollection } from "~/database/data.helpers";
-import { db } from "~/database/database";
+import { queryCollection, useCollection } from "~/database/data.helpers";
 import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
-import { Header } from "../layout/Header/Header";
 import { NewMenu } from "../layout/NewMenu/NewMenu";
 import { TripCard } from "./components/TripCard";
 import { TripItem, tripSchema } from "./trip.types";
+import { tripQueries } from "./trips.data";
 
 export default function TripsRoute() {
   let trips = useTrips();
 
   return (
-    <AppBackgroundLayout>
-      <Header back="/">Trips</Header>
-      <div className="pt-11">
-        {trips.map((trip) => (
-          <TripCard key={trip.id} {...trip} dailyLogCount={0} />
-        ))}
-      </div>
+    <AppBackgroundLayout title="Trips">
+      {trips.map((trip) => (
+        <TripCard key={trip.id} {...trip} dailyLogCount={0} />
+      ))}
       <NewMenu />
     </AppBackgroundLayout>
   );
 }
 
-const getAllTripsQuery = () =>
-  db.trips.find({
-    sort: [
-      {
-        start: "desc",
-      },
-    ],
-  });
 const useTrips = (): TripItem[] => {
-  const trips = useCollection(getAllTripsQuery(), "trips", tripSchema);
+  const trips = useCollection(tripQueries.getAll(), "trips", tripSchema);
   return trips;
 };
 
 export const loader = async () => {
-  let trips = await queryEntity(getAllTripsQuery(), tripSchema);
+  let trips = await queryCollection(tripQueries.getAll(), tripSchema);
   return {
     trips,
   };

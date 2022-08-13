@@ -29,6 +29,7 @@ export type ConfirmationModalProps = {
   formData: any;
   /** Form action */
   action?: string;
+  method?: "post" | "put" | "delete";
   confirmation?: ConfirmationProps;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -44,11 +45,13 @@ const confirmationDefaults: ConfirmationProps = {
 export function ConfirmationModal({
   formData,
   action,
+  method = "post",
   trigger,
   confirmation,
   isOpen,
   setIsOpen,
 }: ConfirmationModalProps) {
+  console.log("🚀 | method", method);
   let fetcher = useFetcher();
   let errors = fetcher?.data?.errors;
   let status = errors ? "error" : fetcher?.state;
@@ -77,7 +80,7 @@ export function ConfirmationModal({
         <div className="modal-action">
           <button
             type="button"
-            className="btn btn-ghost"
+            className="btn btn-ghost rounded-lg"
             onClick={() => setIsOpen(false)}
           >
             {confirmation?.cancel || confirmationDefaults.cancel}
@@ -86,14 +89,16 @@ export function ConfirmationModal({
           {status !== "error" && (
             <button
               type="button"
-              className={"btn btn-error hover:bg-red-700 text-white"}
+              className={
+                "btn btn-error hover:bg-red-600 bg-red-700 border-none rounded-lg text-white"
+              }
               disabled={fetcher?.state !== "idle"}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 console.log("🚀 | action", action, formData);
                 fetcher.submit(formData, {
-                  method: "post",
+                  method: method,
                   action,
                 });
               }}
@@ -115,6 +120,7 @@ export function ConfirmationButton({
   confirmation,
   startOpen,
   as = "button",
+  method = "post",
   ...rest
 }: ConfirmationButtonProps) {
   let modal = Modal.useModal(startOpen);
@@ -122,6 +128,7 @@ export function ConfirmationButton({
   return (
     <ConfirmationModal
       {...modal}
+      method={method}
       confirmation={confirmation}
       action={action}
       formData={formData}

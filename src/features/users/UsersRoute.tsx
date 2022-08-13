@@ -1,4 +1,4 @@
-import { queryEntity, useCollection } from "~/database/data.helpers";
+import { queryCollection, useCollection } from "~/database/data.helpers";
 import { db } from "~/database/database";
 import { userSchema } from "~/features/users/user.types";
 
@@ -23,7 +23,7 @@ export const useUsers = () =>
   useCollection(getAllUsersQuery(), "users", userSchema);
 
 export const loader = async () => {
-  let users = await queryEntity(getAllUsersQuery(), userSchema);
+  let users = await queryCollection(getAllUsersQuery(), userSchema);
   return {
     users,
   };

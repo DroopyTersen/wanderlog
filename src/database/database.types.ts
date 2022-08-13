@@ -13,4 +13,5 @@ export interface RxCollectionDefinition {
     query: string;
     variables: any;
   };
+  batchSize: number;
 }

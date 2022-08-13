@@ -18,8 +18,8 @@ const schema: RxJsonSchema<any> = {
 
 const buildPullQuery = async (doc) => {
   let lastSync = doc?.updatedAt || new Date(0).toUTCString();
-  const query = `query GetLatestUsers($lastSync: timestamptz!) {
-  users(where:{updatedAt:{ _gt: $lastSync }} limit: 5) {
+  const query = `query GetLatestUsers($lastSync: timestamptz!, $batchSize: Int!) {
+  users(where:{updatedAt:{ _gt: $lastSync }}, limit: $batchSize) {
     id
     username
     name
@@ -31,6 +31,7 @@ const buildPullQuery = async (doc) => {
     query,
     variables: {
       lastSync,
+      batchSize: BATCH_SIZE,
     },
   };
 };
@@ -53,10 +54,12 @@ const buildPushQuery = (items) => {
     },
   };
 };
+const BATCH_SIZE = 100;
 export const usersCollection: RxCollectionDefinition = {
   name: "users",
   liveInterval: 60 * 1000,
   schema,
   buildPullQuery,
   buildPushQuery,
+  batchSize: BATCH_SIZE,
 };

@@ -27,11 +27,11 @@ const syncCollection = async (
     },
     pull: {
       queryBuilder: collectionDefinition.buildPullQuery,
-      batchSize: 5,
+      batchSize: collectionDefinition.batchSize,
     },
     push: {
       queryBuilder: collectionDefinition.buildPushQuery,
-      batchSize: 5,
+      batchSize: collectionDefinition.batchSize,
     },
     deletedFlag: "deleted",
     liveInterval: collectionDefinition?.liveInterval || 10 * 1000,

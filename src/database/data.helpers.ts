@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import { RxQuery } from "rxdb";
 import { z, ZodObject, ZodRawShape } from "zod";
 
-export async function queryEntity<
+export async function queryCollection<
   Schema extends ZodObject<T>,
   T extends ZodRawShape
 >(query: RxQuery, schema: Schema) {
@@ -16,6 +16,7 @@ export async function findOneEntity<
   T extends ZodRawShape
 >(query: RxQuery, schema: Schema) {
   let doc: any = await query.exec();
+
   let [result] = parseRxDocs([doc], schema);
   return result;
 }

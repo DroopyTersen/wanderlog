@@ -12,8 +12,8 @@ const schema: RxJsonSchema<any> = {
   additionalProperties: false,
 };
 
-const PULL_QUERY = `query GetLatestTrips($lastSync:timestamptz!) {
-  trips(where:{updatedAt:{_gt:$lastSync}}) {
+const PULL_QUERY = `query GetLatestTrips($lastSync:timestamptz!, $batchSize:Int) {
+  trips(where:{updatedAt:{_gt:$lastSync}} limit: $batchSize) {
     id
     title
     destination
@@ -26,6 +26,7 @@ const PULL_QUERY = `query GetLatestTrips($lastSync:timestamptz!) {
     companions {
       userId
     }
+    deleted
   }
 }`;
 
@@ -54,6 +55,7 @@ const PUSH_QUERY = `mutation UpsertTrips($objects:[TripsInsertInput!]!, $tripIds
       destination
       start
       end
+      deleted
       createdAt
       createdById
       updatedAt
@@ -120,12 +122,15 @@ const buildPullQuery = async (doc) => {
     query: PULL_QUERY,
     variables: {
       lastSync,
+      batchSize: BATCH_SIZE,
     },
   };
 };
+const BATCH_SIZE = 100;
 
 export const tripsCollection: RxCollectionDefinition = {
   name: "trips",
+  batchSize: BATCH_SIZE,
   schema,
   buildPullQuery,
   buildPushQuery,

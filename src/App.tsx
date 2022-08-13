@@ -18,10 +18,12 @@ import {
 } from "~/features/layout/ScreenModeProvider";
 
 import { HomeRoute } from "~/features/home/HomeRoute";
+import EditTripRoute, * as EditTripRouteModule from "~/features/trips/trips.$tripId.edit.route";
 import TripDetailsRoute, * as TripDetailsRouteModule from "~/features/trips/trips.$tripId.route";
 import NewTripRoute, * as NewTripRouteModule from "~/features/trips/trips.new.route";
 import TripsRoute, * as TripsRouteModule from "~/features/trips/trips.route";
 import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
+import { AppErrorBoundary } from "./features/layout/AppErrorBoundary/AppErrorBoundary";
 import { GlobalNav } from "./features/layout/GlobalNav/GlobalNav";
 import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
 import "./styles/App.scss";
@@ -54,23 +56,11 @@ const AnonymousApp = () => {
 };
 
 const AuthenticatedApp = () => {
-  console.log("HERE I AM2");
   return (
     <DataBrowserRouter>
       <Route
         element={<Layout isLoggedIn={true} />}
-        errorElement={
-          <div>
-            <button
-              onClick={async () => {
-                auth.logout();
-                window.location.href = "/";
-              }}
-            >
-              Retry
-            </button>
-          </div>
-        }
+        errorElement={<AppErrorBoundary />}
       >
         <Route element={<HomeRoute />} index />
         <Route element={<HomeRoute />} path="*" />
@@ -79,6 +69,11 @@ const AuthenticatedApp = () => {
           element={<TripDetailsRoute />}
           path="/trips/:tripId"
           {...TripDetailsRouteModule}
+        />
+        <Route
+          element={<EditTripRoute />}
+          path="/trips/:tripId/edit"
+          {...EditTripRouteModule}
         />
         <Route
           element={<NewTripRoute />}
