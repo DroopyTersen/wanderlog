@@ -28,60 +28,58 @@ export const GlobalNav = ({ children }) => {
         onChange={(e) => setIsOpen(e.target.checked)}
       />
       <div className="drawer-content flex flex-col h-screen">
-        <div className="w-full navbar bg-base-300/0 justify-end fixed pt-[calc(var(--safeTop)+8px)] z-10">
-          <div className="flex-none fab-container left lg:hidden">
-            <Button
-              as="label"
-              variants={["blue", "circle"]}
-              htmlFor="global-nav-drawer"
-              className="lg:hidden"
+        <div className="flex-none fab-container left lg:hidden">
+          <Button
+            as="label"
+            variants={["blue", "circle"]}
+            htmlFor="global-nav-drawer"
+            className="lg:hidden"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="inline-block w-6 h-6 stroke-current"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block w-6 h-6 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 6h15M5 12h16M5 18h13"
-                ></path>
-              </svg>
-            </Button>
-          </div>
-          <div className="flex-none hidden lg:block">
-            <ul className="menu menu-horizontal">
-              {isLoggedIn ? (
-                <>
-                  <li>
-                    <Link to="/trips">Trips</Link>
-                  </li>
-                  <li>
-                    <a>Photos</a>
-                  </li>
-                  <li>
-                    <a>Locations</a>
-                  </li>
-                  <li>
-                    <button
-                      className="btn btn-ghost"
-                      onClick={() => auth.logout()}
-                    >
-                      Logout
-                    </button>
-                  </li>
-                </>
-              ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 6h15M5 12h16M5 18h13"
+              ></path>
+            </svg>
+          </Button>
+        </div>
+        <div className="w-full navbar  hidden lg:flex justify-end bg-base-300/0 fixed pt-[calc(var(--safeTop)+8px)] lg:z-10">
+          <ul className="menu menu-horizontal">
+            {isLoggedIn ? (
+              <>
                 <li>
-                  <Link to="/login" className="font-bold rounded-lg">
-                    Sign In
-                  </Link>
+                  <Link to="/trips">Trips</Link>
                 </li>
-              )}
-            </ul>
-          </div>
+                <li>
+                  <a>Photos</a>
+                </li>
+                <li>
+                  <a>Locations</a>
+                </li>
+                <li>
+                  <button
+                    className="btn btn-ghost"
+                    onClick={() => auth.logout()}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link to="/login" className="font-bold rounded-lg">
+                  Sign In
+                </Link>
+              </li>
+            )}
+          </ul>
         </div>
         {children}
       </div>

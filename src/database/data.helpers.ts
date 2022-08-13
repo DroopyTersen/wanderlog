@@ -20,11 +20,10 @@ export async function findOneEntity<
   return result;
 }
 
-export function useEntity<Schema extends ZodObject<T>, T extends ZodRawShape>(
-  query: RxQuery,
-  loaderDataProperty: string,
-  schema: Schema
-) {
+export function useCollection<
+  Schema extends ZodObject<T>,
+  T extends ZodRawShape
+>(query: RxQuery, loaderDataProperty: string, schema: Schema) {
   let loaderData = useLoaderData() as any;
   let [items, setItems] = useState<z.TypeOf<Schema>[]>(() => {
     return loaderData?.[loaderDataProperty] || [];
@@ -40,6 +39,28 @@ export function useEntity<Schema extends ZodObject<T>, T extends ZodRawShape>(
   }, []);
 
   return items;
+}
+export function useEntity<Schema extends ZodObject<T>, T extends ZodRawShape>(
+  query: RxQuery,
+  loaderDataProperty: string,
+  schema: Schema
+) {
+  let loaderData = useLoaderData() as any;
+  let [item, setItem] = useState<z.TypeOf<Schema>>(() => {
+    return loaderData?.[loaderDataProperty] || null;
+  });
+
+  useEffect(() => {
+    query.$.subscribe((doc) => {
+      let items = parseRxDocs([doc], schema);
+      setItem(items?.[0]);
+    });
+    () => {
+      query.$.unsubscribe();
+    };
+  }, []);
+
+  return item;
 }
 
 export const parseRxDocs = <Schema extends ZodObject<T>, T extends ZodRawShape>(

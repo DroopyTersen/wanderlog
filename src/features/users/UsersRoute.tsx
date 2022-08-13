@@ -1,4 +1,4 @@
-import { queryEntity, useEntity } from "~/database/data.helpers";
+import { queryEntity, useCollection } from "~/database/data.helpers";
 import { db } from "~/database/database";
 import { userSchema } from "~/features/users/user.types";
 
@@ -20,7 +20,7 @@ export default function UsersRoute() {
 
 const getAllUsersQuery = () => db.users.find();
 export const useUsers = () =>
-  useEntity(getAllUsersQuery(), "users", userSchema);
+  useCollection(getAllUsersQuery(), "users", userSchema);
 
 export const loader = async () => {
   let users = await queryEntity(getAllUsersQuery(), userSchema);

@@ -3,7 +3,6 @@ import { IoMdImages } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { BigDate, Img, MotionGrid } from "~/components";
 import { BLURRED_PHOTOS } from "../../layout/AppBackground/AppBackground";
-import "./trips.scss";
 
 export interface TripCardProps {
   id: string;

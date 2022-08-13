@@ -1,7 +1,7 @@
 .card.trip-card {
   // background-image: url("/images/mountain-road.landscape.jpg");
   display: grid;
-  grid-template-columns: 70px 1fr;
+  grid-template-columns: 1fr 70px;
   gap: 20px;
   .left-column {
     display: flex;
@@ -18,6 +18,12 @@
   }
   .tags {
     grid-column: 1/3;
+  }
+  .trip-title {
+    color: var(--gold-800);
+    font-size: 1.23rem;
+    line-height: 1.4rem;
+    margin-bottom: 10px;
   }
   .dailylog-count {
     display: flex;
@@ -57,10 +63,6 @@
   }
 }
 .trip {
-  .trip-title {
-    font-weight: 100;
-    margin: 0;
-  }
   .num-days span {
     font-weight: bold;
   }
@@ -79,12 +81,5 @@
   .trip-title {
     font-size: 1.8rem;
     line-height: 1.8rem;
-  }
-
-  section {
-    margin-top: 40px;
-  }
-  .tags {
-    margin-top: 10px;
   }
 }
