@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import { BiBookHeart } from "react-icons/bi";
 import { IoMdImages } from "react-icons/io";
-import { Link } from "react-router-dom";
 import { BigDate, Img, MotionGrid } from "~/components";
 import { BLURRED_PHOTOS } from "~/features/layout/AppBackground/AppBackground";
 import { TripDto } from "../trip.types";
@@ -31,19 +30,14 @@ export function DayCard({ photos, date, trip, memoryCount }: DayCardProps) {
       <div className="overlay overlay-dark"></div>
 
       <div>
+        <div className=" text-shadowed font-bold uppercase">
+          Day {dayjs(date).diff(dayjs(trip.start), "day") + 1}
+        </div>
         <BigDate
           date={date}
           variant="day-date-month"
           className="text-shadowed"
         />
-        {trip?.title && (
-          <div className="daily-log-trip text-shadowed">
-            <span className="day-count">
-              Day {dayjs(date).diff(dayjs(trip.start), "day") + 1}:
-            </span>
-            <Link to={"/trips/" + trip?.id}>{trip.title}</Link>
-          </div>
-        )}
       </div>
       <div className="flex justify-end items-center gap-3 font-sans">
         <div className="flex items-center">
