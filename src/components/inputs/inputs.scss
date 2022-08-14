@@ -4,10 +4,17 @@ html a:not(.btn):visited {
   transition: color 0.2s ease-out;
   text-decoration: none;
 }
+html a:not(.btn).text-pink,
+html a:not(.btn).text-pink:visited {
+  color: var(--pink-500);
+  filter: brightness(1.1);
+}
 html a:not(.btn):hover {
   color: var(--gold-400);
 }
-
+html a:not(.btn).text-pink:hover {
+  filter: brightness(1.2);
+}
 fieldset {
   border: none;
   padding: 0;

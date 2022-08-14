@@ -28,6 +28,7 @@ body * {
 @import "../components/inputs/inputs.scss";
 @import "../components/surfaces/surfaces.scss";
 @import "../features/trips/trips.scss";
+@import "./dailyLogs.scss";
 // @import "../features/dailyLogs/dailyLogs.scss";
 // @import "../features/photos/photos.scss";
 
@@ -75,4 +76,8 @@ html input[type="date"] {
   -webkit-appearance: textfield;
   -moz-appearance: textfield;
   // min-height: 1.2em;
+}
+
+html .tab.tab-active {
+  border-color: var(--pink-500);
 }

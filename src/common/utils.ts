@@ -25,6 +25,8 @@ export const formatTimestampDisplay = (date) => {
   if (!date) return "";
   return dayjs(date).format("M/D/YYYY h:mm a");
 };
+export const formatDateId = (date: Date | string) =>
+  dayjs(date).format("YYYY-MM-DD");
 
 export const wait = (milliseconds: number) => {
   return new Promise((resolve) => {
@@ -59,6 +61,7 @@ export function displayDateRange(start: string | Date, end: string | Date) {
 export function calcNumDays(start: string | Date, end: string | Date): number {
   return dayjs(end).diff(dayjs(start), "day") + 1;
 }
+
 export function checkInDateRange(
   date: string | Date,
   start: string | Date,

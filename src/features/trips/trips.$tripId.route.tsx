@@ -1,22 +1,34 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { HiOutlinePencil } from "react-icons/hi";
-import { LoaderFunction, useParams } from "react-router-dom";
-import { calcNumDays, displayDateRange } from "~/common/utils";
-import { BigDate } from "~/components";
+import { Link, LoaderFunction, useParams } from "react-router-dom";
+import {
+  calcNumDays,
+  displayDateRange,
+  formatDateId,
+  getDaysInRange,
+} from "~/common/utils";
+import { BigDate, MotionGrid } from "~/components";
 import { LinkButton } from "~/components/inputs/buttons";
 import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../layout/AppErrorBoundary/AppErrorBoundary";
 import { useAllUsers } from "../users/user.service";
+import { DayCard } from "./components/DayCard";
 import { tripService, useTrip } from "./trip.service";
 
 export default function TripDetailsRoute() {
   let { tripId } = useParams();
   let trip = useTrip(tripId + "");
+  let photos = [];
 
   let allUsers = useAllUsers() || [];
   let companions =
     trip?.companions?.map((c) => allUsers.find((u) => u.id === c.userId)) || [];
   if (!trip) return null;
+
+  let tripDates = getDaysInRange(trip?.start, trip?.end);
+  let [tab, setTab] = useState<"days" | "photos" | "places">("days");
+
   return (
     <AppBackgroundLayout back="/trips" title="Trips">
       <div className="trip trip-details">
@@ -67,6 +79,41 @@ export default function TripDetailsRoute() {
             ))}
           </div>
         </motion.div>
+        <div className="tabs mt-8 uppercase font-bold">
+          <a
+            onClick={() => setTab("days")}
+            className={`font-semibold tab tab-bordered ${
+              tab === "days" ? "tab-active" : ""
+            }`}
+          >
+            Days
+          </a>
+          <a
+            onClick={() => setTab("photos")}
+            className={`font-semibold tab tab-bordered ${
+              tab === "photos" ? "tab-active" : ""
+            }`}
+          >
+            Photos
+          </a>
+          <a
+            onClick={() => setTab("places")}
+            className={`font-semibold tab tab-bordered ${
+              tab === "places" ? "tab-active" : ""
+            }`}
+          >
+            Places
+          </a>
+        </div>
+        {tab === "days" && (
+          <MotionGrid width="400px" className="mt-2 daily-logs-grid">
+            {tripDates.map((date, index) => (
+              <Link key={formatDateId(date)} to={index + 1 + ""}>
+                <DayCard trip={trip} date={date} photos={[]} memoryCount={0} />
+              </Link>
+            ))}
+          </MotionGrid>
+        )}
       </div>
     </AppBackgroundLayout>
   );
@@ -85,8 +132,12 @@ const animationVariants = {
 
 export const loader: LoaderFunction = async ({ params }) => {
   let trip = tripService.getById(params.tripId + "");
+  // todo get photos for this trip
+  let photos = [];
+
   return {
     trip,
+    photos,
   };
 };
 
