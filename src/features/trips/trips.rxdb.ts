@@ -2,7 +2,7 @@ import type { RxJsonSchema } from "rxdb";
 import { z } from "zod";
 import zodToJsonSchema from "zod-to-json-schema";
 import { RxCollectionDefinition } from "~/database/database.types";
-import { baseTripSchema, TripItem, tripSchema } from "./trip.types";
+import { baseTripSchema, TripDto, tripSchema } from "./trip.types";
 
 const schema: RxJsonSchema<any> = {
   title: "Trips",
@@ -48,7 +48,7 @@ const PUSH_QUERY = `mutation UpsertTrips($objects:[TripsInsertInput!]!, $tripIds
   deleteTripCompanions(where:{tripId:{ _in: $tripIds  }}) {
   	affected_rows
   }
-  insertTrips(objects: $objects, onConflict: { constraint: trips_pkey, update_columns: [title, destination,start,end,deleted] }) {
+  insertTrips(objects: $objects, onConflict: { constraint: trips_pkey, update_columns: [title, destination,start,end,deleted,updatedAt] }) {
     returning {
       id
       title
@@ -96,7 +96,7 @@ type TripHasuraInsertInput = z.infer<typeof tripHasuraInsertSchema>;
 const buildPushQuery = (items) => {
   console.log("🚀 | buildPushQuery | items", items);
   let objects: TripHasuraInsertInput[] = items.map(
-    (item: TripItem & { deleted: boolean }) => {
+    (item: TripDto & { deleted: boolean }) => {
       let object: TripHasuraInsertInput = {
         id: item?.id,
         title: item.title,
@@ -139,4 +139,5 @@ export const tripsCollection: RxCollectionDefinition = {
   schema,
   buildPullQuery,
   buildPushQuery,
+  liveInterval: 20000,
 };

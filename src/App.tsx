@@ -26,6 +26,8 @@ import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
 import { AppErrorBoundary } from "./features/layout/AppErrorBoundary/AppErrorBoundary";
 import { GlobalNav } from "./features/layout/GlobalNav/GlobalNav";
 import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
+import { tripService } from "./features/trips/trip.service";
+import { userService } from "./features/users/user.service";
 import "./styles/App.scss";
 import "./styles/tailwind.css";
 
@@ -60,6 +62,7 @@ const AuthenticatedApp = () => {
     <DataBrowserRouter>
       <Route
         element={<Layout isLoggedIn={true} />}
+        loader={globalLoader}
         errorElement={<AppErrorBoundary />}
       >
         <Route element={<HomeRoute />} index />
@@ -108,4 +111,17 @@ const Layout = ({ isLoggedIn = false }) => {
     </>
   );
 };
+
+export const globalLoader = async () => {
+  if (auth.checkIsLoggedIn()) {
+    let allUsers = await userService.getAll();
+    let allTrips = await tripService.getAll();
+    return {
+      allUsers,
+      allTrips,
+    };
+  }
+  return {};
+};
+
 export default App;

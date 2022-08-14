@@ -4,16 +4,16 @@ import { LoaderFunction, useParams } from "react-router-dom";
 import { calcNumDays, displayDateRange } from "~/common/utils";
 import { BigDate } from "~/components";
 import { LinkButton } from "~/components/inputs/buttons";
-import { findOneEntity, useEntity } from "~/database/data.helpers";
 import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../layout/AppErrorBoundary/AppErrorBoundary";
-import { useUsers } from "../users/UsersRoute";
-import { tripSchema } from "./trip.types";
-import { tripQueries } from "./trips.data";
-export default function TripDetailsRoute() {
-  let trip = useTrip();
+import { useAllUsers } from "../users/user.service";
+import { tripService, useTrip } from "./trip.service";
 
-  let allUsers = useUsers() || [];
+export default function TripDetailsRoute() {
+  let { tripId } = useParams();
+  let trip = useTrip(tripId + "");
+
+  let allUsers = useAllUsers() || [];
   let companions =
     trip?.companions?.map((c) => allUsers.find((u) => u.id === c.userId)) || [];
   if (!trip) return null;
@@ -83,16 +83,8 @@ const animationVariants = {
   },
 };
 
-let useTrip = () => {
-  let { tripId } = useParams();
-  return useEntity(tripQueries.getById(tripId + ""), "trip", tripSchema);
-};
-
 export const loader: LoaderFunction = async ({ params }) => {
-  let trip = await findOneEntity(
-    tripQueries.getById(params.tripId + ""),
-    tripSchema
-  );
+  let trip = tripService.getById(params.tripId + "");
   return {
     trip,
   };

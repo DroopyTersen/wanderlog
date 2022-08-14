@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLoaderData } from "react-router-dom";
 import { RxQuery } from "rxdb";
 import { z, ZodObject, ZodRawShape } from "zod";
+import { RouteSelector, useRouteData } from "~/hooks/useRouteData";
 
 export async function queryCollection<
   Schema extends ZodObject<T>,
@@ -24,10 +24,10 @@ export async function findOneEntity<
 export function useCollection<
   Schema extends ZodObject<T>,
   T extends ZodRawShape
->(query: RxQuery, loaderDataProperty: string, schema: Schema) {
-  let loaderData = useLoaderData() as any;
+>(query: RxQuery, selector: RouteSelector, schema: Schema) {
+  let routeData = useRouteData(selector) as T[];
   let [items, setItems] = useState<z.TypeOf<Schema>[]>(() => {
-    return loaderData?.[loaderDataProperty] || [];
+    return routeData || [];
   });
 
   useEffect(() => {
@@ -43,12 +43,12 @@ export function useCollection<
 }
 export function useEntity<Schema extends ZodObject<T>, T extends ZodRawShape>(
   query: RxQuery,
-  loaderDataProperty: string,
+  selector: RouteSelector,
   schema: Schema
 ) {
-  let loaderData = useLoaderData() as any;
+  let routeData = useRouteData(selector) as T;
   let [item, setItem] = useState<z.TypeOf<Schema>>(() => {
-    return loaderData?.[loaderDataProperty] || null;
+    return routeData || null;
   });
 
   useEffect(() => {

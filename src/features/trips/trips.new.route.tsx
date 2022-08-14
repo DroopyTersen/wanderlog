@@ -1,15 +1,12 @@
 import { ActionFunction, redirect } from "react-router-dom";
-import { queryCollection } from "~/database/data.helpers";
-import { db } from "~/database/database";
 import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
-import { userSchema } from "../users/user.types";
-import { useUsers } from "../users/UsersRoute";
+import { useAllUsers } from "../users/user.service";
 import { TripForm } from "./components/TripForm";
+import { tripService } from "./trip.service";
 import { tripSaveSchema } from "./trip.types";
-import { tripMutations } from "./trips.data";
 
 export default function NewTripRoute() {
-  let users = useUsers();
+  let users = useAllUsers();
   return (
     <AppBackgroundLayout back="/trips" title="New Trip">
       <TripForm users={users} />
@@ -24,14 +21,7 @@ export const action: ActionFunction = async ({ request }) => {
     ...Object.fromEntries(formData),
     companions: companions.map((userId) => ({ userId })),
   });
-  await tripMutations.insert(saveTripInput);
+  await tripService.insert(saveTripInput);
 
   return redirect("/trips/" + saveTripInput.id);
-};
-
-export const loader = async () => {
-  let users = await queryCollection(db.users.find(), userSchema);
-  return {
-    users,
-  };
 };

@@ -1,9 +1,7 @@
-import { queryCollection, useCollection } from "~/database/data.helpers";
-import { db } from "~/database/database";
-import { userSchema } from "~/features/users/user.types";
+import { useAllUsers } from "./user.service";
 
 export default function UsersRoute() {
-  let users = useUsers();
+  let users = useAllUsers();
   return (
     <div>
       <h1>UsersRoute</h1>
@@ -17,14 +15,3 @@ export default function UsersRoute() {
     </div>
   );
 }
-
-const getAllUsersQuery = () => db.users.find();
-export const useUsers = () =>
-  useCollection(getAllUsersQuery(), "users", userSchema);
-
-export const loader = async () => {
-  let users = await queryCollection(getAllUsersQuery(), userSchema);
-  return {
-    users,
-  };
-};

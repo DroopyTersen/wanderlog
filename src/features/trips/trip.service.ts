@@ -1,12 +1,17 @@
 import { generateId } from "~/common/utils";
-import { findOneEntity } from "~/database/data.helpers";
+import {
+  findOneEntity,
+  queryCollection,
+  useCollection,
+  useEntity,
+} from "~/database/data.helpers";
 import { db } from "~/database/database";
 import { auth } from "../auth/auth.client";
 import { TripSaveInput, tripSchema } from "./trip.types";
 
 const currentUserId = auth.getCurrentUser()?.id;
 
-export const tripQueries = {
+const tripQueries = {
   getAll: () =>
     db.trips.find({
       sort: [
@@ -24,7 +29,29 @@ export const tripQueries = {
   },
 };
 
-export const tripMutations = {
+export const useTrips = () => {
+  return useCollection(
+    tripQueries.getAll(),
+    (r) => r?.data?.allTrips,
+    tripSchema
+  );
+};
+
+export const useTrip = (tripId) => {
+  return useEntity(
+    tripQueries.getById(tripId + ""),
+    (r) => r.data.trip,
+    tripSchema
+  );
+};
+
+export const tripService = {
+  getById: (tripId: string) => {
+    return findOneEntity(tripQueries.getById(tripId), tripSchema);
+  },
+  getAll: () => {
+    return queryCollection(tripQueries.getAll(), tripSchema);
+  },
   insert: async (input: TripSaveInput) => {
     if (!input.id) {
       input.id = generateId();
@@ -55,13 +82,5 @@ export const tripMutations = {
   },
   remove: async (id: string) => {
     await tripQueries.getById(id).remove();
-    // let existing = await findOneEntity(tripQueries.getById(id), tripSchema);
-    // let fullInput = {
-    //   ...existing,
-    //   _deleted: true,
-    //   updatedAt: new Date().toISOString(),
-    //   updatedById: currentUserId,
-    // };
-    // await db.trips.upsert(fullInput);
   },
 };

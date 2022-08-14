@@ -5,19 +5,16 @@ import {
   useLoaderData,
 } from "react-router-dom";
 import { DeleteButton } from "~/components/modal/DeleteButton";
-import { findOneEntity, queryCollection } from "~/database/data.helpers";
-import { db } from "~/database/database";
 import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../layout/AppErrorBoundary/AppErrorBoundary";
-import { userSchema } from "../users/user.types";
-import { useUsers } from "../users/UsersRoute";
+import { useAllUsers } from "../users/user.service";
 import { TripForm } from "./components/TripForm";
-import { TripItem, tripSaveSchema, tripSchema } from "./trip.types";
-import { tripMutations, tripQueries } from "./trips.data";
+import { tripService } from "./trip.service";
+import { TripDto, tripSaveSchema } from "./trip.types";
 
 export default function NewTripRoute() {
-  let users = useUsers();
-  let { trip } = useLoaderData() as { trip: TripItem };
+  let users = useAllUsers();
+  let { trip } = useLoaderData() as { trip: TripDto };
   return (
     <AppBackgroundLayout back="/trips" title="Edit Trip">
       <TripForm users={users} initial={trip} />
@@ -39,12 +36,12 @@ export const action: ActionFunction = async ({ request, params }) => {
       ...Object.fromEntries(formData),
       companions: companions.map((userId) => ({ userId })),
     });
-    await tripMutations.update(saveTripInput);
+    await tripService.update(saveTripInput);
 
     return redirect("/trips/" + saveTripInput.id);
   } else if (request.method === "DELETE") {
     console.log("DELETING");
-    await tripMutations.remove(params.tripId + "");
+    await tripService.remove(params.tripId + "");
     return redirect("/trips");
   }
 
@@ -52,13 +49,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  let users = await queryCollection(db.users.find(), userSchema);
-  let trip = await findOneEntity(
-    tripQueries.getById(params.tripId + ""),
-    tripSchema
-  );
+  let trip = tripService.getById(params.tripId + "");
   return {
-    users,
     trip,
   };
 };

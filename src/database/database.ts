@@ -7,6 +7,7 @@ import {
 } from "rxdb/plugins/replication-graphql";
 import { isOnlineStore } from "~/common/isOnline";
 import { auth } from "~/features/auth/auth.client";
+import { memoriesCollection } from "~/features/memories/memories.rxdb";
 import { tripsCollection } from "~/features/trips/trips.rxdb";
 import { usersCollection } from "~/features/users/users.rxdb";
 import { RxCollectionDefinition } from "./database.types";
@@ -20,6 +21,7 @@ const syncCollection = async (
   collection: RxCollection,
   collectionDefinition: RxCollectionDefinition
 ) => {
+  console.log("SYNCING", collectionDefinition.name);
   let replicationState = collection.syncGraphQL({
     url: GRAPHQL_ENDPOINT,
     headers: {
@@ -42,12 +44,19 @@ const syncCollection = async (
     console.error("replication error:" + collectionDefinition.name);
     console.dir(err);
   });
-  replicationState.run();
+  if (replicationState.isStopped()) {
+    replicationState.run();
+  }
   replicationStates.push(replicationState);
   return;
 };
 
-let collections: RxCollectionDefinition[] = [usersCollection, tripsCollection];
+let collections: RxCollectionDefinition[] = [
+  usersCollection,
+  tripsCollection,
+  memoriesCollection,
+];
+
 export const createDb = async () => {
   console.log("CREATING DB");
   const db = await createRxDatabase({
@@ -64,7 +73,6 @@ export const createDb = async () => {
         },
       },
     });
-    await syncCollection(db[collection.name], collection);
   }
 
   return db;
@@ -83,35 +91,36 @@ export const initDB = async () => {
       dbPromise.catch((err) => console.error(err));
       db = await dbPromise;
 
-      isOnlineStore.subscribe(async () => {
-        let isOnline = isOnlineStore.getState();
-        console.log("🚀 | isOnlineStore.subscribe | isOnline", isOnline);
-        if (!isOnline) {
-          replicationStates.forEach((replicationState) => {
-            replicationState.cancel();
-          });
-          replicationStates = [];
-        } else {
-          console.log("syncing");
-          replicationStates.forEach((replicationState) => {
-            replicationState.cancel();
-          });
-          replicationStates = [];
-          for (const collection of collections) {
-            await syncCollection(db[collection.name], collection);
-          }
-        }
-      });
+      // isOnlineStore.subscribe(async () => {
+      //   let isOnline = isOnlineStore.getState();
+      //   console.log("🚀 | isOnlineStore.subscribe | isOnline", isOnline);
+      //   if (!isOnline) {
+      //     replicationStates.forEach((replicationState) => {
+      //       replicationState.cancel();
+      //     });
+      //     replicationStates = [];
+      //   } else {
+      //     console.log("syncing");
+      //     replicationStates.forEach(async (replicationState) => {
+      //       await replicationState.cancel();
+      //     });
+      //     replicationStates = [];
+      //     for (const collection of collections) {
+      //       await syncCollection(db[collection.name], collection);
+      //     }
+      //   }
+      // });
 
       let isOnline = isOnlineStore.getState();
       if (isOnline) {
         console.log("syncing2");
-        replicationStates.filter(Boolean).forEach((replicationState) => {
-          replicationState.cancel();
-        });
+        await Promise.all(
+          replicationStates.filter(Boolean).map((replicationState) => {
+            return replicationState.cancel();
+          })
+        );
         replicationStates = [];
         for (const collection of collections) {
-          console.log("🚀 | initDB | collection", collection);
           await syncCollection(db[collection.name], collection);
         }
       }
