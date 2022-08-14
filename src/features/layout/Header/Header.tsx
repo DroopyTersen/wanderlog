@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export function Header({ children, back }: HeaderProps) {
   return (
-    <header className="lg:hidden z-10 h-11 right-0 left-0 fixed bg-primary-700 grid grid-cols-3">
+    <header className="lg:hidden z-10 h-11 right-0 left-0 fixed bg-primary-700 grid grid-cols-3 pt-[var(--safeContentTop)] -mt-[var(--safeContentTop)]">
       <LinkButton to={back} className="btn-ghost" variants={["circle"]}>
         <IoMdArrowBack size={20} />
       </LinkButton>

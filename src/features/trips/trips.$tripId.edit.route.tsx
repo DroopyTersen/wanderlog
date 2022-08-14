@@ -12,7 +12,7 @@ import { TripForm } from "./components/TripForm";
 import { tripService } from "./trip.service";
 import { TripDto, tripSaveSchema } from "./trip.types";
 
-export default function NewTripRoute() {
+export default function EditTripRoute() {
   let users = useAllUsers();
   let { trip } = useLoaderData() as { trip: TripDto };
   return (
@@ -49,7 +49,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  let trip = tripService.getById(params.tripId + "");
+  let trip = await tripService.getById(params.tripId + "");
+  console.log("🚀 | constloader:LoaderFunction= | trip", trip);
   return {
     trip,
   };
