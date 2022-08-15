@@ -11,7 +11,9 @@ export const AppErrorBoundary = () => {
 
   return (
     <ErrorContainer title="Whoopsies" className="m-4 md:m-6">
-      <pre className="whitespace-pre-wrap text-left text-sm">{message}</pre>
+      <pre className="whitespace-pre-wrap text-left text-sm">
+        {JSON.stringify(message, null, 2)}
+      </pre>
     </ErrorContainer>
   );
 };

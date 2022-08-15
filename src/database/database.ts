@@ -8,6 +8,7 @@ import {
 import { isOnlineStore } from "~/common/isOnline";
 import { auth } from "~/features/auth/auth.client";
 import { memoriesCollection } from "~/features/memories/memories.rxdb";
+import { photosCollection } from "~/features/photos/photos.rxdb";
 import { tripsCollection } from "~/features/trips/trips.rxdb";
 import { usersCollection } from "~/features/users/users.rxdb";
 import { RxCollectionDefinition } from "./database.types";
@@ -55,6 +56,7 @@ let collections: RxCollectionDefinition[] = [
   usersCollection,
   tripsCollection,
   memoriesCollection,
+  photosCollection,
 ];
 
 export const createDb = async () => {

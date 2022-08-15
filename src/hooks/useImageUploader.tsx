@@ -1,6 +1,6 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const clearBlobs = (previews = []) => {
+const clearBlobs = (previews: string[] = []) => {
   previews.forEach((preview) => {
     try {
       console.log("revoking url", preview);
@@ -10,9 +10,10 @@ const clearBlobs = (previews = []) => {
     }
   });
 };
+
 export default function useImageUploader({ multiple = false } = {}) {
   let inputRef = useRef<HTMLInputElement>(null);
-  let [previews, setPreviews] = useState([]);
+  let [previews, setPreviews] = useState<string[]>([]);
   let [files, setFiles] = useState([]);
 
   let clear = () => {
@@ -32,7 +33,7 @@ export default function useImageUploader({ multiple = false } = {}) {
   useEffect(() => {
     let isUnmounted = false;
     let doAsync = async () => {
-      let newPreviews = [];
+      let newPreviews: string[] = [];
       for (var i = 0; i < files.length; i++) {
         let newPreview = URL.createObjectURL(files[i]);
         if (isUnmounted) return;
@@ -53,7 +54,8 @@ export default function useImageUploader({ multiple = false } = {}) {
       onChange={onFileChange}
       multiple={multiple}
       accept="image/*"
-      style={{ display: "none" }}
+      className="absolute inset-0 opacity-0 cursor-pointer"
+      style={{}}
     />
   );
 

@@ -5,6 +5,7 @@ import { BigDate } from "~/components";
 import { Tabs } from "~/components/layout/Tabs";
 import { DropdownMenu } from "~/components/surfaces/DropdownMenu";
 import { NewMenu } from "~/features/layout/NewMenu/NewMenu";
+import { photoService } from "~/features/photos/photo.service";
 import { AppBackgroundLayout } from "../../../../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../../../../layout/AppErrorBoundary/AppErrorBoundary";
 import { memoryService } from "../../../../memories/memory.service";
@@ -69,9 +70,11 @@ export const loader: LoaderFunction = async ({ params }) => {
     params.date + ""
   );
 
+  let photos = await photoService.getByTripAndDate(trip?.id, params.date + "");
   return {
     trip,
     memories,
+    photos,
   };
 };
 

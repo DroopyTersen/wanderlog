@@ -1,0 +1,92 @@
+.photo-uploader.overlay {
+  background: var(--darkBlue);
+  max-width: 100%;
+  //   height: 300px;
+
+  img {
+    filter: brightness(0.75);
+  }
+  &.uploading img {
+    filter: brightness(0.45);
+  }
+  &.saving img {
+    filter: brightness(0.6);
+  }
+  .clear {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  .save-button {
+    width: 120px;
+  }
+  .status {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+}
+
+.photo-grid {
+  display: grid;
+  //   grid-template-columns: repeat(auto-fill, minmax(min(250px, 50%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 50%));
+  grid-auto-rows: min(500px, 45vw);
+  > * {
+    background: var(--darkBlue);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+    display: grid;
+    cursor: pointer;
+    overflow: hidden;
+    &:hover img {
+      filter: saturate(1);
+    }
+  }
+  > *::before {
+    content: "";
+    padding-bottom: 100%;
+    display: block;
+  }
+  > *::before,
+  > * > * {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  img {
+    filter: saturate(0.8);
+    height: 100%;
+    object-fit: cover;
+    min-width: 100%;
+    min-height: 100%;
+  }
+}
+.photo-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: #222;
+  display: grid;
+  place-items: center;
+  z-index: 99;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .close {
+    position: absolute;
+    top: max(env(safe-area-inset-top, 0px), 10px);
+    right: 10px;
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 10px 10px max(env(safe-area-inset-bottom, 0px), 10px) 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+img {
+  background: #354f62;
+}
