@@ -1,7 +1,8 @@
-import { BiBookHeart } from "react-icons/bi";
-import { IoMdImages } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { BigDate, Img, MotionGrid } from "~/components";
+import { AvatarInitialsStack } from "~/components/surfaces/Avatar";
+import { auth } from "~/features/auth/auth.client";
+import { useAllUsers } from "~/features/users/user.service";
 import { BLURRED_PHOTOS } from "../../layout/AppBackground/AppBackground";
 
 export interface TripCardProps {
@@ -15,7 +16,9 @@ export interface TripCardProps {
     thumbnail: string;
     blurred: string;
   }[];
-  dailyLogCount: number;
+  companions?: {
+    userId: string;
+  }[];
 }
 
 const getRandomPhoto = (photos = []) => {
@@ -27,10 +30,20 @@ const getRandomPhoto = (photos = []) => {
 
   return photos[Math.floor(Math.random() * photos.length)];
 };
-
+const currentUserId = auth.getCurrentUser()?.id;
 export const TripCard = (trip: TripCardProps) => {
   let photos = trip?.photos || [];
   const randomPhoto = getRandomPhoto();
+
+  let allUsers = useAllUsers() || [];
+  let companions = (
+    trip?.companions?.map((c) => allUsers.find((u) => u.id === c.userId)) || []
+  ).sort((a, b) => {
+    let [aLastName] = (a?.name || a?.username || "")?.split(" ").reverse();
+    let [bLastName] = (b?.name || b?.username || "")?.split(" ").reverse();
+    return aLastName.localeCompare(bLastName);
+  });
+  if (!trip) return null;
   return (
     <Link
       to={"/trips/" + trip.id}
@@ -56,15 +69,12 @@ export const TripCard = (trip: TripCardProps) => {
               <span>{trip.destination || "Destination Unknown"}</span>
             </div>
           </div>
-          <div className="counts flex gap-2">
-            <span className="dailylog-count flex gap-1 items-center">
-              <span className="number">{trip.dailyLogCount}</span>{" "}
-              <BiBookHeart />
-            </span>
-            <span className="photo-count flex gap-1 items-center">
-              <span className="number">{photos.length}</span>
-              <IoMdImages />
-            </span>
+          <div className="flex gap-1 flex-wrap">
+            <AvatarInitialsStack
+              names={companions
+                .filter((c) => c?.id !== currentUserId)
+                .map((c) => c?.name || c?.username || "")}
+            />
           </div>
         </div>
       </MotionGrid.Item>

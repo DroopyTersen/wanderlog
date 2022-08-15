@@ -40,7 +40,7 @@ export const useTrips = () => {
 export const useTrip = (tripId) => {
   return useEntity(
     tripQueries.getById(tripId + ""),
-    (r) => r.data.trip,
+    (r) => r?.data?.trip,
     tripSchema
   );
 };

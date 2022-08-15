@@ -75,7 +75,7 @@ export const parseRxDocs = <Schema extends ZodObject<T>, T extends ZodRawShape>(
           try {
             return schema.parse(doc);
           } catch (err) {
-            console.error(err, doc);
+            console.error(err, JSON.stringify(doc, null, 2));
             return null as any;
           }
         })

@@ -77,7 +77,12 @@ html input[type="date"] {
   -moz-appearance: textfield;
   // min-height: 1.2em;
 }
-
+html select {
+  display: block;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  // min-height: 1.2em;
+}
 html .tab.tab-active {
   border-color: var(--pink-500);
 }

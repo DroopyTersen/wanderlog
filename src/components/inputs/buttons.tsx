@@ -7,6 +7,7 @@ const VARIANTS = {
   primary: `btn-primary hover:bg-gold-400 hover:border-gold-400`,
   blue: `btn-ghost bg-primary-700/40 backdrop-blur-lg hover:bg-primary-600/50`,
   circle: `btn-square h-11 w-11`,
+  danger: `bg-red-600/70 text-red-100 border-transparent hover:bg-red-600/90 `,
 };
 
 type Variant = keyof typeof VARIANTS;
@@ -40,7 +41,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 type LinkProps = ComponentProps<typeof Link> & {
-  variants: Variant[];
+  variants?: Variant[];
 };
 
 export function LinkButton({

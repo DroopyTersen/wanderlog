@@ -22,10 +22,11 @@ let getSelectClasses = (className) =>
     "block w-full",
     "text-base",
     "border-gray-300",
+    "bg-black/20",
     // "sm:text-sm",
-    "rounded-md",
+    "rounded-lg shadow-sm",
     "focus:outline-none focus:ring-primary-500 focus:border-primary-500",
-    "pl-3 pr-10 py-2",
+    "pl-3 pr-10 py-3",
     className,
   ]
     .filter(Boolean)

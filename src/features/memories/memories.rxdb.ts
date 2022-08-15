@@ -1,7 +1,7 @@
 import type { RxJsonSchema } from "rxdb";
 import zodToJsonSchema from "zod-to-json-schema";
 import { RxCollectionDefinition } from "~/database/database.types";
-import { memorySchema } from "./memory.types";
+import { MemoryDto, memorySchema } from "./memory.types";
 
 const schema: RxJsonSchema<any> = {
   title: "Memories",
@@ -51,19 +51,17 @@ const PUSH_QUERY = `mutation UpsertMemories($objects: [MemoriesInsertInput!]!) {
 
 const buildPushQuery = (items) => {
   console.log("🚀 | buildPushQuery | items", items);
-  // let objects: HasuraInsertSchema[] = items.map(
-  //   (item: MemoryDto & { deleted: boolean }) => {
-  //     let object: HasuraInsertSchema = {
-  //       ...item,
-  //     };
-  //     return object;
-  //   }
-  // );
+  let objects: any[] = items.map(
+    (item: MemoryDto & { deleted: boolean; _meta: any }) => {
+      let { _meta, createdById, ...object } = item;
+      return object;
+    }
+  );
 
   return {
     query: PUSH_QUERY,
     variables: {
-      objects: items,
+      objects,
     },
   };
 };

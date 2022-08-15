@@ -1,7 +1,7 @@
-import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
-import { NewMenu } from "../layout/NewMenu/NewMenu";
-import { TripCard } from "./components/TripCard";
-import { useTrips } from "./trip.service";
+import { AppBackgroundLayout } from "~/features/layout/AppBackground/AppBackgroundLayout";
+import { NewMenu } from "~/features/layout/NewMenu/NewMenu";
+import { TripCard } from "../components/TripCard";
+import { useTrips } from "../trip.service";
 
 export default function TripsRoute() {
   let trips = useTrips();

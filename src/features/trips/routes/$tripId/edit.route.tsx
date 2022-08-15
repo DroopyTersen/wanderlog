@@ -5,12 +5,12 @@ import {
   useLoaderData,
 } from "react-router-dom";
 import { DeleteButton } from "~/components/modal/DeleteButton";
-import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
-import { AppErrorBoundary } from "../layout/AppErrorBoundary/AppErrorBoundary";
-import { useAllUsers } from "../users/user.service";
-import { TripForm } from "./components/TripForm";
-import { tripService } from "./trip.service";
-import { TripDto, tripSaveSchema } from "./trip.types";
+import { AppBackgroundLayout } from "../../../layout/AppBackground/AppBackgroundLayout";
+import { AppErrorBoundary } from "../../../layout/AppErrorBoundary/AppErrorBoundary";
+import { useAllUsers } from "../../../users/user.service";
+import { TripForm } from "../../components/TripForm";
+import { tripService } from "../../trip.service";
+import { TripDto, tripSaveSchema } from "../../trip.types";
 
 export default function EditTripRoute() {
   let users = useAllUsers();

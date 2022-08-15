@@ -45,14 +45,20 @@ export const useMemories = (tripId: string, date: string) => {
     memorySchema
   );
 };
+export const useTripMemories = (tripId: string) => {
+  return useCollection(
+    memorieQueries.getByTrip(tripId),
+    (r) => r?.data?.tripMemories,
+    memorySchema
+  );
+};
 
 export const memoryService = {
   getById: (memoryId: string) => {
     return findOneEntity(memorieQueries.getById(memoryId), memorySchema);
   },
-  getCountByTrip: async (tripId: string) => {
-    let memories = await memorieQueries.getByTrip(tripId).exec();
-    return memories.length;
+  getByTrip: async (tripId: string) => {
+    return queryCollection(memorieQueries.getByTrip(tripId), memorySchema);
   },
   getByTripAndDate: (tripId: string, date: string) => {
     return queryCollection(
@@ -74,7 +80,8 @@ export const memoryService = {
     return fullInput;
   },
   update: async (input: MemorySaveInput) => {
-    let existing = memoryService.getById(input?.id + "");
+    let existing = await memoryService.getById(input?.id + "");
+    console.log("🚀 | update: | existing", existing);
 
     let fullInput = {
       ...existing,

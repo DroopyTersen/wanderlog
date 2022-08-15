@@ -61,7 +61,7 @@ export const Modal = ({
         <Dialog.Portal>
           <Dialog.Overlay asChild={true}>
             <motion.div
-              className="fixed inset-0 z-50 grid modal-overlay bg-white/30  justify-center items-start"
+              className="fixed inset-0 z-50 grid modal-overlay bg-white/20 justify-center items-start"
               transition={{ duration: 0.1 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -76,9 +76,10 @@ export const Modal = ({
                   transition={{ duration: 0.1 }}
                   initial={{ scale: 0.9, y: 30, opacity: 0 }}
                   animate={{ scale: 1, y: 0, opacity: 1 }}
-                  className="text-left whitespace-normal p-8 bg-primary-700/70 backdrop-blur-md shadow rounded-xl w-[500px] max-w-[94vw]  mt-[min(20vw,20vh)]"
+                  style={{ background: "var(--popupBackground)" }}
+                  className="text-left whitespace-normal p-4 md:p-6 lg:p-8 backdrop-blur-md shadow rounded-xl w-[500px] max-w-[94vw]  mt-[min(20vw,20vh)]"
                 >
-                  <div className="flex justify-between modal-header items-center">
+                  <div className="flex justify-between modal-header items-start">
                     {title ? (
                       <Dialog.Title className="modal-title title-text" asChild>
                         {typeof title === "string" ? (
@@ -95,7 +96,7 @@ export const Modal = ({
 
                     {showClose && (
                       <Dialog.Close asChild={true}>
-                        <button className="relative rounded-full btn btn-ghost -top-4 -right-4">
+                        <button className="relative rounded-full btn btn-ghost -top-0 lg:-top-4 lg:-right-4">
                           <IoMdClose />
                         </button>
                       </Dialog.Close>

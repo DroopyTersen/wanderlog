@@ -18,15 +18,22 @@ import {
 } from "~/features/layout/ScreenModeProvider";
 
 import { HomeRoute } from "~/features/home/HomeRoute";
-import TripDayRoute, * as TripDayRouteModule from "~/features/trips/trips.$tripId.$dayNumber.route";
-import EditTripRoute, * as EditTripRouteModule from "~/features/trips/trips.$tripId.edit.route";
-import TripDetailsRoute, * as TripDetailsRouteModule from "~/features/trips/trips.$tripId.route";
-import NewTripRoute, * as NewTripRouteModule from "~/features/trips/trips.new.route";
-import TripsRoute, * as TripsRouteModule from "~/features/trips/trips.route";
+import TripDateLayout, * as TripDateLayoutModule from "~/features/trips/routes/$tripId/$date/$date.layout";
+import TripLayout, * as TripLayoutRouteModule from "~/features/trips/routes/$tripId/$tripId.layout";
+import TripDaysRoute, * as TripDaysRouteModule from "~/features/trips/routes/$tripId/days.route";
+import NewTripRoute, * as NewTripRouteModule from "~/features/trips/routes/new.route";
+import TripsRoute, * as TripsRouteModule from "~/features/trips/routes/trips.route";
 import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
 import { AppErrorBoundary } from "./features/layout/AppErrorBoundary/AppErrorBoundary";
 import { GlobalNav } from "./features/layout/GlobalNav/GlobalNav";
 import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
+import DayMemoriesLayout, * as DayMemoriesLayoutModule from "./features/trips/routes/$tripId/$date/memories.layout";
+import MemoryFormRoute, * as MemoryFormRouteModule from "./features/trips/routes/$tripId/$date/memories.modalForm.route";
+import DayPhotosLayout from "./features/trips/routes/$tripId/$date/photos.layout";
+import DayPlacesLayout from "./features/trips/routes/$tripId/$date/places.layout";
+import EditTripRoute, * as EditTripRouteModule from "./features/trips/routes/$tripId/edit.route";
+import TripPhotosRoute from "./features/trips/routes/$tripId/photos.route";
+import TripPlacesRoute from "./features/trips/routes/$tripId/places.route";
 import { tripService } from "./features/trips/trip.service";
 import { userService } from "./features/users/user.service";
 import "./styles/App.scss";
@@ -68,22 +75,70 @@ const AuthenticatedApp = () => {
       >
         <Route element={<HomeRoute />} index />
         <Route element={<HomeRoute />} path="*" />
-        <Route element={<TripsRoute />} path="/trips" {...TripsRouteModule} />
+        <Route path="/trips">
+          <Route index element={<TripsRoute />} {...TripsRouteModule} />
+          <Route
+            path={":tripId"}
+            element={<TripLayout />}
+            {...TripLayoutRouteModule}
+          >
+            <Route index element={<TripDaysRoute />} {...TripDaysRouteModule} />
+            <Route
+              path="days"
+              element={<TripDaysRoute />}
+              {...TripDaysRouteModule}
+            />
+            <Route
+              path="photos"
+              element={<TripPhotosRoute />}
+              {...TripDaysRouteModule}
+            />
+            <Route
+              path="places"
+              element={<TripPlacesRoute />}
+              {...TripDaysRouteModule}
+            />
+            <Route
+              path="memories/new"
+              element={<MemoryFormRoute />}
+              {...MemoryFormRouteModule}
+            />
+          </Route>
+        </Route>
         <Route
-          path="/trips/:tripId"
-          element={<TripDetailsRoute />}
-          {...TripDetailsRouteModule}
-        />
-        <Route
-          path="/trips/:tripId/:dayNumber"
-          element={<TripDayRoute />}
-          {...TripDayRouteModule}
-        />
-        <Route
-          element={<EditTripRoute />}
           path="/trips/:tripId/edit"
+          element={<EditTripRoute />}
           {...EditTripRouteModule}
         />
+        <Route
+          path="/trips/:tripId/:date"
+          element={<TripDateLayout />}
+          {...TripDateLayoutModule}
+        >
+          <Route
+            index
+            element={<DayMemoriesLayout />}
+            {...DayMemoriesLayoutModule}
+          />
+          <Route
+            path="memories"
+            element={<DayMemoriesLayout />}
+            {...DayMemoriesLayoutModule}
+          >
+            <Route
+              path="new"
+              element={<MemoryFormRoute />}
+              {...MemoryFormRouteModule}
+            />
+            <Route
+              path=":memoryId/edit"
+              element={<MemoryFormRoute />}
+              {...MemoryFormRouteModule}
+            />
+          </Route>
+          <Route path="photos" element={<DayPhotosLayout />}></Route>
+          <Route path="places" element={<DayPlacesLayout />}></Route>
+        </Route>
         <Route
           element={<NewTripRoute />}
           path="/trips/new"

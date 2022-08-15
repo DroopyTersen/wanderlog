@@ -21,9 +21,10 @@ let allEntities = Object.keys(ENTITIES) as EntityType[];
 
 interface NewMenuProps {
   entities?: EntityType[];
+  children?: React.ReactNode;
 }
 
-export function NewMenu({ entities = allEntities }: NewMenuProps) {
+export function NewMenu({ entities = allEntities, children }: NewMenuProps) {
   // TODO figure out if we are in the context of a trip and up
   return (
     <div className="fab-container">
@@ -35,18 +36,20 @@ export function NewMenu({ entities = allEntities }: NewMenuProps) {
           </Button>
         }
       >
-        {entities.map((entity) => {
-          let { label, route } = ENTITIES[entity];
-          return (
-            <DropdownMenu.Item
-              key={entity}
-              className="min-w-[200px]"
-              to={route}
-            >
-              {label}
-            </DropdownMenu.Item>
-          );
-        })}
+        {children
+          ? children
+          : entities.map((entity) => {
+              let { label, route } = ENTITIES[entity];
+              return (
+                <DropdownMenu.Item
+                  key={entity}
+                  className="min-w-[200px]"
+                  to={route}
+                >
+                  {label}
+                </DropdownMenu.Item>
+              );
+            })}
       </DropdownMenu>
     </div>
   );

@@ -1,9 +1,9 @@
 import { ActionFunction, redirect } from "react-router-dom";
-import { AppBackgroundLayout } from "../layout/AppBackground/AppBackgroundLayout";
-import { useAllUsers } from "../users/user.service";
-import { TripForm } from "./components/TripForm";
-import { tripService } from "./trip.service";
-import { tripSaveSchema } from "./trip.types";
+import { AppBackgroundLayout } from "../../layout/AppBackground/AppBackgroundLayout";
+import { useAllUsers } from "../../users/user.service";
+import { TripForm } from "../components/TripForm";
+import { tripService } from "../trip.service";
+import { tripSaveSchema } from "../trip.types";
 
 export default function NewTripRoute() {
   let users = useAllUsers();

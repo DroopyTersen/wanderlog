@@ -3,6 +3,7 @@ import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 import { Link } from "react-router-dom";
+import { Button } from "../inputs/buttons";
 
 export function DropdownMenu({
   label,
@@ -21,14 +22,19 @@ export function DropdownMenu({
           {label}
         </RadixDropdownMenu.Trigger>
       )}
-      <RadixDropdownMenu.Content asChild>
-        <ul
-          // className={`z-10 sm:absolute mt-1 shadow-xl bg-primary-700 ring-1 ring-primary ring-opacity-5 focus:outline-none menu p-3 rounded-box`}
-          className={`m-1 shadow-xl bg-primary-700 menu p-2 rounded-lg`}
-        >
-          {children}
-        </ul>
-      </RadixDropdownMenu.Content>
+      <RadixDropdownMenu.Portal>
+        <RadixDropdownMenu.Content asChild>
+          <ul
+            style={{
+              background: "var(--popupBackground)",
+            }}
+            // className={`z-10 sm:absolute mt-1 shadow-xl bg-primary-700 ring-1 ring-primary ring-opacity-5 focus:outline-none menu p-3 rounded-box`}
+            className={`m-1 shadow-xl bg-primary-700 menu p-2 rounded-lg min-w-[120px] z-20`}
+          >
+            {children}
+          </ul>
+        </RadixDropdownMenu.Content>
+      </RadixDropdownMenu.Portal>
     </RadixDropdownMenu.Root>
   );
 }
@@ -39,12 +45,13 @@ export function ContextMenu(props: Omit<DropdownMenuProps, "label">) {
     <DropdownMenu
       {...(props as any)}
       label={
-        <button
-          className="bg-gray-100 rounded-full btn btn-ghost hover:bg-gray-200"
+        <Button
+          className="btn-ghost"
+          variants={["circle"]}
           title="Context menu"
         >
           <BsThreeDotsVertical />
-        </button>
+        </Button>
       }
     />
   );
