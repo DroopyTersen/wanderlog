@@ -19,7 +19,7 @@ export function AppBackgroundLayout({
       <AppBackground variant={variant} />
       <div className="pt-[var(--safeContentTop)] px-3 sm:px-4">
         {title && <Header back={back}>{title}</Header>}
-        <div className={`${title ? "pt-11" : ""}`}>{children}</div>
+        <div className={`pb-24 ${title ? "pt-11" : ""}`}>{children}</div>
       </div>
     </>
   );

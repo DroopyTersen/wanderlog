@@ -93,25 +93,25 @@ export const initDB = async () => {
       dbPromise.catch((err) => console.error(err));
       db = await dbPromise;
 
-      // isOnlineStore.subscribe(async () => {
-      //   let isOnline = isOnlineStore.getState();
-      //   console.log("🚀 | isOnlineStore.subscribe | isOnline", isOnline);
-      //   if (!isOnline) {
-      //     replicationStates.forEach((replicationState) => {
-      //       replicationState.cancel();
-      //     });
-      //     replicationStates = [];
-      //   } else {
-      //     console.log("syncing");
-      //     replicationStates.forEach(async (replicationState) => {
-      //       await replicationState.cancel();
-      //     });
-      //     replicationStates = [];
-      //     for (const collection of collections) {
-      //       await syncCollection(db[collection.name], collection);
-      //     }
-      //   }
-      // });
+      isOnlineStore.subscribe(async () => {
+        let isOnline = isOnlineStore.getState();
+        console.log("🚀 | isOnlineStore.subscribe | isOnline", isOnline);
+        if (!isOnline) {
+          replicationStates.forEach((replicationState) => {
+            replicationState.cancel();
+          });
+          replicationStates = [];
+        } else {
+          console.log("syncing");
+          replicationStates.forEach(async (replicationState) => {
+            await replicationState.cancel();
+          });
+          replicationStates = [];
+          for (const collection of collections) {
+            await syncCollection(db[collection.name], collection);
+          }
+        }
+      });
 
       let isOnline = isOnlineStore.getState();
       if (isOnline) {

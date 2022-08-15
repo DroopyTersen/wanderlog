@@ -3,15 +3,16 @@ import { BiBookHeart } from "react-icons/bi";
 import { IoMdImages } from "react-icons/io";
 import { BigDate, Img, MotionGrid } from "~/components";
 import { BLURRED_PHOTOS } from "~/features/layout/AppBackground/AppBackground";
+import { PhotoDto } from "~/features/photos/photo.types";
 import { TripDto } from "../trip.types";
 
 interface DayCardProps {
   date: Date;
-  photos: any[];
+  photos: PhotoDto[];
   memoryCount: number;
   trip: TripDto;
 }
-const getRandomPhoto = (photos: any[] = []) => {
+const getRandomPhoto = (photos: PhotoDto[] = []) => {
   if (!photos.length)
     return {
       thumbnail: "/images/mountain-road.thumbnail.jpg",

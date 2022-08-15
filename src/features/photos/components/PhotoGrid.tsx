@@ -1,6 +1,7 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import { useIsOnline } from "~/common/isOnline";
 import { Img } from "~/components";
 import { Button } from "~/components/inputs/buttons";
 import { useDisableBodyScroll } from "~/hooks/useDisableBodyScroll";
@@ -12,6 +13,7 @@ interface Props {
   photos: PhotoDto[];
   date?: string;
   tripId?: string;
+  allowUpload?: boolean;
   onChange?: () => void;
 }
 export function PhotoGrid({
@@ -36,11 +38,12 @@ export function PhotoGrid({
     }
   };
   useDisableBodyScroll(!!selectedPhotoId);
+  let isOnline = useIsOnline();
   return (
     <>
       <AnimateSharedLayout>
         <div className="photo-grid">
-          {date && (
+          {date && isOnline && (
             <PhotoUploader date={date} onSuccess={onChange} tripId={tripId} />
           )}
           {(photos || []).map((photo, index) => (
