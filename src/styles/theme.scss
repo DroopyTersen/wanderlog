@@ -2,6 +2,7 @@
 
 :root {
   --safeTop: env(safe-area-inset-top, 4px);
+  --safeBottom: env(safe-area-inset-bottom, 4px);
   --safeContentTop: calc(var(--safeTop) + 0px);
   --titleFont: Monoton;
   --textFont: "Open Sans";

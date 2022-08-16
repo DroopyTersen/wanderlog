@@ -5,7 +5,6 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { getDaysInRange } from "~/common/utils";
 import { BigDate, Modal } from "~/components";
 import { memoryService, useMemories } from "~/features/memories/memory.service";
 import { memorySaveSchema } from "~/features/memories/memory.types";
@@ -15,7 +14,6 @@ import { useTrip } from "~/features/trips/trip.service";
 export default function MemoryFormRoute() {
   let { tripId, date, memoryId } = useParams();
   let trip = useTrip(tripId + "");
-  let tripDates = getDaysInRange(trip?.start, trip?.end);
   let memories = useMemories(tripId + "", date + "");
   let intialMemory = memories?.find((m) => m.id === memoryId);
   let navigate = useNavigate();
@@ -46,7 +44,7 @@ export default function MemoryFormRoute() {
     >
       <MemoryForm
         tripId={tripId + ""}
-        tripDates={tripDates}
+        trip={trip}
         date={date}
         {...intialMemory}
       />

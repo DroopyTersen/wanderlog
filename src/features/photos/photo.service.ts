@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { generateId } from "~/common/utils";
 import {
   findOneEntity,
@@ -70,18 +71,27 @@ export const photoService = {
     if (!input.id) {
       input.id = generateId();
     }
+    let now = dayjs();
     let fullInput = {
       ...input,
-      createdAt: input?.exif?.timestamp || new Date().toISOString(),
+      createdAt:
+        input?.exif?.timestamp || input?.date
+          ? dayjs(input?.date)
+              .set("hour", now.get("hour"))
+              .set("minute", now.get("minute"))
+              .set("second", now.get("second"))
+              .toISOString()
+          : now.toISOString(),
       updatedAt: new Date().toISOString(),
       createdById: currentUserId,
     };
     await db.photos.insert(fullInput);
     return fullInput;
   },
-  update: async (input: PhotoSaveInput) => {
+  update: async (input: Partial<PhotoSaveInput>) => {
     let existing = await photoService.getById(input?.id + "");
     console.log("🚀 | update: | existing", existing);
+    console.log("🚀 | update: | existing", input);
 
     let fullInput = {
       ...existing,

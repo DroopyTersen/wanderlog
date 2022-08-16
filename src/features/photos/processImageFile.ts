@@ -37,8 +37,9 @@ export const processImageFile = async (
     id: filename,
     date:
       date ||
-      // dayjs(exifData?.timestamp).format("YYYY-MM-DD") ||
-      dayjs().format("YYYY-MM-DD"),
+      (exifData?.timestamp
+        ? dayjs(exifData?.timestamp).format("YYYY-MM-DD")
+        : ""),
     tripId,
     url: fileUrl,
     thumbnail: thumbnailImage,

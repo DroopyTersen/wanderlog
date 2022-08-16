@@ -30,12 +30,7 @@ export function PhotoUploader({ date, tripId, onSuccess }: Props) {
       try {
         setStatus("saving");
         let photo = await processImageFile(files[0], { tripId, date });
-        if (date) {
-          photo.date = date;
-        }
-        if (tripId) {
-          photo.tripId = tripId;
-        }
+
         await photoService.insert(photo);
         clear();
         setStatus("empty");
@@ -58,13 +53,13 @@ export function PhotoUploader({ date, tripId, onSuccess }: Props) {
   return (
     <div
       className={
-        "photo-uploader overlay relative hover:brightness-125 brightness-90 " +
+        "photo-uploader overlay relative hover:brightness-125 brightness-90 drop-shadow-sm " +
         status
       }
     >
       {status === "empty" && (
         <button
-          className="gold large font-bold absolute inset-0"
+          className="gold large font-semibold absolute inset-0 uppercase"
           onClick={open}
         >
           Add Photo
@@ -87,7 +82,7 @@ export function PhotoUploader({ date, tripId, onSuccess }: Props) {
       {status !== "empty" && status !== "previewing" && (
         <div className="status opacity-pulse">{status}</div>
       )}
-      {imgSrc && <img src={imgSrc} />}
+      {status !== "success" && imgSrc && <img src={imgSrc} />}
     </div>
   );
 }
