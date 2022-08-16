@@ -29,10 +29,8 @@ export function PhotoGrid({
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(
     null
   );
-  let [carouselPhotos, setCarouselPhotos] = useState<PhotoDto[]>(photos);
   const selectedPhoto =
     selectedPhotoIndex !== null ? photos?.[selectedPhotoIndex] : null;
-  console.log("🚀 | selectedPhotoIndex", selectedPhotoIndex);
 
   const deletePhoto = async () => {
     if (selectedPhoto && window.confirm("Are you sure!?!")) {
@@ -64,11 +62,6 @@ export function PhotoGrid({
               // layoutId={`photo-${photo.id}`}
               key={photo.id}
               onClick={() => {
-                let reorderedPhotos = [
-                  ...photos.slice(index),
-                  ...photos.slice(0, index),
-                ];
-                setCarouselPhotos(reorderedPhotos);
                 setSelectedPhotoIndex(index);
               }}
             >
@@ -98,8 +91,13 @@ export function PhotoGrid({
                 <IoMdClose />
               </Button>
 
-              <CarouselSlider onChange={setSelectedPhotoIndex}>
-                {carouselPhotos.map((photo) => (
+              <CarouselSlider
+                startingIndex={selectedPhotoIndex}
+                onChange={(index) => {
+                  setSelectedPhotoIndex(index);
+                }}
+              >
+                {photos.map((photo) => (
                   <img
                     key={photo.id}
                     className="bg-black"

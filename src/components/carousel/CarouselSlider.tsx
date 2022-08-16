@@ -6,6 +6,7 @@ interface Props {
   children: React.ReactNode;
   /** Milliseconds to delay the autopaging. Defaults to off */
   autoPageDelay?: number;
+  startingIndex?: number | null;
   onChange?: (selectedIndex: number) => void;
   [key: string]: any;
 }
@@ -28,6 +29,7 @@ export let debounce = function (func, wait) {
 export function CarouselSlider({
   children,
   autoPageDelay = 0,
+  startingIndex = 0,
   className = "",
   onChange,
   ...rest
@@ -38,7 +40,7 @@ export function CarouselSlider({
       return React.cloneElement(child, { [ATTRIBUTE]: index });
     }
   );
-  let activeItem = useActiveItem(clones, onChange);
+  let activeItem = useActiveItem(clones, startingIndex || 0, onChange);
   let autoPaging = useAutoPaging(activeItem.next, autoPageDelay);
 
   if (!clones?.length) return null;
@@ -77,6 +79,7 @@ const selectItem = (index: string | number) =>
 
 function useActiveItem(
   children: React.ReactNode[],
+  startingIndex = 0,
   onChange?: (index: number) => void
 ) {
   let activeKeyRef = useRef(0);
@@ -135,6 +138,17 @@ function useActiveItem(
       });
     };
   }, [children]);
+
+  useEffect(() => {
+    if (startingIndex) {
+      let container = document.querySelector(
+        ".carousel-items"
+      ) as HTMLDivElement;
+      if (container) container.style.scrollBehavior = "auto";
+      scrollToIndex(startingIndex);
+      if (container) container.style.scrollBehavior = "smooth";
+    }
+  }, []);
 
   return {
     next: () => scrollToIndex(activeKeyRef.current + 1),
