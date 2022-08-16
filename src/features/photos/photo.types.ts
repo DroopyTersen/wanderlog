@@ -17,6 +17,7 @@ export const exifSchema = z.object({
     .or(z.literal(""))
     .optional()
     .default(""),
+  raw: z.any().optional(),
 });
 
 export const basePhotoSchema = z.object({

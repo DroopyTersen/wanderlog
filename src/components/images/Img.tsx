@@ -9,6 +9,7 @@ export function Img({
   src = DEFAULT,
   fallback = DEFAULT,
   opacity = 1,
+  className = "",
 }) {
   let [imgSrc, setImgSrc] = useState(initial);
   let fallbackRef = useRef(fallback);
@@ -39,7 +40,7 @@ export function Img({
     <AnimatePresence>
       {imgSrc && (
         <motion.img
-          className="animated"
+          className={`animated ${className}`}
           style={{ position: "absolute" } as any}
           key={imgSrc}
           src={imgSrc}

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useIsOnline } from "~/common/isOnline";
 import { Img } from "~/components";
+import { CarouselSlider } from "~/components/carousel/CarouselSlider";
 import { Button } from "~/components/inputs/buttons";
 import { useDisableBodyScroll } from "~/hooks/useDisableBodyScroll";
 import { photoService } from "../photo.service";
@@ -22,23 +23,26 @@ export function PhotoGrid({
   tripId = "",
   onChange = undefined,
 }: Props) {
-  const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
-  const selectedPhoto = photos.find((p) => p.id === selectedPhotoId);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(
+    null
+  );
+  let [carouselPhotos, setCarouselPhotos] = useState<PhotoDto[]>(photos);
+  const selectedPhoto =
+    selectedPhotoIndex !== null ? photos?.[selectedPhotoIndex] : null;
+  console.log("🚀 | selectedPhotoIndex", selectedPhotoIndex);
 
   const deletePhoto = async () => {
-    if (selectedPhotoId && window.confirm("Are you sure!?!")) {
-      let photo = photos.find((p) => p.id === selectedPhotoId);
-      if (photo) {
-        await Promise.all([
-          deletePhotoBlobs(photo),
-          photoService.remove(selectedPhotoId),
-        ]);
-        setSelectedPhotoId("");
-      }
+    if (selectedPhoto && window.confirm("Are you sure!?!")) {
+      await Promise.all([
+        deletePhotoBlobs(selectedPhoto),
+        photoService.remove(selectedPhoto.id),
+      ]);
+      setSelectedPhotoIndex(null);
     }
   };
-  useDisableBodyScroll(!!selectedPhotoId);
+  useDisableBodyScroll(!!selectedPhoto);
   let isOnline = useIsOnline();
+
   return (
     <>
       <AnimateSharedLayout>
@@ -50,7 +54,14 @@ export function PhotoGrid({
             <motion.div
               layoutId={`photo-${photo.id}`}
               key={photo.id}
-              onClick={() => setSelectedPhotoId(photo.id)}
+              onClick={() => {
+                let reorderedPhotos = [
+                  ...photos.slice(index),
+                  ...photos.slice(0, index),
+                ];
+                setCarouselPhotos(reorderedPhotos);
+                setSelectedPhotoIndex(index);
+              }}
             >
               <Img src={photo.thumbnail} />
             </motion.div>
@@ -59,7 +70,7 @@ export function PhotoGrid({
         <AnimatePresence exitBeforeEnter={true}>
           {selectedPhoto && (
             <motion.div
-              className="photo-overlay"
+              className="photo-overlay bg-black"
               style={{
                 paddingTop: "var(--safeContentTop)",
               }}
@@ -68,11 +79,22 @@ export function PhotoGrid({
             >
               <Button
                 className="close btn-ghost z-10"
-                onClick={() => setSelectedPhotoId("")}
+                onClick={() => setSelectedPhotoIndex(null)}
               >
                 <IoMdClose />
               </Button>
-              <Img src={selectedPhoto.url} />
+
+              <CarouselSlider onChange={setSelectedPhotoIndex}>
+                {carouselPhotos.map((photo) => (
+                  <img
+                    key={photo.id}
+                    className="bg-black"
+                    // initial={photo.thumbnail}
+                    src={photo.url}
+                  />
+                ))}
+              </CarouselSlider>
+              {/* <Img src={selectedPhoto.url} /> */}
               <div className="footer">
                 <Button
                   variants={["danger"]}

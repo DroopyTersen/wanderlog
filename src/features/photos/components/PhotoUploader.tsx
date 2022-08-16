@@ -29,7 +29,7 @@ export function PhotoUploader({ date, tripId, onSuccess }: Props) {
     if (hasFiles) {
       try {
         setStatus("saving");
-        let photo = await processImageFile(files[0]);
+        let photo = await processImageFile(files[0], { tripId, date });
         if (date) {
           photo.date = date;
         }

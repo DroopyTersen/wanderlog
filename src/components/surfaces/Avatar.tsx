@@ -23,7 +23,7 @@ export function Avatar({ name }: AvatarProps) {
 export const AvatarInitialsStack = ({ names }: { names: string[] }) => {
   return (
     <div className="avatar-group -space-x-2">
-      {names.map((name) => (
+      {names.filter(Boolean).map((name) => (
         <AvatarInitials name={name} key={name} />
       ))}
     </div>

@@ -1,46 +1,51 @@
 import dayjs from "dayjs";
-import { generateId } from "~/common/utils";
+import * as md5 from "spark-md5";
 import { auth } from "../auth/auth.client";
+import { parseExif } from "./exif";
 import { ExifData, PhotoSaveInput } from "./photo.types";
-
 const THUMB_SIZE = 460;
 const FULL_SIZE = 3000;
 
 let currentUser = auth?.getCurrentUser()?.username + "";
-
-export const processImageFile = async (file: File): Promise<PhotoSaveInput> => {
-  let filename = generateFileName(file.name);
-  let fullSizeUrl = `/api/photos/${currentUser}/${filename}`;
-  console.log("🚀 | processImageFile | fullSizeUrl", fullSizeUrl);
+const FILE_URL_PREFIX = `https://wanderlog.droopy.workers.dev/photos`;
+const UPLOAD_FILE_URL_PREFIX = `/api/photos`;
+const generateFileName = (thumbnail: string, tripId = "", date = "") => {
+  return md5.hash(thumbnail + tripId + date) + ".jpg";
+};
+export const processImageFile = async (
+  file: File,
+  { tripId, date }
+): Promise<PhotoSaveInput> => {
   console.log("STARTING RESIZE", file.name);
-  let fullFile = await readFile(file);
-  let fullsizedImage = await resizeImage(fullFile, FULL_SIZE);
-  console.log("🚀 | processImageFile | fullsizedImage", fullsizedImage);
-  let exifData: ExifData | null = null; //await parseExif({ src: fullsizedImage });
+  let exifData: ExifData | null = await parseExif(file);
   console.log("🚀 | processImageFile | exifData", exifData);
+  let fullFile = await readFileAsDataURL(file);
+  let fullsizedImage = await resizeImage(fullFile, FULL_SIZE);
 
   let thumbnailImage = await resizeImage(fullsizedImage, THUMB_SIZE);
+  let filename = generateFileName(thumbnailImage);
+  let blobPath = `/${currentUser}/${filename}`;
+  let fileUrl = `${FILE_URL_PREFIX}${blobPath}`;
+  let uploadUrl = `${UPLOAD_FILE_URL_PREFIX}${blobPath}`;
   console.log("END RESIZE", file.name);
-  await fetch(fullSizeUrl, {
+  await fetch(uploadUrl, {
     method: "POST",
     body: fullsizedImage,
   });
 
   return {
+    id: filename,
     date:
+      date ||
       // dayjs(exifData?.timestamp).format("YYYY-MM-DD") ||
       dayjs().format("YYYY-MM-DD"),
-    url: fullSizeUrl,
+    tripId,
+    url: fileUrl,
     thumbnail: thumbnailImage,
     exif: exifData,
   };
 };
-const generateFileName = (filename: string) => {
-  let [name] = filename.split(".");
-  return `${name}-${generateId()}.jpg`;
-};
-
-const readFile = (file: File): Promise<string> => {
+const readFileAsDataURL = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     // Ensure it's an image
     if (file.type.match(/image.*/)) {

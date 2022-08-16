@@ -4,7 +4,6 @@ const AZURE_STORAGE_CONTAINER = "photos";
 
 exports.handler = async function (event) {
   let filepath = event.path.replace("/api/photos/", "");
-  // console.log(event);
   if (filepath) {
     if (event.httpMethod === "GET") {
       return getPhoto(filepath);
@@ -41,7 +40,17 @@ async function uploadPhoto({ filepath, body }) {
     .getContainerClient(AZURE_STORAGE_CONTAINER)
     .getBlockBlobClient(filepath);
 
-  await blobClient.uploadData(buffer, buffer.length);
+  await blobClient
+    .uploadData(buffer, {
+      blobHTTPHeaders: {
+        blobContentType: contentType,
+        blobCacheControl: "public, max-age=31536000",
+      },
+    })
+    .catch((err) => {
+      console.error("AZURE UPLOAD ERROR", err);
+      throw err;
+    });
 
   return {
     statusCode: "204",
