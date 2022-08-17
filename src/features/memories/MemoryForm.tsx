@@ -25,7 +25,13 @@ export function MemoryForm({
       <input type="hidden" value={id} name="id"></input>
       {date && <input type="hidden" value={date} name="date"></input>}
       {!date && trip && (
-        <TripDayPicker trip={trip} name="date" label="Date" required />
+        <TripDayPicker
+          trip={trip}
+          name="date"
+          label="Date"
+          required
+          autoFocus
+        />
       )}
       {!date && !trip && (
         <InputField type="date" label="Date" name="date" defaultValue={date} />

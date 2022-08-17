@@ -87,3 +87,7 @@ html select {
 html .tab.tab-active {
   border-color: var(--pink-500);
 }
+
+html textarea {
+  -webkit-nbsp-mode: normal;
+}

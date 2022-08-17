@@ -78,6 +78,9 @@ export default function TripDetailsRoute() {
           <DropdownMenu.Item to={`/trips/${trip.id}/memories/new`}>
             Add a Memory
           </DropdownMenu.Item>
+          <DropdownMenu.Item to={`/trips/${trip.id}/photos?new=true`}>
+            Add Photos
+          </DropdownMenu.Item>
         </NewMenu>
       </div>
     </AppBackgroundLayout>

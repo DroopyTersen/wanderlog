@@ -86,6 +86,7 @@ export const pluckFormFieldProps = (props: any) => {
     formControlProps: {
       name,
       id: id || name,
+      required,
       ...formControlProps,
     },
   };

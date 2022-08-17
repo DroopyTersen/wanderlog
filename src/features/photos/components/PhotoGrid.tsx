@@ -1,6 +1,7 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import { useSearchParams } from "react-router-dom";
 import { useIsOnline } from "~/common/isOnline";
 import { Img } from "~/components";
 import { CarouselSlider } from "~/components/carousel/CarouselSlider";
@@ -25,7 +26,12 @@ export function PhotoGrid({
   trip,
   onChange = undefined,
 }: Props) {
-  console.log("🚀 | photos", photos);
+  let isOnline = useIsOnline();
+  let containerRef = useRef<HTMLDivElement>(null);
+  let [searchParams, setSearchParams] = useSearchParams();
+  const isNewMode = useRef<boolean>(
+    isOnline && searchParams.get("new") === "true"
+  );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(
     null
   );
@@ -42,7 +48,6 @@ export function PhotoGrid({
     }
   };
   useDisableBodyScroll(!!selectedPhoto);
-  let isOnline = useIsOnline();
 
   useEffect(() => {
     if (selectedPhotoIndex && !selectedPhoto) {
@@ -50,10 +55,23 @@ export function PhotoGrid({
     }
   }, [selectedPhotoIndex, selectedPhoto]);
 
+  // Auto click the Add Photo if "isNewMode"
+  useEffect(() => {
+    if (isNewMode.current && containerRef.current) {
+      isNewMode.current = false;
+      let newSearchParams = new URL(location.href).searchParams;
+      newSearchParams.delete("new");
+      setSearchParams(newSearchParams);
+      (
+        containerRef.current.querySelector("input[type='file']") as any
+      )?.click();
+    }
+  }, []);
+
   return (
     <>
       <AnimateSharedLayout>
-        <div className="photo-grid">
+        <div className="photo-grid" ref={containerRef}>
           {trip && isOnline && (
             <PhotoUploader date={date} onSuccess={onChange} tripId={trip?.id} />
           )}
