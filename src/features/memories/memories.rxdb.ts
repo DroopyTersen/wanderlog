@@ -12,7 +12,7 @@ const schema: RxJsonSchema<any> = {
 };
 
 const PULL_QUERY = `query GetLatestMemories($lastSync:timestamptz!, $batchSize:Int) {
-  memories(where:{updatedAt:{_gt:$lastSync}} limit: $batchSize orderBy: [{ sortOrder: asc, createdAt:asc}]) {
+  memories(where:{updatedAt:{_gt:$lastSync}} limit: $batchSize orderBy: [{ updatedAt: asc }]) {
     id
     tripId
     date

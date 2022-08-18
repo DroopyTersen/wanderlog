@@ -89,20 +89,23 @@ export function TripForm({ initial, users }: TripFormProps) {
           />
         </div>
         <FormField label="Companions" name="companions">
-          <PickerMulti
-            onChange={(options = []) => {
-              setCompanions(options.map(({ value }) => ({ userId: value })));
-            }}
-            initialValue={
-              companions
-                .map((c) =>
-                  companionOptions.find((co) => co?.value === c.userId + "")
-                )
-                .filter(Boolean) as PickerOption[]
-            }
-            options={companionOptions}
-          />
+          {users?.length > 0 && (
+            <PickerMulti
+              onChange={(options = []) => {
+                setCompanions(options.map(({ value }) => ({ userId: value })));
+              }}
+              initialValue={
+                companions
+                  .map((c) =>
+                    companionOptions.find((co) => co?.value === c.userId + "")
+                  )
+                  .filter(Boolean) as PickerOption[]
+              }
+              options={companionOptions}
+            />
+          )}
         </FormField>
+
         <div className="flex items-center justify-end gap-2">
           <Button
             type="button"

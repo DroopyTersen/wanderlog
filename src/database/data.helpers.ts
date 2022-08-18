@@ -6,9 +6,16 @@ import { RouteSelector, useRouteData } from "~/hooks/useRouteData";
 export async function queryCollection<
   Schema extends ZodObject<T>,
   T extends ZodRawShape
->(query: RxQuery, schema: Schema) {
+>(
+  query: RxQuery,
+  schema: Schema,
+  sortCompare?: (a: z.TypeOf<Schema>, b: z.TypeOf<Schema>) => number
+) {
   let docs: any = await query.exec();
-  return parseRxDocs(docs, schema);
+  let items = parseRxDocs(docs, schema);
+  if (sortCompare) items = items.sort(sortCompare);
+
+  return items;
 }
 
 export async function findOneEntity<
@@ -24,7 +31,12 @@ export async function findOneEntity<
 export function useCollection<
   Schema extends ZodObject<T>,
   T extends ZodRawShape
->(query: RxQuery, selector: RouteSelector, schema: Schema) {
+>(
+  query: RxQuery,
+  selector: RouteSelector,
+  schema: Schema,
+  sortCompare?: (a: z.TypeOf<Schema>, b: z.TypeOf<Schema>) => number
+) {
   let routeData = useRouteData(selector) as T[];
   let [items, setItems] = useState<z.TypeOf<Schema>[]>(() => {
     return routeData || [];
@@ -32,7 +44,9 @@ export function useCollection<
 
   useEffect(() => {
     query.$.subscribe((docs) => {
-      setItems(parseRxDocs(docs, schema));
+      let newItems = parseRxDocs(docs, schema);
+      if (sortCompare) newItems = newItems.sort(sortCompare);
+      setItems(newItems);
     });
     () => {
       query.$.unsubscribe();

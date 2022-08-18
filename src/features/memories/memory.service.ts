@@ -6,7 +6,7 @@ import {
 } from "~/database/data.helpers";
 import { db } from "~/database/database";
 import { auth } from "../auth/auth.client";
-import { MemorySaveInput, memorySchema } from "./memory.types";
+import { MemoryDto, MemorySaveInput, memorySchema } from "./memory.types";
 
 const currentUserId = auth.getCurrentUser()?.id;
 
@@ -42,14 +42,16 @@ export const useMemories = (tripId: string, date: string) => {
   return useCollection(
     memorieQueries.getByTripAndDate(tripId, date),
     (r) => r?.data?.memories,
-    memorySchema
+    memorySchema,
+    sortMemories
   );
 };
 export const useTripMemories = (tripId: string) => {
   return useCollection(
     memorieQueries.getByTrip(tripId),
     (r) => r?.data?.tripMemories,
-    memorySchema
+    memorySchema,
+    sortMemories
   );
 };
 
@@ -58,12 +60,17 @@ export const memoryService = {
     return findOneEntity(memorieQueries.getById(memoryId), memorySchema);
   },
   getByTrip: async (tripId: string) => {
-    return queryCollection(memorieQueries.getByTrip(tripId), memorySchema);
+    return queryCollection(
+      memorieQueries.getByTrip(tripId),
+      memorySchema,
+      sortMemories
+    );
   },
   getByTripAndDate: (tripId: string, date: string) => {
     return queryCollection(
       memorieQueries.getByTripAndDate(tripId, date),
-      memorySchema
+      memorySchema,
+      sortMemories
     );
   },
   insert: async (input: MemorySaveInput) => {
@@ -81,7 +88,6 @@ export const memoryService = {
   },
   update: async (input: MemorySaveInput) => {
     let existing = await memoryService.getById(input?.id + "");
-    console.log("🚀 | update: | existing", existing);
 
     let fullInput = {
       ...existing,
@@ -93,4 +99,11 @@ export const memoryService = {
   remove: async (id: string) => {
     await memorieQueries.getById(id).remove();
   },
+};
+
+const sortMemories = (a: MemoryDto, b: MemoryDto) => {
+  if (a.sortOrder === b.sortOrder) {
+    return a.createdAt.localeCompare(b.createdAt);
+  }
+  return a.sortOrder - b.sortOrder;
 };

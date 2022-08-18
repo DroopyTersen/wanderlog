@@ -104,7 +104,6 @@ export const sortCompanions = (
   companions: TripDto["companions"] = [],
   allUsers
 ) => {
-  console.log("🚀 | companions", companions);
   return (
     companions?.map((c) => allUsers.find((u) => u.id === c.userId)) || []
   ).sort((a, b) => {

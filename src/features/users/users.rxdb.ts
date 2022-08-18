@@ -19,7 +19,7 @@ const schema: RxJsonSchema<any> = {
 const buildPullQuery = async (doc) => {
   let lastSync = doc?.updatedAt || new Date(0).toUTCString();
   const query = `query GetLatestUsers($lastSync: timestamptz!, $batchSize: Int!) {
-  users(where:{updatedAt:{ _gt: $lastSync }}, limit: $batchSize) {
+  users(where:{updatedAt:{ _gt: $lastSync }}, limit: $batchSize orderBy: [{ updatedAt:asc}]) {
     id
     username
     name

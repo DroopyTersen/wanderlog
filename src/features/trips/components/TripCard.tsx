@@ -36,7 +36,11 @@ export const TripCard = (trip: TripCardProps) => {
     >
       <MotionGrid.Item className="card dailylog-card">
         <div className="img overlay">
-          <Img src={randomPhoto.thumbnail} opacity={0.9} />
+          <Img
+            src={randomPhoto.thumbnail}
+            opacity={1}
+            className="saturate-[0.8]"
+          />
         </div>
         <div className="overlay overlay-dark"></div>
 
@@ -44,7 +48,7 @@ export const TripCard = (trip: TripCardProps) => {
           <BigDate
             variant="month"
             date={trip.start}
-            className="text-shadowed z-10 text-gold-200"
+            className="text-shadowed text-gold-200"
           />
           <div className="flex flex-col items-end gap-1">
             <div className=" text-shadowed font-bold uppercase text-gold-200">

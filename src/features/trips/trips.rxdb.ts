@@ -13,7 +13,7 @@ const schema: RxJsonSchema<any> = {
 };
 
 const PULL_QUERY = `query GetLatestTrips($lastSync:timestamptz!, $batchSize:Int) {
-  trips(where:{updatedAt:{_gt:$lastSync}} limit: $batchSize) {
+  trips(where:{updatedAt:{_gt:$lastSync}} limit: $batchSize orderBy: [{ updatedAt:asc}]) {
     id
     title
     destination

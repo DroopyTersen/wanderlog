@@ -13,7 +13,7 @@ const schema: RxJsonSchema<any> = {
 };
 
 const PULL_QUERY = `query GetLatestPhotos($lastSync:timestamptz!, $batchSize:Int) {
-  photos(where:{updatedAt:{_gt:$lastSync}} limit: $batchSize orderBy: [{ createdAt:asc}]) {
+  photos(where:{updatedAt:{_gt:$lastSync}} limit: $batchSize orderBy: [{ updatedAt:asc}]) {
     id
     tripId
     date
@@ -85,7 +85,7 @@ const buildPushQuery = (items) => {
 };
 
 const buildPullQuery = async (doc) => {
-  let lastSync = doc?.updatedAt || new Date(0).toUTCString();
+  let lastSync = doc?.updatedAt || new Date(0).toISOString();
   return {
     query: PULL_QUERY,
     variables: {

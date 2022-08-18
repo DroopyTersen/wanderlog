@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { generateId } from "~/common/utils";
 import {
   findOneEntity,
@@ -7,7 +6,7 @@ import {
 } from "~/database/data.helpers";
 import { db } from "~/database/database";
 import { auth } from "../auth/auth.client";
-import { PhotoSaveInput, photoSchema } from "./photo.types";
+import { PhotoDto, PhotoSaveInput, photoSchema } from "./photo.types";
 
 const currentUserId = auth.getCurrentUser()?.id;
 
@@ -42,14 +41,16 @@ export const usePhotos = (tripId: string, date: string) => {
   return useCollection(
     photoQueries.getByTripAndDate(tripId, date),
     (r) => r?.data?.photos,
-    photoSchema
+    photoSchema,
+    sortTimestampDesc
   );
 };
 export const useTripPhotos = (tripId: string) => {
   return useCollection(
     photoQueries.getByTrip(tripId),
     (r) => r?.data?.tripPhotos,
-    photoSchema
+    photoSchema,
+    sortTimestampDesc
   );
 };
 
@@ -58,29 +59,26 @@ export const photoService = {
     return findOneEntity(photoQueries.getById(photoId), photoSchema);
   },
   getByTrip: async (tripId: string) => {
-    return queryCollection(photoQueries.getByTrip(tripId), photoSchema);
+    return queryCollection(
+      photoQueries.getByTrip(tripId),
+      photoSchema,
+      sortTimestampDesc
+    );
   },
   getByTripAndDate: (tripId: string, date: string) => {
     return queryCollection(
       photoQueries.getByTripAndDate(tripId, date),
-      photoSchema
+      photoSchema,
+      sortTimestampDesc
     );
   },
   insert: async (input: PhotoSaveInput) => {
     if (!input.id) {
       input.id = generateId();
     }
-    let now = dayjs();
     let fullInput = {
       ...input,
-      createdAt:
-        input?.exif?.timestamp || input?.date
-          ? dayjs(input?.date)
-              .set("hour", now.get("hour"))
-              .set("minute", now.get("minute"))
-              .set("second", now.get("second"))
-              .toISOString()
-          : now.toISOString(),
+      createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       createdById: currentUserId,
     };
@@ -102,4 +100,11 @@ export const photoService = {
   remove: async (id: string) => {
     await photoQueries.getById(id).remove();
   },
+};
+
+const sortTimestampDesc = (a: PhotoDto, b: PhotoDto) => {
+  return (a?.exif?.timestamp || a?.createdAt) <
+    (b?.exif?.timestamp || b?.createdAt)
+    ? -1
+    : 1;
 };

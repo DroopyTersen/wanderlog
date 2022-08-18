@@ -18,6 +18,16 @@ export const processImageFile = async (
 ): Promise<PhotoSaveInput> => {
   console.log("STARTING RESIZE", file.name);
   let exifData: ExifData | null = await parseExif(file);
+  if (exifData && !exifData?.timestamp) {
+    let now = dayjs();
+    exifData.timestamp = date
+      ? dayjs(date)
+          .set("hour", now.get("hour"))
+          .set("minute", now.get("minute"))
+          .set("second", now.get("second"))
+          .toISOString()
+      : now.toISOString();
+  }
   console.log("🚀 | processImageFile | exifData", exifData);
   let fullFile = await readFileAsDataURL(file);
   let fullsizedImage = await resizeImage(fullFile, FULL_SIZE);
