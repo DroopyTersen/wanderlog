@@ -18,15 +18,14 @@ import { delayedOpenFilePicker } from "~/features/photos/components/PhotoUploade
 import { AppBackgroundLayout } from "../../../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../../../layout/AppErrorBoundary/AppErrorBoundary";
 import { useAllUsers } from "../../../users/user.service";
-import { tripService, useTrip } from "../../trip.service";
+import { sortCompanions, tripService, useTrip } from "../../trip.service";
 
 export default function TripDetailsRoute() {
   let { tripId } = useParams();
   let navigate = useNavigate();
   let trip = useTrip(tripId + "");
   let allUsers = useAllUsers() || [];
-  let companions =
-    trip?.companions?.map((c) => allUsers.find((u) => u.id === c.userId)) || [];
+  let companions = sortCompanions(trip?.companions || [], allUsers);
   if (!trip) return null;
 
   return (
@@ -72,10 +71,10 @@ export default function TripDetailsRoute() {
               label: "Photos",
               to: "photos",
             },
-            {
-              label: "Places",
-              to: "places",
-            },
+            // {
+            //   label: "Places",
+            //   to: "places",
+            // },
           ]}
         />
 

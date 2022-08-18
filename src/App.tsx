@@ -4,6 +4,7 @@ import {
   Outlet,
   Route,
   ScrollRestoration,
+  useLocation,
   useNavigate,
 } from "react-router-dom";
 import { auth } from "~/features/auth/auth.client";
@@ -17,7 +18,7 @@ import {
   useScreenMode,
 } from "~/features/layout/ScreenModeProvider";
 
-import { HomeRoute } from "~/features/home/HomeRoute";
+import HomeRoute, * as HomeRouteModule from "~/features/home/HomeRoute";
 import TripDateLayout, * as TripDateLayoutModule from "~/features/trips/routes/$tripId/$date/$date.layout";
 import TripLayout, * as TripLayoutRouteModule from "~/features/trips/routes/$tripId/$tripId.layout";
 import TripDaysRoute, * as TripDaysRouteModule from "~/features/trips/routes/$tripId/days.route";
@@ -73,7 +74,7 @@ const AuthenticatedApp = () => {
         loader={globalLoader}
         errorElement={<AppErrorBoundary />}
       >
-        <Route element={<HomeRoute />} index />
+        <Route element={<HomeRoute />} index {...HomeRouteModule} />
         <Route element={<HomeRoute />} path="*" />
         <Route path="/trips">
           <Route index element={<TripsRoute />} {...TripsRouteModule} />
@@ -163,6 +164,12 @@ const AnonymousHomeRoute = () => {
 };
 
 const Layout = ({ isLoggedIn = false }) => {
+  let { pathname } = useLocation();
+
+  useEffect(() => {
+    //scroll to top on route change
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <>
       <AppBackground variant="sharp" />

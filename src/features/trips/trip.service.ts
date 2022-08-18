@@ -1,4 +1,4 @@
-import { generateId } from "~/common/utils";
+import { generateId, getRandom } from "~/common/utils";
 import {
   findOneEntity,
   queryCollection,
@@ -7,7 +7,8 @@ import {
 } from "~/database/data.helpers";
 import { db } from "~/database/database";
 import { auth } from "../auth/auth.client";
-import { TripSaveInput, tripSchema } from "./trip.types";
+import { photoService } from "../photos/photo.service";
+import { TripDto, TripSaveInput, tripSchema } from "./trip.types";
 
 const currentUserId = auth.getCurrentUser()?.id;
 
@@ -46,11 +47,25 @@ export const useTrip = (tripId) => {
 };
 
 export const tripService = {
+  getRandomPhotoForEachTrip: async () => {
+    let allTrips = await queryCollection(tripQueries.getAll(), tripSchema);
+    let tripIds = allTrips.map((trip) => trip.id);
+    let photos = await Promise.all(
+      tripIds.map((tripId) =>
+        photoService.getByTrip(tripId).then((photos) => getRandom(photos))
+      )
+    );
+    let map = {};
+    for (let i = 0; i < tripIds.length; i++) {
+      map[tripIds[i]] = photos[i];
+    }
+    return map;
+  },
   getById: (tripId: string) => {
     return findOneEntity(tripQueries.getById(tripId), tripSchema);
   },
-  getAll: () => {
-    return queryCollection(tripQueries.getAll(), tripSchema);
+  getAll: async () => {
+    let allTrips = await queryCollection(tripQueries.getAll(), tripSchema);
   },
   insert: async (input: TripSaveInput) => {
     if (!input.id) {
@@ -83,4 +98,22 @@ export const tripService = {
   remove: async (id: string) => {
     await tripQueries.getById(id).remove();
   },
+};
+
+export const sortCompanions = (
+  companions: TripDto["companions"] = [],
+  allUsers
+) => {
+  console.log("🚀 | companions", companions);
+  return (
+    companions?.map((c) => allUsers.find((u) => u.id === c.userId)) || []
+  ).sort((a, b) => {
+    let [aFirst, aLastName] = (a?.name || a?.username || "")?.split(" ");
+    let [bFirst, bLastName] = (b?.name || b?.username || "")?.split(" ");
+    if (aLastName === bLastName) {
+      return aFirst.localeCompare(bFirst);
+    } else {
+      return aLastName.localeCompare(bLastName);
+    }
+  });
 };

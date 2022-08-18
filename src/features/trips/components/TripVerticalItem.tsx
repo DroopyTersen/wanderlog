@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { getRandomPhoto } from "~/common/utils";
 import { BigDate, Img, MotionGrid } from "~/components";
@@ -34,36 +33,32 @@ export const TripCard = (trip: TripCardProps) => {
       to={"/trips/" + trip.id}
       className="text-white hover:text-white hover:brightness-110"
     >
-      <MotionGrid.Item className="card dailylog-card">
-        <div className="img overlay">
-          <Img src={randomPhoto.thumbnail} opacity={0.9} />
-        </div>
-        <div className="overlay overlay-dark"></div>
-
-        <div className="flex justify-between">
-          <BigDate
-            variant="month"
-            date={trip.start}
-            className="text-shadowed z-10 text-gold-200"
+      <MotionGrid.Item className="py-4 grid grid-cols-[90px_1fr] backdrop-blur-sm gap-4 border-b border-b-gray-100/20 hover:bg-primary-700 w-full">
+        <div className="overlay w-[90px] h-[90px] rounded-lg overflow-hidden">
+          <Img
+            src={randomPhoto.thumbnail}
+            initial={randomPhoto.thumbnail}
+            opacity={0.7}
           />
-          <div className="flex flex-col items-end gap-1">
-            <div className=" text-shadowed font-bold uppercase text-gold-200">
-              {dayjs(trip.end).diff(dayjs(trip.start), "day") + 1} Days
+          <BigDate
+            variant={"month"}
+            date={trip.start}
+            className="text-shadowed z-10"
+          />
+        </div>
+        <div className="flex flex-col justify-between">
+          <div>
+            <h2 className="text-lg text-white font-medium">{trip.title}</h2>
+            <div className="italic text-gray-200 flex gap-1 items-center">
+              <span>{trip.destination || "Destination Unknown"}</span>
             </div>
-
+          </div>
+          <div className="flex gap-1 flex-wrap">
             <AvatarInitialsStack
               names={companions
                 .filter((c) => c?.id !== currentUserId)
                 .map((c) => c?.name || c?.username || "")}
             />
-          </div>
-        </div>
-        <div className="pb-2">
-          <h2 className="text-xl text-white font-semibold text-shadowed">
-            {trip.title}
-          </h2>
-          <div className="italic text-gray-200 flex gap-1 items-center relative -top-1">
-            <span>{trip.destination || "Destination Unknown"}</span>
           </div>
         </div>
       </MotionGrid.Item>

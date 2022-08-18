@@ -60,9 +60,9 @@ export const GlobalNav = ({ children }) => {
                 <li>
                   <a>Photos</a>
                 </li>
-                <li>
+                {/* <li>
                   <a>Locations</a>
-                </li>
+                </li> */}
                 <li>
                   <button
                     className="btn btn-ghost"
@@ -122,9 +122,9 @@ export const GlobalNav = ({ children }) => {
                 <li>
                   <a>Photos</a>
                 </li>
-                <li>
+                {/* <li>
                   <a>Locations</a>
-                </li>
+                </li> */}
               </ul>
               <div className="mt-12">
                 <div className="font-medium text-center w-full">

@@ -7,14 +7,14 @@ let ENTITIES = {
     label: "New Trip",
     route: "/trips/new",
   },
-  dailyLog: {
-    label: "New Daily Log",
-    route: "/daily-logs/new",
-  },
-  location: {
-    label: "New Location",
-    route: "/locations/new",
-  },
+  // dailyLog: {
+  //   label: "New Daily Log",
+  //   route: "/daily-logs/new",
+  // },
+  // location: {
+  //   label: "New Location",
+  //   route: "/locations/new",
+  // },
 };
 type EntityType = keyof typeof ENTITIES;
 let allEntities = Object.keys(ENTITIES) as EntityType[];

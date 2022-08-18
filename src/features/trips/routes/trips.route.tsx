@@ -1,17 +1,32 @@
+import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { MotionGrid } from "~/components";
 import { AppBackgroundLayout } from "~/features/layout/AppBackground/AppBackgroundLayout";
 import { NewMenu } from "~/features/layout/NewMenu/NewMenu";
 import { TripCard } from "../components/TripCard";
-import { useTrips } from "../trip.service";
+import { tripService, useTrips } from "../trip.service";
 
 export default function TripsRoute() {
   let trips = useTrips();
-
+  let { tripPhotos } = useLoaderData() as any;
   return (
     <AppBackgroundLayout title="Trips">
-      {trips.map((trip) => (
-        <TripCard key={trip.id} {...trip} dailyLogCount={0} />
-      ))}
-      <NewMenu />
+      <MotionGrid width="400px" className="mt-2 daily-logs-grid">
+        {trips.map((trip) => (
+          <TripCard
+            key={trip.id}
+            {...trip}
+            photos={[tripPhotos[trip.id]].filter(Boolean)}
+          />
+        ))}
+      </MotionGrid>
+      <NewMenu></NewMenu>
     </AppBackgroundLayout>
   );
 }
+export const loader: LoaderFunction = async () => {
+  let tripPhotos = await tripService.getRandomPhotoForEachTrip();
+
+  return {
+    tripPhotos,
+  };
+};

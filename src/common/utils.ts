@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
+import { PhotoDto } from "~/features/photos/photo.types";
 
 export const getClassName = (classNames: string[]) =>
   classNames.filter(Boolean).join(" ");
@@ -120,3 +121,17 @@ export function pick(obj: any, keys: string[]): any {
     return newObj;
   }, {});
 }
+
+export function getRandom<T>(array: T[]): T | null {
+  if (!array || !array.length) return null;
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+export const getRandomPhoto = (photos: any[] = []): Partial<PhotoDto> => {
+  if (!photos.length)
+    return {
+      thumbnail: "/images/mountain-road.thumbnail.jpg",
+    };
+
+  return photos[Math.floor(Math.random() * photos.length)];
+};

@@ -24,7 +24,6 @@ const photoQueries = {
       selector: {
         tripId,
       },
-
       sort: [{ createdAt: "asc" }],
     });
   },

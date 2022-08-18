@@ -56,7 +56,7 @@ export default function TripDayLayout() {
           items={[
             { to: "memories", label: "Memories" },
             { to: "photos", label: "Photos" },
-            { to: "places", label: "Places" },
+            // { to: "places", label: "Places" },
           ]}
         />
 
