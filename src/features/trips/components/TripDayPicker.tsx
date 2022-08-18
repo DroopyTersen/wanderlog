@@ -12,7 +12,7 @@ export function TripDayPicker({ trip, ...rest }: TripDayPickerProps) {
 
   return (
     <SelectField {...(rest as any)}>
-      <option value="">Select a date</option>
+      <option value="">Which day?</option>
       {tripDates.map((date, index) => (
         <option key={formatDateId(date)} value={formatDateId(date)}>
           Day {index + 1} {dayjs(date).format("ddd MMM D, YYYY")}

@@ -47,7 +47,7 @@ export default function useImageUploader({ multiple = false } = {}) {
     };
   }, [files]);
 
-  let HiddenInput = (
+  let renderInput = (props: any) => (
     <input
       type="file"
       ref={inputRef}
@@ -56,11 +56,12 @@ export default function useImageUploader({ multiple = false } = {}) {
       accept="image/*"
       className="absolute inset-0 opacity-0 cursor-pointer"
       style={{}}
+      {...props}
     />
   );
 
   return {
-    HiddenInput,
+    renderInput,
     previews,
     clear,
     open,

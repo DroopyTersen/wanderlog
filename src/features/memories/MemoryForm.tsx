@@ -26,6 +26,16 @@ export function MemoryForm({
       {date && <input type="hidden" value={date} name="date"></input>}
       {!date && trip && (
         <TripDayPicker
+          onChange={(e) => {
+            let textArea = e.currentTarget
+              ?.closest("form")
+              ?.querySelector(
+                "textarea[name='content']"
+              ) as HTMLTextAreaElement;
+
+            console.log("🚀 | textArea", textArea);
+            if (textArea) textArea.focus();
+          }}
           trip={trip}
           name="date"
           label="Date"
@@ -43,7 +53,7 @@ export function MemoryForm({
           rows={6}
           required
           defaultValue={content}
-          className="h-32"
+          className={date ? "h-[320px]" : "h-[220px]"}
           placeholder="Describe something that happened on this day..."
         />
       </FormField>

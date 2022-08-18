@@ -1,10 +1,17 @@
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
-import { Link, LoaderFunction, Outlet, useParams } from "react-router-dom";
+import {
+  Link,
+  LoaderFunction,
+  Outlet,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { BigDate } from "~/components";
 import { Tabs } from "~/components/layout/Tabs";
 import { DropdownMenu } from "~/components/surfaces/DropdownMenu";
 import { NewMenu } from "~/features/layout/NewMenu/NewMenu";
+import { delayedOpenFilePicker } from "~/features/photos/components/PhotoUploader";
 import { photoService } from "~/features/photos/photo.service";
 import { AppBackgroundLayout } from "../../../../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../../../../layout/AppErrorBoundary/AppErrorBoundary";
@@ -16,6 +23,7 @@ export const errorElement = <AppErrorBoundary />;
 export default function TripDayLayout() {
   let params = useParams();
   let date = params.date + "";
+  let navigate = useNavigate();
   let trip = useTrip(params.tripId);
 
   return (
@@ -56,6 +64,14 @@ export default function TripDayLayout() {
         <NewMenu>
           <DropdownMenu.Item to={`/trips/${trip.id}/${date}/memories/new`}>
             Add a Memory
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
+            onSelect={() => {
+              delayedOpenFilePicker();
+              navigate(`/trips/${trip.id}/${date}/photos`);
+            }}
+          >
+            <a>Add Photos</a>
           </DropdownMenu.Item>
         </NewMenu>
       </div>

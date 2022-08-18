@@ -120,11 +120,12 @@ const AuthenticatedApp = () => {
             element={<DayMemoriesLayout />}
             {...DayMemoriesLayoutModule}
           />
-          <Route
-            path="memories"
-            element={<DayMemoriesLayout />}
-            {...DayMemoriesLayoutModule}
-          >
+          <Route path="memories">
+            <Route
+              index
+              element={<DayMemoriesLayout />}
+              {...DayMemoriesLayoutModule}
+            ></Route>
             <Route
               path="new"
               element={<MemoryFormRoute />}

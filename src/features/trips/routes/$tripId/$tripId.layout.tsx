@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
 import { HiOutlinePencil } from "react-icons/hi";
-import { LoaderFunction, Outlet, useParams } from "react-router-dom";
+import {
+  LoaderFunction,
+  Outlet,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { calcNumDays, displayDateRange } from "~/common/utils";
 import { BigDate } from "~/components";
 import { LinkButton } from "~/components/inputs/buttons";
@@ -9,6 +14,7 @@ import { Avatar } from "~/components/surfaces/Avatar";
 import { DropdownMenu } from "~/components/surfaces/DropdownMenu";
 import { NewMenu } from "~/features/layout/NewMenu/NewMenu";
 import { memoryService } from "~/features/memories/memory.service";
+import { delayedOpenFilePicker } from "~/features/photos/components/PhotoUploader";
 import { AppBackgroundLayout } from "../../../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../../../layout/AppErrorBoundary/AppErrorBoundary";
 import { useAllUsers } from "../../../users/user.service";
@@ -16,7 +22,7 @@ import { tripService, useTrip } from "../../trip.service";
 
 export default function TripDetailsRoute() {
   let { tripId } = useParams();
-
+  let navigate = useNavigate();
   let trip = useTrip(tripId + "");
   let allUsers = useAllUsers() || [];
   let companions =
@@ -78,8 +84,13 @@ export default function TripDetailsRoute() {
           <DropdownMenu.Item to={`/trips/${trip.id}/memories/new`}>
             Add a Memory
           </DropdownMenu.Item>
-          <DropdownMenu.Item to={`/trips/${trip.id}/photos?new=true`}>
-            Add Photos
+          <DropdownMenu.Item
+            onSelect={() => {
+              delayedOpenFilePicker();
+              navigate(`/trips/${tripId}/photos`);
+            }}
+          >
+            <a>Add Photos</a>
           </DropdownMenu.Item>
         </NewMenu>
       </div>

@@ -13,14 +13,26 @@ interface Props {
   date?: string;
   tripId?: string;
   onSuccess?: () => void;
+  inputProps?: any;
 }
 
 type PhotoStatus = "empty" | "previewing" | "saving" | "success" | "errored";
 
-export function PhotoUploader({ date, tripId, onSuccess }: Props) {
+export const delayedOpenFilePicker = (
+  selector = ".photo-grid input[type='file']"
+) => {
+  setTimeout(() => {
+    let fileInput = document.querySelector(selector) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }, 200);
+};
+
+export function PhotoUploader({ date, tripId, onSuccess, inputProps }: Props) {
   let [status, setStatus] = useState<PhotoStatus>("empty");
   // TODO: add support for multiple
-  let { HiddenInput, previews, open, clear, files } = useImageUploader();
+  let { renderInput, previews, open, clear, files } = useImageUploader();
 
   let hasFiles = previews?.length;
   const imgSrc = previews?.[0];
@@ -65,7 +77,7 @@ export function PhotoUploader({ date, tripId, onSuccess }: Props) {
           Add Photo
         </button>
       )}
-      {HiddenInput}
+      {renderInput(inputProps)}
       {status === "previewing" && (
         <>
           <button
