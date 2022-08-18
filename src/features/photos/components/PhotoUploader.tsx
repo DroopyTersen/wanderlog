@@ -65,7 +65,7 @@ export function PhotoUploader({ date, tripId, onSuccess, inputProps }: Props) {
   return (
     <div
       className={
-        "photo-uploader overlay relative hover:brightness-125 brightness-90 drop-shadow-sm " +
+        "photo-uploader text-white hover:brightness-125 bg-primary-600 overlay relative drop-shadow-sm " +
         status
       }
     >

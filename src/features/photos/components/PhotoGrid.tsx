@@ -2,13 +2,13 @@ import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useIsOnline } from "~/common/isOnline";
-import { Img } from "~/components";
+import { BigDate, Img } from "~/components";
 import { CarouselSlider } from "~/components/carousel/CarouselSlider";
 import { Button } from "~/components/inputs/buttons";
 import { TripDayPicker } from "~/features/trips/components/TripDayPicker";
 import { TripDto } from "~/features/trips/trip.types";
 import { useDisableBodyScroll } from "~/hooks/useDisableBodyScroll";
-import { photoService } from "../photo.service";
+import { groupPhotosByDate, photoService } from "../photo.service";
 import { PhotoDto } from "../photo.types";
 import { PhotoUploader } from "./PhotoUploader";
 
@@ -28,11 +28,8 @@ export function PhotoGrid({
 }: Props) {
   let isOnline = useIsOnline();
   let containerRef = useRef<HTMLDivElement>(null);
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(
-    null
-  );
-  const selectedPhoto =
-    selectedPhotoIndex !== null ? photos?.[selectedPhotoIndex] : null;
+  const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
+  const selectedPhoto = photos.find((p) => p.id === selectedPhotoId);
 
   const deletePhoto = async () => {
     if (selectedPhoto && window.confirm("Are you sure!?!")) {
@@ -40,18 +37,18 @@ export function PhotoGrid({
         deletePhotoBlobs(selectedPhoto),
         photoService.remove(selectedPhoto.id),
       ]);
-      setSelectedPhotoIndex(null);
+      setSelectedPhotoId("");
     }
   };
   useDisableBodyScroll(!!selectedPhoto);
 
-  const selectedPhotoId = selectedPhoto?.id;
   useEffect(() => {
-    if (selectedPhotoIndex && !selectedPhoto) {
-      setSelectedPhotoIndex(null);
+    if (selectedPhotoId && !selectedPhoto) {
+      setSelectedPhotoId("");
     }
-  }, [selectedPhotoIndex, selectedPhoto]);
-
+  }, [selectedPhotoId, selectedPhoto]);
+  const groupedPhotos = groupPhotosByDate(photos);
+  console.log("🚀 | groupedPhotos", groupedPhotos);
   return (
     <>
       <AnimateSharedLayout>
@@ -59,21 +56,32 @@ export function PhotoGrid({
           {trip && isOnline && (
             <PhotoUploader date={date} onSuccess={onChange} tripId={trip?.id} />
           )}
-          {(photos || []).map((photo, index) => (
-            <div
-              // layoutId={`photo-${photo.id}`}
-              key={photo.id}
-              onClick={() => {
-                setSelectedPhotoIndex(index);
-              }}
-            >
-              <Img src={photo.thumbnail} />
-              {!photo.date && (
-                <div className="overlay bg-black/40 drop-shadow-sm font-semibold uppercase">
-                  Set Date
+          {groupedPhotos.map((group) => (
+            <>
+              <div
+                className={
+                  "overlay relative brightness-90 drop-shadow-sm bg-black/50 "
+                }
+              >
+                <BigDate variant="date-month" date={group.date} />
+              </div>
+              {(group.photos || []).map((photo, index) => (
+                <div
+                  // layoutId={`photo-${photo.id}`}
+                  key={photo.id}
+                  onClick={() => {
+                    setSelectedPhotoId(photo.id);
+                  }}
+                >
+                  <Img src={photo.thumbnail} className="cursor-pointer" />
+                  {!photo.date && (
+                    <div className="overlay bg-black/40 drop-shadow-sm font-semibold uppercase">
+                      Set Date
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              ))}
+            </>
           ))}
         </div>
         <AnimatePresence exitBeforeEnter={true}>
@@ -88,15 +96,17 @@ export function PhotoGrid({
             >
               <Button
                 className="close btn-ghost z-10"
-                onClick={() => setSelectedPhotoIndex(null)}
+                onClick={() => setSelectedPhotoId("")}
               >
                 <IoMdClose />
               </Button>
 
               <CarouselSlider
-                startingIndex={selectedPhotoIndex}
+                startingIndex={photos.findIndex(
+                  (p) => p.id === selectedPhoto.id
+                )}
                 onChange={(index) => {
-                  setSelectedPhotoIndex(index);
+                  setSelectedPhotoId(photos[index]?.id || "");
                 }}
               >
                 {photos.map((photo) => (
@@ -110,9 +120,9 @@ export function PhotoGrid({
               </CarouselSlider>
               {/* <Img src={selectedPhoto.url} /> */}
               <div className="footer flex justify-between items-center">
-                {trip && (
+                {trip ? (
                   <TripDayPicker
-                    key={selectedPhotoIndex}
+                    key={selectedPhotoId}
                     trip={trip}
                     name="date"
                     onChange={async (event) => {
@@ -123,7 +133,19 @@ export function PhotoGrid({
                     }}
                     defaultValue={selectedPhoto?.date}
                   />
+                ) : (
+                  <input
+                    type="date"
+                    onChange={async (event) => {
+                      await photoService.updateDate(
+                        selectedPhoto.id,
+                        event.currentTarget.value
+                      );
+                    }}
+                    defaultValue={selectedPhoto?.date}
+                  />
                 )}
+
                 <Button
                   variants={["danger"]}
                   // disabled={isDeleting}

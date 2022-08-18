@@ -146,3 +146,20 @@ const sortTimestampAsc = (a: PhotoDto, b: PhotoDto) => {
 const sortTimestampDesc = (a: PhotoDto, b: PhotoDto) => {
   return sortTimestampAsc(a, b) * -1;
 };
+
+export const groupPhotosByDate = (photos: PhotoDto[]) => {
+  let photosDateMap: Map<string, PhotoDto[]> = photos.reduce((map, photo) => {
+    let date = photo.date;
+    if (!map.get(date)) {
+      map.set(date, []);
+    }
+    map.get(date)?.push(photo);
+    return map;
+  }, new Map());
+  let datePhotos: { date: string; photos: PhotoDto[] }[] = [];
+  photosDateMap.forEach((photos, date) => {
+    datePhotos.push({ date, photos });
+  });
+
+  return datePhotos;
+};
