@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Loader } from "../surfaces";
 
@@ -37,7 +37,7 @@ export function Img({
     };
   }, [src]);
   return (
-    <AnimatePresence>
+    <>
       {imgSrc && (
         <motion.img
           className={`animated ${className}`}
@@ -52,6 +52,6 @@ export function Img({
         />
       )}
       {!imgSrc && <Loader />}
-    </AnimatePresence>
+    </>
   );
 }

@@ -11,6 +11,11 @@ import { PhotoDto, PhotoSaveInput, photoSchema } from "./photo.types";
 const currentUserId = auth.getCurrentUser()?.id;
 
 const photoQueries = {
+  getAll: () => {
+    return db.photos.find({
+      sort: [{ createdAt: "desc" }],
+    });
+  },
   getById: (id: string) => {
     return db.photos.findOne({
       selector: {
@@ -42,7 +47,7 @@ export const usePhotos = (tripId: string, date: string) => {
     photoQueries.getByTripAndDate(tripId, date),
     (r) => r?.data?.photos,
     photoSchema,
-    sortTimestampDesc
+    sortTimestampAsc
   );
 };
 export const useTripPhotos = (tripId: string) => {
@@ -50,7 +55,7 @@ export const useTripPhotos = (tripId: string) => {
     photoQueries.getByTrip(tripId),
     (r) => r?.data?.tripPhotos,
     photoSchema,
-    sortTimestampDesc
+    sortTimestampAsc
   );
 };
 
@@ -62,6 +67,13 @@ export const photoService = {
     return queryCollection(
       photoQueries.getByTrip(tripId),
       photoSchema,
+      sortTimestampAsc
+    );
+  },
+  getAll: async () => {
+    return queryCollection(
+      photoQueries.getAll(),
+      photoSchema,
       sortTimestampDesc
     );
   },
@@ -69,7 +81,7 @@ export const photoService = {
     return queryCollection(
       photoQueries.getByTripAndDate(tripId, date),
       photoSchema,
-      sortTimestampDesc
+      sortTimestampAsc
     );
   },
   insert: async (input: PhotoSaveInput) => {
@@ -102,9 +114,13 @@ export const photoService = {
   },
 };
 
-const sortTimestampDesc = (a: PhotoDto, b: PhotoDto) => {
+const sortTimestampAsc = (a: PhotoDto, b: PhotoDto) => {
   return (a?.exif?.timestamp || a?.createdAt) <
     (b?.exif?.timestamp || b?.createdAt)
     ? -1
     : 1;
+};
+
+const sortTimestampDesc = (a: PhotoDto, b: PhotoDto) => {
+  return sortTimestampAsc(a, b) * -1;
 };

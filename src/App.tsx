@@ -19,6 +19,7 @@ import {
 } from "~/features/layout/ScreenModeProvider";
 
 import HomeRoute, * as HomeRouteModule from "~/features/home/HomeRoute";
+import PhotosRoute, * as PhotosRouteModule from "~/features/photos/routes/photos.route";
 import TripDateLayout, * as TripDateLayoutModule from "~/features/trips/routes/$tripId/$date/$date.layout";
 import TripLayout, * as TripLayoutRouteModule from "~/features/trips/routes/$tripId/$tripId.layout";
 import TripDaysRoute, * as TripDaysRouteModule from "~/features/trips/routes/$tripId/days.route";
@@ -76,6 +77,11 @@ const AuthenticatedApp = () => {
       >
         <Route element={<HomeRoute />} index {...HomeRouteModule} />
         <Route element={<HomeRoute />} path="*" />
+        <Route
+          path="/photos"
+          element={<PhotosRoute />}
+          {...PhotosRouteModule}
+        />
         <Route path="/trips">
           <Route index element={<TripsRoute />} {...TripsRouteModule} />
           <Route
