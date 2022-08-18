@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { generateId } from "~/common/utils";
 import {
   findOneEntity,
@@ -107,6 +108,27 @@ export const photoService = {
       ...input,
       updatedAt: new Date().toISOString(),
     };
+    await db.photos.upsert(fullInput);
+  },
+  updateDate: async (photoId: string, date: string) => {
+    let existing = await photoService.getById(photoId + "");
+    // console.log("🚀 | updateDate: | existing", existing?.exif?.timestamp);
+    let prevTimestamp = dayjs(existing?.exif?.timestamp || date);
+    // console.log("🚀 | updateDate: | prevTimestamp", prevTimestamp.toString());
+    let newTimestamp = dayjs(date)
+      .set("hour", prevTimestamp.get("hour"))
+      .set("minute", prevTimestamp.get("minute"));
+    // console.log(newTimestamp.toString());
+    let fullInput: PhotoDto = {
+      ...existing,
+      exif: {
+        ...(existing.exif as any),
+        timestamp: newTimestamp.toISOString(),
+      },
+      date,
+      updatedAt: new Date().toISOString(),
+    };
+    // console.log("UPDATED TO", date);
     await db.photos.upsert(fullInput);
   },
   remove: async (id: string) => {

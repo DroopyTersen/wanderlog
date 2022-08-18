@@ -45,6 +45,7 @@ export function PhotoGrid({
   };
   useDisableBodyScroll(!!selectedPhoto);
 
+  const selectedPhotoId = selectedPhoto?.id;
   useEffect(() => {
     if (selectedPhotoIndex && !selectedPhoto) {
       setSelectedPhotoIndex(null);
@@ -111,14 +112,14 @@ export function PhotoGrid({
               <div className="footer flex justify-between items-center">
                 {trip && (
                   <TripDayPicker
-                    key={selectedPhoto.id}
+                    key={selectedPhotoIndex}
                     trip={trip}
                     name="date"
-                    onChange={(event) => {
-                      photoService.update({
-                        id: selectedPhoto.id,
-                        date: event.currentTarget.value,
-                      });
+                    onChange={async (event) => {
+                      await photoService.updateDate(
+                        selectedPhoto.id,
+                        event.currentTarget.value
+                      );
                     }}
                     defaultValue={selectedPhoto?.date}
                   />
@@ -145,11 +146,3 @@ async function deletePhotoBlobs({ id, url, thumbnail }) {
     fetch(thumbnail, { method: "DELETE" }),
   ]);
 }
-
-const DELETE_MUTATION = `
-mutation deletePhoto($id: Int!) {
-  delete_photos_by_pk(id: $id) {
-    id
-  }
-}
-`;
