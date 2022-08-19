@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { IoMdClose } from "react-icons/io";
 // import { useMutation } from "urql";
-import { Button } from "~/components/inputs/buttons";
 import useImageUploader from "~/hooks/useImageUploader";
 import { photoService } from "../photo.service";
 import { processImageFile } from "../processImageFile";
@@ -12,11 +10,10 @@ import { processImageFile } from "../processImageFile";
 interface Props {
   date?: string;
   tripId?: string;
-  onSuccess?: () => void;
   inputProps?: any;
 }
 
-type PhotoStatus = "empty" | "previewing" | "saving" | "success" | "errored";
+type PhotoStatus = "empty" | "saving" | "success" | "errored";
 
 export const delayedOpenFilePicker = (
   selector = ".photo-grid input[type='file']"
@@ -29,26 +26,29 @@ export const delayedOpenFilePicker = (
   }, 200);
 };
 
-export function PhotoUploader({ date, tripId, onSuccess, inputProps }: Props) {
+export function PhotoUploader({ date, tripId, inputProps }: Props) {
   let [status, setStatus] = useState<PhotoStatus>("empty");
+  let [imgSrc, setImgSrc] = useState<string>("");
   // TODO: add support for multiple
-  let { renderInput, previews, open, clear, files } = useImageUploader();
+  let { renderInput, previews, open, clear, files } = useImageUploader({
+    multiple: true,
+  });
 
   let hasFiles = previews?.length;
-  const imgSrc = previews?.[0];
 
   const save = async () => {
     if (hasFiles) {
       try {
-        setStatus("saving");
-        let photo = await processImageFile(files[0], { tripId, date });
-
-        await photoService.insert(photo);
-        clear();
-        setStatus("empty");
-        if (onSuccess) {
-          onSuccess();
+        for (let i = 0; i < files.length; i++) {
+          setStatus("saving");
+          setImgSrc(previews[i]);
+          let photo = await processImageFile(files[i], { tripId, date });
+          await photoService.insert(photo);
         }
+
+        clear();
+        setImgSrc("");
+        setStatus("empty");
       } catch (err) {
         console.error("PHOTO SAVE ERROR", err);
         setStatus(err);
@@ -78,20 +78,7 @@ export function PhotoUploader({ date, tripId, onSuccess, inputProps }: Props) {
         </button>
       )}
       {renderInput(inputProps)}
-      {status === "previewing" && (
-        <>
-          <button
-            className="large gold save-button uppercase font-bold absolute inset-0"
-            onClick={() => save()}
-          >
-            Save
-          </button>
-          <Button className="clear btn-ghost absolute" onClick={clear}>
-            <IoMdClose />
-          </Button>
-        </>
-      )}
-      {status !== "empty" && status !== "previewing" && (
+      {status !== "empty" && (
         <div className="status opacity-pulse">{status}</div>
       )}
       {status !== "success" && imgSrc && <img src={imgSrc} />}

@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
+import { useState } from "react";
 import { BiBookHeart } from "react-icons/bi";
 import { IoMdImages } from "react-icons/io";
+import { useIsOnline } from "~/common/isOnline";
 import { BigDate, Img, MotionGrid } from "~/components";
-import { BLURRED_PHOTOS } from "~/features/layout/AppBackground/AppBackground";
 import { PhotoDto } from "~/features/photos/photo.types";
 import { TripDto } from "../trip.types";
 
@@ -15,18 +16,25 @@ interface DayCardProps {
 const getRandomPhoto = (photos: PhotoDto[] = []) => {
   if (!photos.length)
     return {
-      thumbnail: "/images/mountain-road.thumbnail.jpg",
-      blurred: BLURRED_PHOTOS.landscape,
+      mid: "/images/mountain-road.thumbnail.jpg",
+      small: "/images/mountain-road.thumbnail.jpg",
     };
 
   return photos[Math.floor(Math.random() * photos.length)];
 };
 
 export function DayCard({ photos, date, trip, memoryCount }: DayCardProps) {
+  const isOnline = useIsOnline();
+  const [randomPhoto] = useState(() => getRandomPhoto(photos));
   return (
-    <MotionGrid.Item className="card dailylog-card">
+    <MotionGrid.Item className="card dailylog-card aspect-video">
       <div className="img overlay">
-        <Img src={getRandomPhoto(photos).thumbnail} opacity={0.9} />
+        <Img
+          src={isOnline ? randomPhoto.mid : randomPhoto.small}
+          initial={randomPhoto.small}
+          className="saturate-[0.85] brightness-95"
+          opacity={1}
+        />
       </div>
       <div className="overlay overlay-dark"></div>
 

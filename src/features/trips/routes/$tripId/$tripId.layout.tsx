@@ -11,14 +11,13 @@ import { BigDate } from "~/components";
 import { LinkButton } from "~/components/inputs/buttons";
 import { Tabs } from "~/components/layout/Tabs";
 import { Avatar } from "~/components/surfaces/Avatar";
-import { DropdownMenu } from "~/components/surfaces/DropdownMenu";
-import { NewMenu } from "~/features/layout/NewMenu/NewMenu";
 import { memoryService } from "~/features/memories/memory.service";
-import { delayedOpenFilePicker } from "~/features/photos/components/PhotoUploader";
+import { photoService } from "~/features/photos/photo.service";
 import { AppBackgroundLayout } from "../../../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../../../layout/AppErrorBoundary/AppErrorBoundary";
 import { useAllUsers } from "../../../users/user.service";
 import { sortCompanions, tripService, useTrip } from "../../trip.service";
+import { TripNewMenu } from "./$tripId.newMenu";
 
 export default function TripDetailsRoute() {
   let { tripId } = useParams();
@@ -36,7 +35,7 @@ export default function TripDetailsRoute() {
           initial="fromTop"
           animate="visible"
         >
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center lg:justify-start">
             <h1 className="page-title trip-title mt-4 mb-4 font-normal">
               {trip.title}
             </h1>
@@ -44,7 +43,7 @@ export default function TripDetailsRoute() {
               <HiOutlinePencil />
             </LinkButton>
           </div>
-          <div className="row space-between date-row">
+          <div className="flex justify-between date-row lg:justify-end gap-4 lg:flex-row-reverse">
             <div className="trip-dates">
               <div className="num-days">
                 <span>{calcNumDays(trip.start, trip.end)}</span> days
@@ -79,19 +78,7 @@ export default function TripDetailsRoute() {
         />
 
         <Outlet />
-        <NewMenu>
-          <DropdownMenu.Item to={`/trips/${trip.id}/memories/new`}>
-            Add a Memory
-          </DropdownMenu.Item>
-          <DropdownMenu.Item
-            onSelect={() => {
-              delayedOpenFilePicker();
-              navigate(`/trips/${tripId}/photos`);
-            }}
-          >
-            <a>Add Photos</a>
-          </DropdownMenu.Item>
-        </NewMenu>
+        <TripNewMenu trip={trip} />
       </div>
     </AppBackgroundLayout>
   );
@@ -112,11 +99,11 @@ export const loader: LoaderFunction = async ({ params }) => {
   let trip = await tripService.getById(params.tripId + "");
   let tripMemories = await memoryService.getByTrip(params.tripId + "");
   // todo get photos for this trip
-  let photos = [];
+  let tripPhotos = await photoService.getByTrip(params.tripId + "");
 
   return {
     trip,
-    photos,
+    tripPhotos,
     tripMemories,
   };
 };

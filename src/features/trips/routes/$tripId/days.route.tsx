@@ -12,6 +12,7 @@ export default function TripDaysRoute() {
   let tripDates = getDaysInRange(trip?.start, trip?.end);
   let tripMemories = useTripMemories(tripId + "") || [];
   let tripPhotos = useTripPhotos(tripId + "") || [];
+  console.log("🚀 | TripDaysRoute | tripPhotos", tripPhotos);
 
   return (
     <MotionGrid width="400px" className="mt-2 daily-logs-grid">

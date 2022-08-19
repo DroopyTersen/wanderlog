@@ -130,7 +130,8 @@ export function getRandom<T>(array: T[]): T | null {
 export const getRandomPhoto = (photos: any[] = []): Partial<PhotoDto> => {
   if (!photos.length)
     return {
-      thumbnail: "/images/mountain-road.thumbnail.jpg",
+      mid: "/images/mountain-road.thumbnail.jpg",
+      small: "/images/mountain-road.thumbnail.jpg",
     };
 
   return photos[Math.floor(Math.random() * photos.length)];

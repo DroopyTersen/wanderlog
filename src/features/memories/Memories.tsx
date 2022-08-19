@@ -23,7 +23,7 @@ export function MemoriesDisplay({
   let allUsers = useAllUsers();
   return (
     <MotionGrid
-      width="600px"
+      width="1600px"
       {...rest}
       gap="44px"
       className={"my-4" + className}

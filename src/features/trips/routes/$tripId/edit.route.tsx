@@ -5,6 +5,7 @@ import {
   useLoaderData,
 } from "react-router-dom";
 import { DeleteButton } from "~/components/modal/DeleteButton";
+import { DesktopPageTitle } from "~/features/layout/DesktopPageTitle";
 import { AppBackgroundLayout } from "../../../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../../../layout/AppErrorBoundary/AppErrorBoundary";
 import { useAllUsers } from "../../../users/user.service";
@@ -17,6 +18,7 @@ export default function EditTripRoute() {
   let { trip } = useLoaderData() as { trip: TripDto };
   return (
     <AppBackgroundLayout back="/trips" title="Edit Trip">
+      <DesktopPageTitle>Edit Trip</DesktopPageTitle>
       <TripForm users={users} initial={trip} />
       <div>
         <DeleteButton method="delete" formData={{ id: trip?.id }}>

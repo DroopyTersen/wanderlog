@@ -10,6 +10,9 @@ import { auth } from "../auth/auth.client";
 import { PhotoDto, PhotoSaveInput, photoSchema } from "./photo.types";
 
 const currentUserId = auth.getCurrentUser()?.id;
+const currentUsername = auth.getCurrentUser()?.username;
+const UPLOAD_FILE_URL_PREFIX = `/api/photos`;
+const FILE_URL_PREFIX = `https://wanderlog.droopy.workers.dev/photos`;
 
 const photoQueries = {
   getAll: () => {
@@ -134,8 +137,39 @@ export const photoService = {
   remove: async (id: string) => {
     await photoQueries.getById(id).remove();
   },
-};
+  uploadImage: async (
+    img: string,
+    filename: string,
+    size: "small" | "mid" | "full"
+  ) => {
+    if (size === "mid" || size === "small") {
+      filename = filename.replace(".jpg", `_${size}.jpg`);
+    }
+    let blobPath = `/${currentUsername}/${filename}`;
+    let uploadUrl = `${UPLOAD_FILE_URL_PREFIX}${blobPath}`;
 
+    await fetch(uploadUrl, {
+      method: "POST",
+      body: img,
+    });
+    return `${FILE_URL_PREFIX}${blobPath}`;
+  },
+  deleteBlobs: (photo: PhotoDto) => {
+    let fullDeleteUrl = photo.full?.replace(
+      FILE_URL_PREFIX,
+      UPLOAD_FILE_URL_PREFIX
+    );
+    let midDeleteUrl = photo.mid?.replace(
+      FILE_URL_PREFIX,
+      UPLOAD_FILE_URL_PREFIX
+    );
+
+    return Promise.all([
+      fetch(fullDeleteUrl, { method: "DELETE" }),
+      fetch(midDeleteUrl, { method: "DELETE" }),
+    ]);
+  },
+};
 const sortTimestampAsc = (a: PhotoDto, b: PhotoDto) => {
   return (a?.exif?.timestamp || a?.createdAt) <
     (b?.exif?.timestamp || b?.createdAt)

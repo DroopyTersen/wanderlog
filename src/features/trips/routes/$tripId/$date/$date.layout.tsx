@@ -9,14 +9,12 @@ import {
 } from "react-router-dom";
 import { BigDate } from "~/components";
 import { Tabs } from "~/components/layout/Tabs";
-import { DropdownMenu } from "~/components/surfaces/DropdownMenu";
-import { NewMenu } from "~/features/layout/NewMenu/NewMenu";
-import { delayedOpenFilePicker } from "~/features/photos/components/PhotoUploader";
 import { photoService } from "~/features/photos/photo.service";
 import { AppBackgroundLayout } from "../../../../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../../../../layout/AppErrorBoundary/AppErrorBoundary";
 import { memoryService } from "../../../../memories/memory.service";
 import { tripService, useTrip } from "../../../trip.service";
+import { DateNewMenu } from "./$date.newMenu";
 
 export const errorElement = <AppErrorBoundary />;
 
@@ -61,19 +59,7 @@ export default function TripDayLayout() {
         />
 
         <Outlet />
-        <NewMenu>
-          <DropdownMenu.Item to={`/trips/${trip.id}/${date}/memories/new`}>
-            Add a Memory
-          </DropdownMenu.Item>
-          <DropdownMenu.Item
-            onSelect={() => {
-              delayedOpenFilePicker();
-              navigate(`/trips/${trip.id}/${date}/photos`);
-            }}
-          >
-            <a>Add Photos</a>
-          </DropdownMenu.Item>
-        </NewMenu>
+        <DateNewMenu tripId={trip?.id} date={date} />
       </div>
     </AppBackgroundLayout>
   );

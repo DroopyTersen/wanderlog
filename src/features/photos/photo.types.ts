@@ -21,8 +21,9 @@ export const exifSchema = z.object({
 });
 
 export const basePhotoSchema = z.object({
-  url: z.string(),
-  thumbnail: z.string(),
+  full: z.string(),
+  mid: z.string(),
+  small: z.string(),
   tripId: z.string().optional(),
   date: z.string(),
   exif: exifSchema.or(z.null()).optional().default(null),

@@ -27,10 +27,6 @@
 }
 
 .photo-grid {
-  display: grid;
-  //   grid-template-columns: repeat(auto-fill, minmax(min(250px, 50%), 1fr));
-  grid-template-columns: repeat(auto-fill, minmax(150px, 50%));
-  grid-auto-rows: min(500px, 45vw);
   > * {
     background: var(--darkBlue);
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);

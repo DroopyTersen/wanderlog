@@ -58,7 +58,7 @@ export const GlobalNav = ({ children }) => {
                   <Link to="/trips">Trips</Link>
                 </li>
                 <li>
-                  <a>Photos</a>
+                  <Link to="/photos">Photos</Link>
                 </li>
                 {/* <li>
                   <a>Locations</a>
@@ -120,7 +120,9 @@ export const GlobalNav = ({ children }) => {
                   </Link>
                 </li>
                 <li>
-                  <a>Photos</a>
+                  <Link className="rounded" to="/photos">
+                    Photos
+                  </Link>
                 </li>
                 {/* <li>
                   <a>Locations</a>

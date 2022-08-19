@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import {
   ActionFunction,
-  Outlet,
   redirect,
   useFetcher,
   useParams,
@@ -16,7 +15,6 @@ export default function DayMemoriesLayout() {
   let deleteFetcher = useFetcher();
 
   const deleteMemory = (memory: MemoryDto) => {
-    console.log("🚀 | deleteMemory | memory", memory);
     deleteFetcher.submit(
       {
         memoryId: memory.id,
@@ -31,7 +29,7 @@ export default function DayMemoriesLayout() {
   if (!memories.length) {
   }
   return (
-    <div className="bg-primary-700 p-2 rounded-lg mt-2 shadow">
+    <div className="bg-primary-700 p-2 rounded-lg mt-2 shadow max-w-xl">
       {memories?.length ? (
         <MemoriesDisplay
           memories={memories}
@@ -44,7 +42,6 @@ export default function DayMemoriesLayout() {
           <b>{dayjs(date).format("MM/DD/YYYY")}</b> yet.
         </div>
       )}
-      <Outlet />
     </div>
   );
 }

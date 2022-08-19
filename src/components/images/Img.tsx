@@ -42,10 +42,10 @@ export function Img({
         <motion.img
           className={`animated ${className}`}
           style={{ position: "absolute" } as any}
-          key={imgSrc}
+          key={src}
           src={imgSrc}
           initial={{ opacity: 0 }}
-          animate={{ opacity }}
+          animate={{ opacity: 1 }}
           exit={{ opacity }}
           transition={{ duration: imgSrc === src ? 0.5 : 0.15 }}
           loading="lazy"

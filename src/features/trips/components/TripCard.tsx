@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { useIsOnline } from "~/common/isOnline";
 import { getRandomPhoto } from "~/common/utils";
 import { BigDate, Img, MotionGrid } from "~/components";
 import { AvatarInitialsStack } from "~/components/surfaces/Avatar";
@@ -25,19 +26,22 @@ export interface TripCardProps {
 
 const currentUserId = auth.getCurrentUser()?.id;
 export const TripCard = (trip: TripCardProps) => {
+  console.log(trip.photos);
   const randomPhoto = getRandomPhoto(trip.photos);
   let allUsers = useAllUsers() || [];
   let companions = sortCompanions(trip?.companions, allUsers);
+  let isOnline = useIsOnline();
   if (!trip) return null;
   return (
     <Link
       to={"/trips/" + trip.id}
       className="text-white hover:text-white hover:brightness-110"
     >
-      <MotionGrid.Item className="card dailylog-card">
+      <MotionGrid.Item className="card dailylog-card aspect-video">
         <div className="img overlay">
           <Img
-            src={randomPhoto.thumbnail}
+            src={isOnline ? randomPhoto.mid : randomPhoto.small}
+            initial={randomPhoto.small}
             opacity={1}
             className="saturate-[0.8]"
           />

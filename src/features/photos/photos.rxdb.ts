@@ -12,13 +12,18 @@ const schema: RxJsonSchema<any> = {
   additionalProperties: false,
 };
 
+// There is a bug here where if you update a bunch of records at once, then
+// the sync paging will only get the first page because it is a `$gt` on lastSync (updated at)
+// as opposed to a `$gte`. But gte is challening too because it would repeatedly refetch the first page
+// of results. Can't figure out a way to inject an offset since we only have access to query builder
 const PULL_QUERY = `query GetLatestPhotos($lastSync:timestamptz!, $batchSize:Int) {
   photos(where:{updatedAt:{_gt:$lastSync}} limit: $batchSize orderBy: [{ updatedAt:asc}]) {
     id
     tripId
     date
-    url
-    thumbnail
+    full
+    mid
+    small
     exif
     createdById
     createdAt
@@ -28,13 +33,14 @@ const PULL_QUERY = `query GetLatestPhotos($lastSync:timestamptz!, $batchSize:Int
 }`;
 
 const PUSH_QUERY = `mutation UpsertPhotos($objects: [PhotosInsertInput!]!) {
-  insertPhotos(objects: $objects, onConflict: {constraint: photos_pkey, update_columns: [url, date, thumbnail, exif, location, deleted, tripId, updatedAt]}) {
+  insertPhotos(objects: $objects, onConflict: {constraint: photos_pkey, update_columns: [full,mid,small, date, exif, location, deleted, tripId, updatedAt]}) {
     returning {
       id
       tripId
       date
-      url
-      thumbnail
+      full
+      mid
+      small
       exif
       createdById
       createdAt

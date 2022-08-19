@@ -2,13 +2,13 @@ import dayjs from "dayjs";
 import * as md5 from "spark-md5";
 import { auth } from "../auth/auth.client";
 import { parseExif } from "./exif";
+import { photoService } from "./photo.service";
 import { ExifData, PhotoSaveInput } from "./photo.types";
-const THUMB_SIZE = 460;
+const SMALL_SIZE = 460;
+const MID_SIZE = 1260;
 const FULL_SIZE = 3000;
 
 let currentUser = auth?.getCurrentUser()?.username + "";
-const FILE_URL_PREFIX = `https://wanderlog.droopy.workers.dev/photos`;
-const UPLOAD_FILE_URL_PREFIX = `/api/photos`;
 const generateFileName = (thumbnail: string, tripId = "", date = "") => {
   return md5.hash(thumbnail + tripId + date) + ".jpg";
 };
@@ -32,17 +32,16 @@ export const processImageFile = async (
   let fullFile = await readFileAsDataURL(file);
   let fullsizedImage = await resizeImage(fullFile, FULL_SIZE);
 
-  let thumbnailImage = await resizeImage(fullsizedImage, THUMB_SIZE);
-  let filename = generateFileName(thumbnailImage);
-  let blobPath = `/${currentUser}/${filename}`;
-  let fileUrl = `${FILE_URL_PREFIX}${blobPath}`;
-  let uploadUrl = `${UPLOAD_FILE_URL_PREFIX}${blobPath}`;
-  console.log("END RESIZE", file.name);
-  await fetch(uploadUrl, {
-    method: "POST",
-    body: fullsizedImage,
-  });
+  let smallImg = await resizeImage(fullsizedImage, SMALL_SIZE, 0.5);
+  let midImg = await resizeImage(fullsizedImage, MID_SIZE, 0.6);
+  let filename = generateFileName(smallImg, tripId, date);
 
+  let midUrl = await photoService.uploadImage(midImg, filename, "mid");
+  let fullUrl = await photoService.uploadImage(
+    fullsizedImage,
+    filename,
+    "full"
+  );
   return {
     id: filename,
     date:
@@ -51,11 +50,13 @@ export const processImageFile = async (
         ? dayjs(exifData?.timestamp).format("YYYY-MM-DD")
         : ""),
     tripId,
-    url: fileUrl,
-    thumbnail: thumbnailImage,
+    full: fullUrl,
+    mid: midUrl,
+    small: smallImg,
     exif: exifData,
   };
 };
+
 const readFileAsDataURL = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     // Ensure it's an image
@@ -73,7 +74,11 @@ const readFileAsDataURL = (file: File): Promise<string> => {
   });
 };
 
-const resizeImage = (imgSrc: string, maxSize): Promise<string> => {
+const resizeImage = (
+  imgSrc: string,
+  maxSize: number,
+  compression?: number
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     var image = new Image();
     image.onload = function (imageEvent) {
@@ -96,7 +101,7 @@ const resizeImage = (imgSrc: string, maxSize): Promise<string> => {
       canvas.width = width;
       canvas.height = height;
       canvas.getContext("2d")?.drawImage(image, 0, 0, width, height);
-      resolve(canvas.toDataURL("image/jpeg"));
+      resolve(canvas.toDataURL("image/jpeg", compression));
     };
     image.src = imgSrc;
   });

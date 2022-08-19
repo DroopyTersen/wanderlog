@@ -29,8 +29,8 @@ import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
 import { AppErrorBoundary } from "./features/layout/AppErrorBoundary/AppErrorBoundary";
 import { GlobalNav } from "./features/layout/GlobalNav/GlobalNav";
 import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
-import DayMemoriesLayout, * as DayMemoriesLayoutModule from "./features/trips/routes/$tripId/$date/memories.layout";
 import MemoryFormRoute, * as MemoryFormRouteModule from "./features/trips/routes/$tripId/$date/memories.modalForm.route";
+import DayMemoriesRoute, * as DayMemoriesRouteModule from "./features/trips/routes/$tripId/$date/memories.route";
 import DayPhotosLayout from "./features/trips/routes/$tripId/$date/photos.layout";
 import DayPlacesLayout from "./features/trips/routes/$tripId/$date/places.layout";
 import EditTripRoute, * as EditTripRouteModule from "./features/trips/routes/$tripId/edit.route";
@@ -124,14 +124,14 @@ const AuthenticatedApp = () => {
         >
           <Route
             index
-            element={<DayMemoriesLayout />}
-            {...DayMemoriesLayoutModule}
+            element={<DayMemoriesRoute />}
+            {...DayMemoriesRouteModule}
           />
           <Route path="memories">
             <Route
               index
-              element={<DayMemoriesLayout />}
-              {...DayMemoriesLayoutModule}
+              element={<DayMemoriesRoute />}
+              {...DayMemoriesRouteModule}
             ></Route>
             <Route
               path="new"
