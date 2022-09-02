@@ -29,7 +29,6 @@ export const delayedOpenFilePicker = (
 export function PhotoUploader({ date, tripId, inputProps }: Props) {
   let [status, setStatus] = useState<PhotoStatus>("empty");
   let [imgSrc, setImgSrc] = useState<string>("");
-  // TODO: add support for multiple
   let { renderInput, previews, open, clear, files } = useImageUploader({
     multiple: true,
   });

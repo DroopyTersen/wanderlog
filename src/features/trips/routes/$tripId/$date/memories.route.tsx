@@ -1,17 +1,28 @@
 import dayjs from "dayjs";
+import { useEffect } from "react";
 import {
   ActionFunction,
   redirect,
   useFetcher,
+  useNavigate,
   useParams,
 } from "react-router-dom";
 import { MemoriesDisplay } from "~/features/memories/Memories";
 import { memoryService, useMemories } from "~/features/memories/memory.service";
 import { MemoryDto } from "~/features/memories/memory.types";
+import { PhotoDto } from "~/features/photos/photo.types";
+import { useRouteData } from "~/hooks/useRouteData";
 
-export default function DayMemoriesLayout() {
+export default function DayMemoriesRoute() {
   let { tripId, date } = useParams();
+  let photos = useRouteData((r) => r?.data?.photos) as PhotoDto[];
   let memories = useMemories(tripId + "", date + "") || [];
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (!memories?.length && photos?.length) {
+      navigate("photos");
+    }
+  }, []);
   let deleteFetcher = useFetcher();
 
   const deleteMemory = (memory: MemoryDto) => {
