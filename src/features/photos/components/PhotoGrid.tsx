@@ -1,5 +1,7 @@
+import dayjs from "dayjs";
 import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
+import { BsCloudDownload } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { useIsOnline } from "~/common/isOnline";
 import { BigDate, Img } from "~/components";
@@ -62,7 +64,7 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
             {(group.photos || []).map((photo, index) => (
               <div
                 className="grid place-items-center lg:saturate-[0.95] lg:brightness-100 lg:hover:saturate-100 lg:hover:brightness-105"
-                key={photo.id}
+                key={group.date + photo.id}
                 onClick={() => {
                   setSelectedPhotoId(photo.id);
                 }}
@@ -91,12 +93,26 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
             }}
             // transition={{ duration: 0.08 }}
           >
+            <div className="header absolute top-4 left-4 z-10">
+              <Button
+                variants={["danger"]}
+                // disabled={isDeleting}
+                onClick={deletePhoto}
+              >
+                Delete
+              </Button>
+            </div>
             <Button
               className="close btn-ghost z-10"
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+              }}
               variants={["circle"]}
               onClick={() => setSelectedPhotoId("")}
             >
-              <IoMdClose size={20} />
+              <IoMdClose size={32} />
             </Button>
 
             <CarouselSlider
@@ -108,7 +124,7 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
               {photos.map((photo) => (
                 <div className="relative">
                   <Img
-                    key={photo.id}
+                    key={"slider" + photo.id}
                     className="bg-black"
                     initial={photo.small}
                     src={isOnline ? photo.full : photo.small}
@@ -119,7 +135,7 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
             <div className="footer flex justify-between items-center">
               {trip ? (
                 <TripDayPicker
-                  key={selectedPhotoId}
+                  key={"selected" + selectedPhotoId}
                   trip={trip}
                   name="date"
                   onChange={async (event) => {
@@ -142,14 +158,26 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
                   defaultValue={selectedPhoto?.date}
                 />
               )}
-
-              <Button
-                variants={["danger"]}
-                // disabled={isDeleting}
-                onClick={deletePhoto}
-              >
-                Delete
-              </Button>
+              {isOnline && (
+                <div>
+                  <a
+                    className="btn btn-circle btn-primary hover:bg-gold-400 hover:border-gold-400 mr-6 relative bottom-1"
+                    href={selectedPhoto.full.replace(
+                      "https://wanderlog.droopy.workers.dev/",
+                      "/api/"
+                    )}
+                    target="_blank"
+                    download={`${trip?.title}_${dayjs(
+                      selectedPhoto?.exif?.timestamp || selectedPhoto?.createdAt
+                    ).format("YYYY-MM-DD")}_${selectedPhoto.id.substring(
+                      0,
+                      5
+                    )}.jpg`}
+                  >
+                    <BsCloudDownload size={24} />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         )}
