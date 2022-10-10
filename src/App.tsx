@@ -29,6 +29,7 @@ import UsersRoute, * as UsersRouteModule from "~/features/users/UsersRoute";
 import { AppErrorBoundary } from "./features/layout/AppErrorBoundary/AppErrorBoundary";
 import { GlobalNav } from "./features/layout/GlobalNav/GlobalNav";
 import { ReloadPrompt } from "./features/layout/ReloadPrompt/ReloadPrompt";
+import PhotoShareRoute, * as PhotoShareRouteModule from "./features/photos/routes/share-button.route";
 import MemoryFormRoute, * as MemoryFormRouteModule from "./features/trips/routes/$tripId/$date/memories.modalForm.route";
 import DayMemoriesRoute, * as DayMemoriesRouteModule from "./features/trips/routes/$tripId/$date/memories.route";
 import DayPhotosLayout from "./features/trips/routes/$tripId/$date/photos.layout";
@@ -70,6 +71,11 @@ const AnonymousApp = () => {
 const AuthenticatedApp = () => {
   return (
     <DataBrowserRouter>
+      <Route
+        path="/photo-share"
+        element={<PhotoShareRoute />}
+        {...PhotoShareRouteModule}
+      />
       <Route
         element={<Layout isLoggedIn={true} />}
         loader={globalLoader}

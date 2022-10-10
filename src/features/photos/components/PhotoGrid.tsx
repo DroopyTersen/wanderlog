@@ -1,7 +1,5 @@
-import dayjs from "dayjs";
 import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
-import { BsCloudDownload, BsDownload } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { useIsOnline } from "~/common/isOnline";
 import { BigDate, Img } from "~/components";
@@ -165,30 +163,17 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
               )}
               {isOnline && (
                 <div>
-                  <PhotoShareButton
-                    photo={selectedPhoto}
-                    trip={trip}
-                    className="mr-6 relative bottom-1"
-                    key={"share" + selectedPhoto.id}
-                  />
-                  <a
-                    className="btn btn-circle btn-primary hover:bg-gold-400 hover:border-gold-400 mr-6 relative bottom-1"
-                    href={
-                      selectedPhoto.full.replace(
-                        "https://wanderlog.droopy.workers.dev/",
-                        "/api/"
-                      ) + "?download=true"
-                    }
-                    target="_blank"
-                    download={`${trip?.title || ""}_${dayjs(
-                      selectedPhoto?.exif?.timestamp || selectedPhoto?.createdAt
-                    ).format("YYYY-MM-DD")}_${selectedPhoto.id.substring(
-                      0,
-                      5
-                    )}.jpg`}
-                  >
-                    <BsCloudDownload size={24} />
-                  </a>
+                  <iframe
+                    key={"iframe" + selectedPhoto.id}
+                    className="w-11 h-11 rounded-full mr-6 relative bottom-1 transition-opacity opacity-0"
+                    src={`/photo-share?photoId=${selectedPhoto.id}`}
+                    onLoad={(event) => {
+                      let iframe: any = event.target;
+                      setTimeout(() => {
+                        iframe.classList.add("opacity-100");
+                      }, 300);
+                    }}
+                  ></iframe>
                 </div>
               )}
             </div>
@@ -196,78 +181,5 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
         )}
       </AnimatePresence>
     </>
-  );
-}
-
-function PhotoShareButton({
-  photo,
-  trip,
-  className = "",
-}: {
-  photo: PhotoDto;
-  trip?: TripDto;
-  className?: string;
-}) {
-  let [blob, setBlob] = useState<Blob | null>(null);
-  let hasStartedBlobLoad = useRef(false);
-  let [err, setErr] = useState<Error | null>(null);
-  useEffect(() => {
-    if (!hasStartedBlobLoad.current) {
-      hasStartedBlobLoad.current = true;
-      fetch(
-        photo.full.replace("https://wanderlog.droopy.workers.dev/", "/api/")
-      )
-        .then((r) => r.blob())
-        .then((result) => setBlob(result))
-        .catch((err) => {
-          setErr(err);
-        });
-    }
-  }, [photo.full]);
-
-  let date = dayjs(photo.exif?.timestamp || photo.createdAt);
-  let filename = `${date.format("YYYY-MM-DD")}_${photo.id.substring(0, 5)}.jpg`;
-
-  const handleShare = async () => {
-    if (!blob) return;
-    console.log("🚀 | handleShare | blob", blob);
-
-    const data = {
-      files: [
-        new File([blob], filename, {
-          type: "image/jpeg",
-        }),
-      ],
-      title: `${trip ? trip.title + " - " : ""} ${date
-        .toDate()
-        .toLocaleDateString()}`,
-      text: `Wanderlog photo from ${date.toDate().toLocaleDateString()}`,
-    };
-    try {
-      if (!navigator.canShare(data)) {
-        throw new Error("Can't share data.");
-      }
-      await navigator.share(data);
-    } catch (err) {
-      console.log("share error", err.name, err.message);
-      if (err?.name === "NotAllowedError") {
-      }
-    }
-  };
-  if (err) {
-    return <div>{err.message}</div>;
-  }
-  if (!blob) return null;
-  return (
-    <Button
-      key={"share-button" + photo.id}
-      className={className}
-      variants={["circle", "primary"]}
-      onClick={() => {
-        handleShare();
-      }}
-    >
-      <BsDownload size={24} />
-    </Button>
   );
 }
