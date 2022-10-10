@@ -3,9 +3,10 @@ const AZURE_STORAGE_CONTAINER = "photos";
 
 export const handler = async function (event) {
   let filepath = event.path.replace("/api/photos/", "");
+  let isDownload = event.queryStringParameters?.download === "true";
   if (filepath) {
     if (event.httpMethod === "GET") {
-      return getPhoto(filepath);
+      return getPhoto(filepath, isDownload);
     } else if (event.httpMethod === "POST" && event.body) {
       return uploadPhoto({ filepath, body: event.body });
     } else if (event.httpMethod === "DELETE") {
@@ -50,7 +51,8 @@ async function uploadPhoto({ filepath, body }) {
   };
 }
 
-async function getPhoto(filepath) {
+async function getPhoto(filepath, isDownload = false) {
+  console.log("🚀 | getPhoto | isDownload", isDownload);
   let blobClient = BlobServiceClient.fromConnectionString(
     process.env.AZURE_STORAGE_CONNECTION + ""
   )
@@ -66,7 +68,7 @@ async function getPhoto(filepath) {
     statusCode: 200,
     headers: {
       "cache-control": "max-age=31540000",
-      "Content-type": "image/jpeg",
+      "Content-type": isDownload ? "application/octet-stream" : "image/jpeg",
     },
     body: base64Image,
     isBase64Encoded: true,
