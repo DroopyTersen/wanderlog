@@ -110,7 +110,7 @@ function useActiveItem(
   // don't need to re-render.
   useEffect(() => {
     let options = {
-      root: document.querySelector(".carousel"),
+      root: parentElemRef?.current?.querySelector(".carousel"),
       rootMargin: "0px",
       threshold: 1.0,
     };
@@ -146,9 +146,7 @@ function useActiveItem(
 
   useEffect(() => {
     if (startingIndex) {
-      let container = document.querySelector(
-        ".carousel-items"
-      ) as HTMLDivElement;
+      let container = parentElemRef?.current as HTMLDivElement;
       if (container) container.style.scrollBehavior = "auto";
       scrollToIndex(startingIndex);
       if (container) container.style.scrollBehavior = "smooth";
