@@ -115,15 +115,17 @@ export const initDB = async () => {
 
       let isOnline = isOnlineStore.getState();
       if (isOnline) {
-        console.log("syncing2");
-        await Promise.all(
-          replicationStates.filter(Boolean).map((replicationState) => {
-            return replicationState.cancel();
-          })
-        );
-        replicationStates = [];
-        for (const collection of collections) {
-          await syncCollection(db[collection.name], collection);
+        if (window.location.pathname !== "/photo-share") {
+          console.log("syncing2");
+          await Promise.all(
+            replicationStates.filter(Boolean).map((replicationState) => {
+              return replicationState.cancel();
+            })
+          );
+          replicationStates = [];
+          for (const collection of collections) {
+            await syncCollection(db[collection.name], collection);
+          }
         }
       }
     }

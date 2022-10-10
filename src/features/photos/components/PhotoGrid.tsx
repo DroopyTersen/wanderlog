@@ -106,7 +106,7 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
               </Button>
             </div>
             <Button
-              className="close btn-ghost z-10"
+              className="close btn-ghost z-20"
               style={{
                 width: "60px",
                 height: "60px",
@@ -125,7 +125,7 @@ export function PhotoGrid({ photos = [], date = "", trip }: Props) {
               }}
             >
               {photos.map((photo) => (
-                <div className="relative">
+                <div className="relative" key={"photo" + photo.id}>
                   <Img
                     key={"slider" + photo.id}
                     className="bg-black"

@@ -1,9 +1,8 @@
 import dayjs from "dayjs";
-import { motion } from "framer-motion";
-import { Link, LoaderFunction, Outlet, useParams } from "react-router-dom";
-import { BigDate } from "~/components";
+import { LoaderFunction, Outlet, useParams } from "react-router-dom";
 import { Tabs } from "~/components/layout/Tabs";
 import { photoService } from "~/features/photos/photo.service";
+import { TripDaysSlider } from "~/features/trips/components/TripDaysSlider";
 import { AppBackgroundLayout } from "../../../../layout/AppBackground/AppBackgroundLayout";
 import { AppErrorBoundary } from "../../../../layout/AppErrorBoundary/AppErrorBoundary";
 import { memoryService } from "../../../../memories/memory.service";
@@ -16,32 +15,14 @@ export default function TripDayLayout() {
   let params = useParams();
   let date = params.date + "";
   let trip = useTrip(params.tripId);
-
   return (
     <AppBackgroundLayout
       back={`/trips/${trip?.id}`}
       title={dayjs(date).format("MM/DD/YY")}
+      key={date}
     >
-      <div className="dailyLog-details">
-        <motion.div
-          variants={animationVariants}
-          initial="fromTop"
-          animate="visible"
-        >
-          <h2 className="text-gold-300 mt-4 mb-2">
-            <BigDate date={date} variant="day-date-month" />
-          </h2>
-          {trip?.title && (
-            <div className="flex items-center gap-1">
-              <span className="day-count font-bold">
-                Day {dayjs(date).diff(dayjs(trip.start), "day") + 1}:
-              </span>
-              <Link to={"/trips/" + trip?.id} className="text-pink">
-                {trip.title}
-              </Link>
-            </div>
-          )}
-        </motion.div>
+      <div className="dailyLog-details pt-2">
+        <TripDaysSlider trip={trip} activeDate={date} />
 
         <Tabs
           items={[

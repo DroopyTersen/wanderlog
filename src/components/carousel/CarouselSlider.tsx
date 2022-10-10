@@ -11,20 +11,6 @@ interface Props {
   [key: string]: any;
 }
 const ATTRIBUTE = "data-carousel-index";
-export let debounce = function (func, wait) {
-  let timeout: number | null = null;
-  return function () {
-    var args = arguments;
-    var later = () => {
-      timeout = null;
-      func.apply(this, args);
-    };
-    if (timeout != null) {
-      clearTimeout(timeout);
-    }
-    timeout = setTimeout(later, wait) as any;
-  };
-};
 
 export function CarouselSlider({
   children,
@@ -34,13 +20,19 @@ export function CarouselSlider({
   onChange,
   ...rest
 }: Props) {
+  let parentRef = useRef<HTMLDivElement>(null);
   let clones: React.ReactNode[] = React.Children.map(
     children,
     (child: any, index) => {
       return React.cloneElement(child, { [ATTRIBUTE]: index });
     }
   );
-  let activeItem = useActiveItem(clones, startingIndex || 0, onChange);
+  let activeItem = useActiveItem(
+    clones,
+    startingIndex || 0,
+    parentRef,
+    onChange
+  );
   let autoPaging = useAutoPaging(activeItem.next, autoPageDelay);
 
   if (!clones?.length) return null;
@@ -51,7 +43,9 @@ export function CarouselSlider({
       {...autoPaging.pauseEvents}
       {...rest}
     >
-      <div className="carousel-items">{clones}</div>
+      <div className="carousel-items" ref={parentRef}>
+        {clones}
+      </div>
       {clones?.length > 1 && (
         <>
           <button
@@ -74,18 +68,21 @@ export function CarouselSlider({
   );
 }
 
-const selectItem = (index: string | number) =>
-  document.querySelector(`[${ATTRIBUTE}='${index}']`);
-
 function useActiveItem(
   children: React.ReactNode[],
   startingIndex = 0,
+  parentElemRef: any,
   onChange?: (index: number) => void
 ) {
   let activeKeyRef = useRef(0);
+  const selectItem = (index: string | number) => {
+    // console.log("🚀 | selectItem | elem", elem);
+    // return parentElemRef?.current?.querySelector(`[${ATTRIBUTE}='${index}']`);
 
+    return parentElemRef?.current?.querySelector(`[${ATTRIBUTE}='${index}']`);
+  };
   // Manually scroll to the target index
-  const scrollToIndex = (index) => {
+  const scrollToIndex = (index, delay = 0) => {
     if (index > children?.length - 1) index = 0;
     if (index < 0) index = children?.length - 1;
     let elem = selectItem(index);
@@ -97,7 +94,15 @@ function useActiveItem(
       elem.scrollIntoView();
       activeKeyRef.current = index;
     }
-    if (onChange) onChange(activeKeyRef.current);
+    if (onChange) {
+      if (delay) {
+        setTimeout(() => {
+          onChange(index);
+        }, delay);
+      } else {
+        onChange(index);
+      }
+    }
   };
 
   // Use intersection observer to track when the user
@@ -151,7 +156,7 @@ function useActiveItem(
   }, []);
 
   return {
-    next: () => scrollToIndex(activeKeyRef.current + 1),
-    prev: () => scrollToIndex(activeKeyRef.current - 1),
+    next: () => scrollToIndex(activeKeyRef.current + 1, 100),
+    prev: () => scrollToIndex(activeKeyRef.current - 1, 100),
   };
 }
