@@ -31,7 +31,7 @@ let tryParseMessage = (thrown: ThrownErrorType) => {
   console.log("🚀 | tryParseMessage | thrown", thrown);
   if (typeof thrown === "string") return thrown;
   if ("message" in thrown) return thrown.message;
-  if ("data" in thrown) return thrown.data.message;
+  if ("data" in thrown) return thrown?.data?.message || thrown?.data;
   if (Array.isArray(thrown))
     return thrown
       .map((e) => e?.message)

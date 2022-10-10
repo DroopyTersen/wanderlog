@@ -1,12 +1,6 @@
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
-import {
-  Link,
-  LoaderFunction,
-  Outlet,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Link, LoaderFunction, Outlet, useParams } from "react-router-dom";
 import { BigDate } from "~/components";
 import { Tabs } from "~/components/layout/Tabs";
 import { photoService } from "~/features/photos/photo.service";
@@ -21,7 +15,6 @@ export const errorElement = <AppErrorBoundary />;
 export default function TripDayLayout() {
   let params = useParams();
   let date = params.date + "";
-  let navigate = useNavigate();
   let trip = useTrip(params.tripId);
 
   return (
@@ -52,8 +45,8 @@ export default function TripDayLayout() {
 
         <Tabs
           items={[
-            { to: "memories", label: "Memories" },
             { to: "photos", label: "Photos" },
+            { to: "memories", label: "Memories" },
             // { to: "places", label: "Places" },
           ]}
         />
