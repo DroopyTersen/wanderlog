@@ -52,8 +52,8 @@ function PhotoShareButton({
     }
   }, [photo.full]);
 
-  let date = dayjs(photo.exif?.timestamp || photo.createdAt);
-  let filename = `${date.format("YYYY-MM-DD")}_${photo.id.substring(0, 5)}.jpg`;
+  let date = dayjs(photo.date);
+  let filename = `${photo.date}_${photo.id.substring(0, 5)}.jpg`;
 
   const handleShare = async () => {
     if (!blob) return;

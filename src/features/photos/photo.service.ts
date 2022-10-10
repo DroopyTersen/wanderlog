@@ -171,10 +171,13 @@ export const photoService = {
   },
 };
 const sortTimestampAsc = (a: PhotoDto, b: PhotoDto) => {
-  return (a?.exif?.timestamp || a?.createdAt) <
-    (b?.exif?.timestamp || b?.createdAt)
-    ? -1
-    : 1;
+  if (a.date === b.date) {
+    return (a?.exif?.timestamp || a?.createdAt) <
+      (b?.exif?.timestamp || b?.createdAt)
+      ? -1
+      : 1;
+  }
+  return a?.date < b?.date ? -1 : 1;
 };
 
 const sortTimestampDesc = (a: PhotoDto, b: PhotoDto) => {
